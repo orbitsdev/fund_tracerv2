@@ -97,7 +97,7 @@ class ListPersonalServices extends Component implements HasForms, HasTable
 
             $set('abbreviation', Str::acronym($get('title')));
         }
-        
+
     }
 
     public function render()
