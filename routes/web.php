@@ -1,8 +1,10 @@
 <?php
 
-use App\Livewire\ListParticulars;
 use App\Livewire\Particular;
+use App\Livewire\ListParticulars;
+use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\ListPersonalServices;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,8 +30,9 @@ Route::middleware([
 
     Route::get('/dashboard', function () { return view('dashboard');})->name('dashboard');
 
-    Route::prefix('particulars')->name('particular.')->group(function(){
-         Route::get('/', ListParticulars::class)->name('index');
+    Route::prefix('personal-service')->name('personal-service.')->group(function(){
+         Route::get('/', ListPersonalServices::class)->name('index');
+         Route::get('/edit/{record}', EditPsGroup::class)->name('edit');
 
     });
 
