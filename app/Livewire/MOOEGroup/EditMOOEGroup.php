@@ -1,60 +1,45 @@
 <?php
 
-namespace App\Livewire\PSGroup;
+namespace App\Livewire\MOOEGroup;
 
-use App\Livewire\ContentManagement;
 use Filament\Forms;
-use App\Models\PSGroup;
 use Livewire\Component;
 use Filament\Forms\Form;
+use App\Models\MOOEGroup;
 use Filament\Support\RawJs;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
-
-use Filament\Forms\Components\Repeater;
-use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
+use Filament\Notifications\Notification;
 
-
-class EditPsGroup extends Component implements HasForms
+class EditMOOEGroup extends Component implements HasForms
 {
     use InteractsWithForms;
 
     public ?array $data = [];
 
-    public PSGroup $record;
-
-
+    public MOOEGroup $record;
 
     public function mount(): void
     {
         $this->form->fill($this->record->attributesToArray());
-        // dd($this->record);
     }
-
-    protected function getForms(): array
-{
-    return [
-        'form',
-
-    ];
-}
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
-                TableRepeater::make('ps_expenses')
+
+                TableRepeater::make('mooe_expenses')
 
                 ->columns([
                     'sm' => 3,
                     'xl' => 6,
                     '2xl' => 8,
                 ])
-                    ->relationship('p_s_expenses')
+                    ->relationship('m_o_o_e_expenses')
                     ->label('')
                     // ->emptyLabel('There are no options added')
                     ->addActionLabel('Add Option')
@@ -62,17 +47,9 @@ class EditPsGroup extends Component implements HasForms
                         TextInput::make('title')
                         ->label('Description')
                         ->columnSpan(4)
-                        ->required(),
-                        TextInput::make('amount')
-                        ->columnSpan(4)
-                    ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters(',')
-                        ->prefix('₱')
-                        ->numeric()
-                        // ->maxValue(9999999999)
-                        ->default(0)
+                        ->required()
+                        ,
 
-                        ->required(),
                     ])
                     ->columnSpan('full')
             ])
@@ -86,21 +63,15 @@ class EditPsGroup extends Component implements HasForms
         $this->record->update($data);
 
         Notification::make()
-            ->title('Saved successfully')
-            ->success()
-            ->send();
+        ->title('Saved successfully')
+        ->success()
+        ->send();
 
-             return redirect()->route('content-management');
-    }
-
-
-    public function test(){
-        $this->dispatch('test')->to(ContentManagement::class);
-
+        return redirect()->route('content-management');
     }
 
     public function render(): View
     {
-        return view('livewire.p-s-group.edit-ps-group');
+        return view('livewire.m-o-o-e-group.edit-m-o-o-e-group');
     }
 }

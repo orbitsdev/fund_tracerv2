@@ -1,4 +1,5 @@
 <div>
+    <x-management-layout>
 
     <div class="flex justify-end">
             <a href="{{route('personal-service.index')}}" class="rounded bg-gray-600 p-2 text-white flex items-center">
@@ -11,16 +12,18 @@
                     </span>
             </a>
     </div>
-    <p class="my-2">
-        {{$record->title}}
+
+
+
+    <p class="my-2 text-2xl italic text-primary-600 mb-4">
+        Personal Service > {{$record->title}}
     </p>
     <form wire:submit="save">
         {{ $this->form }}
 
-        <button type="submit">
-            Submit
-        </button>
+        <x-custom-button type="submit"  class="text-center justify-center">Save</x-custom-button>
     </form>
 
     <x-filament-actions::modals />
+</x-management-layout>
 </div>

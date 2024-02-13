@@ -36,7 +36,7 @@
 
 
                 <div class="flex items-center justify-end w-full mt-2">
-                    <button type="submit" class="bg-indigo-700  py-2 px-4 rounded-lg text-white w-full">Login</button>
+                    <x-custom-button type="submit"  class="w-full text-center justify-center">Login</x-custom-button>
                 </div>
                 {{-- <div class="mt-2">
 

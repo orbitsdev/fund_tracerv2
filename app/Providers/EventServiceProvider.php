@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
-
+use App\Models\MOOEGroup;
+use App\Models\PSGroup;
+use App\Observers\MOOEGroupObserver;
+use App\Observers\PSGroupObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -27,6 +30,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
+        PSGroup::observe(PSGroupObserver::class);
+        MOOEGroup::observe(MOOEGroupObserver::class);
     }
 
     /**

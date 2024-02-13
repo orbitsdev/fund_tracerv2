@@ -24,22 +24,17 @@ class PSGroupSeeder extends Seeder
             ['title' => 'Project Administrative Aide V', 'amount' => 23693.00],
             ['title' => 'Project Administrative Aide VI', 'amount' => 25355.00],
         ];
+        $honoraria_options = [
+            ['title' => 'One(1) Project Learder @ P8000.00/mo x 12', 'amount' => 105600],
+            ['title' => 'One(1) Project Staff Support Level 3 @ 7500', 'amount' => 90000.00],
+            ['title' => 'One(1) Project Staff Support Level 3 @ 7500', 'amount' => 90000.00],
 
-        // $honaria_options = [
-        //     ['title' => 'Command', 'amount' => 19852.00],
-        //     ['title' => 'Project Administrative Aide III', 'amount' => 21064.00],
-        //     ['title' => 'Project Administrative Aide IV', 'amount' => 22344.00],
-        //     ['title' => 'Project Administrative Aide V', 'amount' => 23693.00],
-        //     ['title' => 'Project Administrative Aide VI', 'amount' => 25355.00],
-        // ];
+        ];
 
-        // Create the expenses associated with the salary PSGroup
+
         $salary->p_s_expenses()->createMany($salary_options);
+        $honoraria->p_s_expenses()->createMany($honoraria_options);
 
-        // Insert the data into the database
-        // foreach ($expenses as $expense) {
-        //     DB::table('p_s_expenses')->insert($expense);
-        // }
 
     }
 }
