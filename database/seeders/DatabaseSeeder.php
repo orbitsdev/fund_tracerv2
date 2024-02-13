@@ -8,6 +8,8 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\EOGroupSeeder;
 use Database\Seeders\PSGroupSeeder;
 use Database\Seeders\MOOEGroupSeeder;
+use Database\Seeders\MonitoringAgencySeeder;
+use Database\Seeders\ImplementingAgencySeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +24,9 @@ class DatabaseSeeder extends Seeder
             PSGroupSeeder::class,
             MOOEGroupSeeder::class,
             EOGroupSeeder::class,
+            ProgramSeeder::class,
+            ImplementingAgencySeeder::class,
+            MonitoringAgencySeeder::class,
 
         ]);
         // \App\Models\User::factory(10)->create();
