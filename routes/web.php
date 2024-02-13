@@ -1,19 +1,24 @@
 <?php
 
-use App\Livewire\ContentManagement;
-use App\Livewire\CreateManagement;
-use App\Livewire\ListImplentinAgencies;
 use App\Livewire\ListMOOE;
 use App\Livewire\Particular;
 use App\Livewire\ListParticulars;
+use App\Livewire\CreateManagement;
+use App\Livewire\ContentManagement;
 use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ListPersonalServices;
-use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
-use App\Livewire\MOOEGroup\EditMOOEGroup;
-use App\Livewire\Programs\CreateProgram;
 use App\Livewire\Programs\EditProgram;
+use App\Livewire\Programs\ViewProgram;
+use App\Livewire\ListImplentinAgencies;
 use App\Livewire\Programs\ListPrograms;
+use App\Livewire\Programs\CreateProgram;
+use App\Livewire\MOOEGroup\EditMOOEGroup;
+use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
+use App\Livewire\Projects\CreateProject;
+use App\Livewire\Projects\EditProject;
+use App\Livewire\Projects\ListProjects;
+use App\Livewire\ViewProject;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,8 +52,17 @@ Route::middleware([
          Route::get('/', ListPrograms::class)->name('index');
          Route::get('/create', CreateProgram::class)->name('create');
          Route::get('/edit/{record}', EditProgram::class)->name('edit');
+         Route::get('/view/{record}', ViewProgram::class)->name('view');
+    });
+
+    Route::prefix('project')->name('project.')->group(function(){
+         Route::get('/', ListProjects::class)->name('index');
+         Route::get('/create', CreateProject::class)->name('create');
+         Route::get('/edit/{record}', EditProject::class)->name('edit');
+         Route::get('/view/{record}', ViewProject::class)->name('view');
 
     });
+
     Route::prefix('personal-service')->name('personal-service.')->group(function(){
          Route::get('/', ListPersonalServices::class)->name('index');
          Route::get('/edit/{record}', EditPsGroup::class)->name('edit');

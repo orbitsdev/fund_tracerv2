@@ -96,17 +96,23 @@ class ListPrograms extends Component implements HasForms, HasTable
                 //
             ])
             ->headerActions([
-                Action::make('edit')
+                Action::make('create')
                     ->icon('heroicon-m-plus')
                     ->label('Create')
                     ->url(fn (): string => route('program.create'))
             ])
             ->actions([
                 //
+                Action::make('view')
+                ->icon('heroicon-m-eye')
+                ->label('View Program')
+                ->url(fn (Model $record): string => route('program.view', ['record'=> $record])),
+
                 Action::make('edit')
                 ->icon('heroicon-m-pencil')
                 ->label('Edit')
                 ->url(fn (Model $record): string => route('program.edit', ['record'=> $record])),
+
                 // Tables\Actions\EditAction::make()->label('Edit'),
                 Tables\Actions\DeleteAction::make(),
             ])
