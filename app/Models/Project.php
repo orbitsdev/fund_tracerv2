@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Models\Year;
 use App\Models\Program;
+use App\Models\ProjectYear;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,4 +20,9 @@ class Project extends Model
     public function program(){
         return $this->belongsTo(Program::class);
     }
+
+    public function project_years(){
+        return $this->hasMany(ProjectYear::class);
+    }
+
 }

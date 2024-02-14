@@ -5,6 +5,7 @@ use App\Livewire\Particular;
 use App\Livewire\ListParticulars;
 use App\Livewire\CreateManagement;
 use App\Livewire\ContentManagement;
+use App\Livewire\LineItemBudget;
 use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ListPersonalServices;
@@ -15,6 +16,7 @@ use App\Livewire\Programs\ListPrograms;
 use App\Livewire\Programs\CreateProgram;
 use App\Livewire\MOOEGroup\EditMOOEGroup;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
+use App\Livewire\ProjectLineItemBudget;
 use App\Livewire\Projects\CreateProject;
 use App\Livewire\Projects\EditProject;
 use App\Livewire\Projects\ListProjects;
@@ -60,6 +62,8 @@ Route::middleware([
          Route::get('/create', CreateProject::class)->name('create');
          Route::get('/edit/{record}', EditProject::class)->name('edit');
          Route::get('/view/{record}', ViewProject::class)->name('view');
+         Route::get('/line-item-budget/{record}', ProjectLineItemBudget::class)->name('line-item-budget');
+         Route::get('/line-items/year/{record}', LineItemBudget::class)->name('line-items');
 
     });
 

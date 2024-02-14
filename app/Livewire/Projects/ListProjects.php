@@ -12,6 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -28,12 +29,12 @@ class ListProjects extends Component implements HasForms, HasTable
             ->query(Project::query())
             ->columns([
 
-                TextColumn::make('program.title')
-                ->numeric()
-                ->sortable()
-                ->searchable()
-                ->badge()
-                ->color('primary'),
+                // TextColumn::make('program.title')
+                // ->numeric()
+                // ->sortable()
+                // ->searchable()
+                // ->badge()
+                // ->color('primary'),
 
             TextColumn::make('title')
                 ->searchable()->label('Project Title')->wrap(),
@@ -71,19 +72,26 @@ class ListProjects extends Component implements HasForms, HasTable
 
             ])
             ->actions([
-                //
                 Action::make('view')
-                ->icon('heroicon-m-eye')
-                ->label('View project')
-                ->url(fn (Model $record): string => route('project.view', ['record'=> $record])),
 
-                Action::make('edit')
-                ->icon('heroicon-m-pencil')
-                ->label('Edit')
-                ->url(fn (Model $record): string => route('project.edit', ['record'=> $record])),
+                ->label('Click here to Add/Update LIB')
+                ->url(fn (Model $record): string => route('project.line-item-budget', ['record'=> $record])),
 
-                // Tables\Actions\EditAction::make()->label('Edit'),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Action::make('view')
+                    ->icon('heroicon-m-eye')
+                    ->label('View')
+                    ->url(fn (Model $record): string => route('project.view', ['record'=> $record])),
+
+                    Action::make('edit')
+                    ->icon('heroicon-m-pencil')
+                    ->label('Edit')
+                    ->url(fn (Model $record): string => route('project.edit', ['record'=> $record])),
+
+                    // Tables\Actions\EditAction::make()->label('Edit'),
+                    Tables\Actions\DeleteAction::make(),
+                ]),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

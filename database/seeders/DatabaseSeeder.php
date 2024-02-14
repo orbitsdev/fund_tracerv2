@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,
             ImplementingAgencySeeder::class,
             MonitoringAgencySeeder::class,
+            YearSeeder::class,
 
         ]);
         // \App\Models\User::factory(10)->create();
