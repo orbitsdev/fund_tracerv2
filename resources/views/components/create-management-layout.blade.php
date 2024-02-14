@@ -17,7 +17,7 @@
 
               <a href="{{route('program.index')}}" class="{{(request()->routeIs('program.index')||request()->routeIs('program.create')|| request()->routeIs('program.edit') ) ? 'border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'}}" >
                 Programs
-                @if (\App\Models\Program::count() >1)
+                @if (\App\Models\Program::count() >0)
                 <span class="{{(request()->routeIs('program.index')||request()->routeIs('program.create') || request()->routeIs('program.edit')) ? 'bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block' : 'bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'}} ">
 
                 {{ \App\Models\Program::count() }}
@@ -25,10 +25,10 @@
             </span>
             @endif
               </a>
-             
+
               <a href="{{route('project.index')}}" class="{{( request()->routeIs('project.index')|| request()->routeIs('project.create')|| request()->routeIs('project.edit') ) ? 'border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'}}" >
                 Projects
-                @if (\App\Models\Project::count() >1)
+                @if (\App\Models\Project::count() >0)
                 <span class="{{(request()->routeIs('project.index')||request()->routeIs('project.create') || request()->routeIs('project.edit')) ? 'bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block' : 'bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'}} ">
 
                 {{ \App\Models\Project::count() }}
@@ -36,8 +36,6 @@
             </span>
             @endif
               </a>
-
-
 
             </nav>
           </div>

@@ -27,8 +27,8 @@ class PSGroupObserver
      */
     public function deleted(PSGroup $pSGroup): void
     {
-        $pSGroup->p_s_expenses->each(function ($p_s_expense) {
-            $p_s_expense->delete();
+        $pSGroup->selected_p_ses->each(function ($selected_p_s) {
+            $selected_p_s->delete();
         });
     }
 

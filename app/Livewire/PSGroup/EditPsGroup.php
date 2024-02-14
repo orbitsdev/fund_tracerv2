@@ -48,7 +48,7 @@ class EditPsGroup extends Component implements HasForms
         return $form
             ->schema([
                 TableRepeater::make('ps_expenses')
-
+                
                 ->columns([
                     'sm' => 3,
                     'xl' => 6,
@@ -64,6 +64,7 @@ class EditPsGroup extends Component implements HasForms
                         ->columnSpan(4)
                         ->required(),
                         TextInput::make('amount')
+                        ->label('Amount ')
                         ->columnSpan(4)
                     ->mask(RawJs::make('$money($input)'))
                     ->stripCharacters(',')

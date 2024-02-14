@@ -2,10 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\PSGroup;
+use App\Models\PSExpense;
+use App\Models\ProjectYear;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class SelectedPS extends Model
 {
     use HasFactory;
+
+    public function p_s_group(){
+        return $this->belongsTo(PSGroup::class);
+    }
+    public function p_s_expense(){
+        return $this->belongsTo(PSExpense::class);
+    }
+    public function project_year(){
+        return $this->belongsTo(ProjectYear::class);
+    }
 }

@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+.fi-ta-header{
+    background: rgb(38, 45, 148) !important;
+} */

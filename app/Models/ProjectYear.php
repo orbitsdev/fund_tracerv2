@@ -18,4 +18,8 @@ class ProjectYear extends Model
     public function year(){
         return $this->belongsTo(Year::class);
     }
+
+    public function selected_p_ses(){
+        return $this->hasMany(SelectedPS::class);
+    }
 }
