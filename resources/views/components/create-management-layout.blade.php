@@ -26,10 +26,10 @@
             @endif
               </a>
 
-              <a href="{{route('project.index')}}" class="{{( request()->routeIs('project.index')|| request()->routeIs('project.create')|| request()->routeIs('project.edit') ) ? 'border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'}}" >
+              <a href="{{route('project.index')}}" class="{{( request()->routeIs('project.index')|| request()->routeIs('project.create')|| request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items')  ) ? 'border-indigo-500 text-indigo-600 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'}}" >
                 Projects
                 @if (\App\Models\Project::count() >0)
-                <span class="{{(request()->routeIs('project.index')||request()->routeIs('project.create') || request()->routeIs('project.edit')) ? 'bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block' : 'bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'}} ">
+                <span class="{{(request()->routeIs('project.index')||request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') ) ? 'bg-indigo-100 text-indigo-600 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block' : 'bg-gray-100 text-gray-900 ml-3 hidden rounded-full py-0.5 px-2.5 text-xs font-medium md:inline-block'}} ">
 
                 {{ \App\Models\Project::count() }}
 

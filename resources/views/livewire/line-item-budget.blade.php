@@ -1,20 +1,26 @@
 <div>
 
     <x-create-management-layout>
+        {{-- <div class="p-2 bg-indigo-100 rounded-md drop-shadow-sm mb-2">
+
+        </div> --}}
+
+        <x-back-button style="justify-start" :url="route('project.line-item-budget',['record' => $record->project->id])">
+            Back
+        </x-bacl-button>
         {{-- {{$record}} --}}
         <div class="mb-4">
             <p class="text-primary-700 text-4xl  font-medium"> {{ $record->year->title }}</p>
-
         </div>
         <div>
-            <p class="text-primary-600 text-3xl font-medium"> I. Personal Service</p>
-            <div class="mt-4">
+            <p class="text-primary-600 text-2xl font-medium"> I. Personal Service</p>
+            <div class="mt-2">
                 {{ $this->addPersonalServiceAction }}
             </div>
 
-            <div class="mt-4">
+            <div class="mt-2">
                 @forelse ($personal_services as $cost_type => $personal_service)
-                    <div class="">
+                    <div class="mt-4">
                         <p class="font-bold text-gray-600">
 
                             {{ $cost_type }}
@@ -31,7 +37,7 @@
                                         <div class="flex justify-between   items-center border-b hover:bg-gray-50">
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
-                                                <p class="italic">
+                                                <p class="italic text-sm text-gray-500">
                                                     {{ $expense->p_s_expense->title }}
                                                 </p>
                                                 <p>
@@ -103,6 +109,7 @@
                 </div>
             </div>
            --}}
+           @if($total_ps > 0)
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
                 <div>
 
@@ -117,17 +124,18 @@
                     </p>
                 </div>
             </div>
+            @endif
 
         </div>
         <div class="mt-6">
-            <p class="text-primary-600 text-3xl font-medium"> II. Maintenance and Other Operating Expenses</p>
-            <div class="mt-4">
+            <p class="text-primary-600 text-2xl font-medium"> II. Maintenance and Other Operating Expenses</p>
+            <div class="mt-2">
                 {{ $this->addMOOEAction }}
             </div>
 
-            <div class="mt-4">
+            <div class="mt-2">
                 @forelse ($mooes as $cost_type => $mooe)
-                    <div class="">
+                    <div class="mt-4">
                         <p class="font-bold text-gray-600">
 
                             {{ $cost_type }}
@@ -144,7 +152,7 @@
                                         <div class="flex justify-between   items-center border-b hover:bg-gray-50">
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
-                                                <p class="italic">
+                                                <p class="italic text-sm text-gray-500">
                                                     {{ $expense->m_o_o_e_expense->title }}
                                                 </p>
                                                 <p>
@@ -218,6 +226,7 @@
                 </div>
             </div>
            --}}
+           @if($total_mooe > 0)
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
                 <div>
 
@@ -232,16 +241,17 @@
                     </p>
                 </div>
             </div>
+            @endif
 
         </div>
         <div class="mt-6">
-            <p class="text-primary-600 text-3xl font-medium"> III Capital Outlay</p>
-            <div class="mt-4">
+            <p class="text-primary-600 text-2xl font-medium"> III Capital Outlay</p>
+            <div class="mt-2">
                 {{ $this->addCOAction }}
             </div>
-            <div class="mt-4">
+            <div class="mt-2">
                 @forelse ($cos as $cost_type => $groups)
-                    <div class="">
+                    <div class="mt-4">
                         <p class="font-bold text-gray-600">
 
                             {{ $cost_type }}
@@ -252,7 +262,7 @@
                             <div class="flex justify-between   items-center border-b hover:bg-gray-50">
 
                                 <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
-                                    <p class="italic">
+                                    <p class="italic text-sm text-gray-500">
                                         {{ $expense->description }}
                                     </p>
                                     <p>
@@ -263,10 +273,10 @@
 
                                 <div class="mb-2 flex">
                                     <div class="mr-2">
-                                    {{ ($this->editMooeAction)(['mooe' => $expense->id]) }}
+                                    {{ ($this->editCOAction)(['co' => $expense->id]) }}
                                 </div>
                                 <div class="mr-2">
-                                    {{ ($this->deleteMooeAction)(['mooe' => $expense->id]) }}
+                                    {{ ($this->deleteCoAction)(['co' => $expense->id]) }}
 
                                 </div>
 
@@ -278,7 +288,7 @@
 
                 @endforelse
             </div>
-
+            @if($total_co > 0)
 
 
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
@@ -295,18 +305,20 @@
                     </p>
                 </div>
             </div>
+            @endif
 
         </div>
+        @if($total_budet> 0)
         <div>
 
-            <div class="mt-4 pr-8 flex justify-between text-2xl mb-8  bg-indigo-600  p-2 text-gray-100 rounded">
+            <div class="mt-4 pr-8 flex justify-between text-xl mb-8   p-2 text-gray-600 rounded">
                 <div>
 
                 </div>
                 <div class="flex font-medium">
 
                     <p class=" ">
-                        Total Proposed Budget:
+                        Year Total Budget:
                     </p>
                     <p class="w-[200px] text-end mr-6">
                         {{ number_format($total_budet) }}
@@ -315,6 +327,7 @@
             </div>
 
         </div>
+        @endif
         <x-filament-actions::modals />
     </x-create-management-layout>
 </div>

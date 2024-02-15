@@ -72,6 +72,26 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->send();
             });
     }
+
+
+    public function deleteCoAction(): Action
+    {
+        return Action::make('deleteCo')
+            ->size(ActionSize::Large)
+            ->iconButton()
+            ->icon('heroicon-m-x-mark')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->action(function (array $arguments) {
+                $ps =  SelectedCo::find($arguments['co']);
+                $ps?->delete();
+
+                Notification::make()
+                    ->title('Delete successfully')
+                    ->success()
+                    ->send();
+            });
+    }
     public function editPersonalServiceAction(): Action
     {
         return Action::make('editPersonalService')
@@ -128,7 +148,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                 $amount = $ps_expenses->amount;
 
                 $final_data = [
-                    'project_year_id' => $this->record->id,
+                    // 'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'p_s_group_id' => $data['p_s_group_id'],
                     'p_s_expense_id' => $data['p_s_expense_id'],
@@ -363,7 +383,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
 
                 $final_data = [
-                    'project_year_id' => $this->record->id,
+                    // 'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
                     'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
@@ -441,6 +461,91 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->send();
             });
     }
+    public function editCOAction(): Action
+    {
+        return Action::make('editCO')
+            ->extraAttributes([
+                'style' => 'border-radius: 100px;',
+            ])
+            ->size(ActionSize::Large)
+            ->icon('heroicon-m-pencil-square')
+            ->iconButton()
+            ->fillForm(function (array $arguments) {
+                $mooe = SelectedCO::find($arguments['co']);
+                return [
+                    'cost_type' => $mooe?->cost_type,
+                    'description' => $mooe?->description,
+                    'amount' => $mooe?->amount,
+                ];
+            })
+           
+            ->label('Add CO')
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                    ])
+                    ->native(false)
+                    ->required(),
+
+
+                TextInput::make('description')
+                    ->required(),
+
+
+
+
+                TextInput::make('amount')
+                    ->required()
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->prefix('₱')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Allocated Amount')
+                    ->required(),
+
+
+
+            ])
+            ->modalHeading('Add/Edit CO')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data, array $arguments) {
+
+
+                $co = SelectedCO::find($arguments['co']);
+
+
+
+                $final_data = [
+                    // 'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'description' => $data['description'],
+                    'amount' => $data['amount'],
+                ];
+
+
+                $co->update($final_data); // Corrected update method
+
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+
+
+
+
+                // SelectedM::create($final_data);
+                SelectedCO::create($final_data);
+
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+            });
+    }
 
 
     public function render()
@@ -461,7 +566,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
         //     });
         // });
 
-        $personal_services = SelectedPS::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+        $personal_services = SelectedPS::where('project_year_id', $this->record->id)->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
             switch ($key) {
                 case 'Direct Cost':
                     return 1;
@@ -478,15 +583,15 @@ class LineItemBudget extends Component implements HasForms, HasActions
             });
         });
 
-        $total_ps = SelectedPS::with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_dc = SelectedPS::where('cost_type', 'Direct Cost')->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_sksu = SelectedPS::where('cost_type', 'Indirect Cost SKSU')->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_pcaarrd = SelectedPS::where('cost_type', 'Indirect Cost PCAARRD')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_dc = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Direct Cost')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_sksu = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Indirect Cost SKSU')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_pcaarrd = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Indirect Cost PCAARRD')->with('p_s_expense')->get()->sum('p_s_expense.amount');
 
 
 
 
-        $mooes = SelectedMOOE::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+        $mooes = SelectedMOOE::where('project_year_id', $this->record->id)->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
             switch ($key) {
                 case 'Direct Cost':
                     return 1;
@@ -504,9 +609,9 @@ class LineItemBudget extends Component implements HasForms, HasActions
         });
 
 
-        $total_mooe = SelectedMOOE::sum('amount');
+        $total_mooe = SelectedMOOE::where('project_year_id', $this->record->id)->sum('amount');
 
-        $cos = SelectedCO::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+        $cos = SelectedCO::where('project_year_id', $this->record->id)->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
             switch ($key) {
                 case 'Direct Cost':
                     return 1;
@@ -520,7 +625,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
         });
 
 
-        $total_co = SelectedCO::sum('amount');
+        $total_co = SelectedCO::where('project_year_id', $this->record->id)->sum('amount');
         // dd($cos);
 
 

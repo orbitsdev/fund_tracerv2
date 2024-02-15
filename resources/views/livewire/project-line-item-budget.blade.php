@@ -1,5 +1,9 @@
 <div>
     <x-create-management-layout>
+            {{-- {{$record}} --}}
+        <x-back-button :url="route('project.index')" >
+            Back
+        </x-bacl-button>
     {{-- {{$record}} --}}
     <p class="text-center text-3xl text-indigo-700 font-medium ">
         Project Line-Item Budget
@@ -12,6 +16,29 @@
     <div class="mt-6">
         {{ $this->table }}
     </div>
+
+
+    <div>
+
+        <div class="mt-4 pr-8 flex justify-between text-2xl mb-8   p-2 text-gray-700 rounded">
+            <div>
+
+            </div>
+            <div class="flex font-medium">
+
+                <p class=" ">
+                    Total Budget :
+                </p>
+                <p class="w-[200px] text-end mr-6">
+                    {{ number_format($project_total_budget) }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+
+
 </x-create-management-layout>
 
     {{-- <div>

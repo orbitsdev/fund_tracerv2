@@ -27,7 +27,7 @@ class ProjectYear extends Model
     public function selected_m_o_o_es(){
         return $this->hasMany(SelectedMOOE::class);
     }
-    public function selected_c_o(){
+    public function selected_c_os(){
         return $this->hasMany(SelectedCO::class);
     }
 }

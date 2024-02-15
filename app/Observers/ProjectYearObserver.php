@@ -27,11 +27,14 @@ class ProjectYearObserver
      */
     public function deleted(ProjectYear $projectYear): void
     {
-        $projectYear->p_s_expenses->each(function ($p_s_expense) {
-            $p_s_expense->delete();
+        $projectYear->selected_p_ses->each(function ($ps) {
+            $ps->delete();
         });
-        $projectYear->p_s_expenses->each(function ($p_s_expense) {
-            $p_s_expense->delete();
+        $projectYear->selected_m_o_o_es->each(function ($mooe) {
+            $mooe->delete();
+        });
+        $projectYear->selected_c_os->each(function ($co) {
+            $co->delete();
         });
     }
 
