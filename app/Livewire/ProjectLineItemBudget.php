@@ -250,15 +250,26 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
     public function render()
     {
 
-           $project_years=  ProjectYear::where('project_id', $this->record->id)->get();
-            $project_total_budget = 0;
-           foreach ($project_years as $project_year) {
-            $total_ps = $project_year->selected_p_ses()->with('p_s_expense')->get()->sum('p_s_expense.amount');
-            $total_mooe = $project_year->selected_m_o_o_es()->sum('amount');
-            $total_co = $project_year->selected_c_os()->sum('amount');
+           $project_total_budget=  ProjectYear::where('project_id', $this->record->id)->get()->sum(function($item){
+            $total_ps = $item->selected_p_ses()->with('p_s_expense')->get()->sum('p_s_expense.amount');
+            $total_mooe = $item->selected_m_o_o_es()->sum('amount');
+            $total_co = $item->selected_c_os()->sum('amount');
             $year_total = ($total_ps  +$total_mooe + $total_co);
-            $project_total_budget += $year_total;
-           }
+            return $year_total;
+
+            // $project_total_budget += $year_total;
+
+           });
+
+
+        //     $project_total_budget = 0;
+        //    foreach ($project_years as $project_year) {
+        //     $total_ps = $project_year->selected_p_ses()->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        //     $total_mooe = $project_year->selected_m_o_o_es()->sum('amount');
+        //     $total_co = $project_year->selected_c_os()->sum('amount');
+        //     $year_total = ($total_ps  +$total_mooe + $total_co);
+        //     $project_total_budget += $year_total;
+        //    }
 
 
 
