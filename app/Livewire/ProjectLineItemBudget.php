@@ -83,7 +83,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                             ->required(),
                     ])
                     ->action(function (array $data,  Model $record) {
-                        $record = ProjectYear::with(['selected_p_ses', 'selected_m_o_o_es', 'selected_c_os'])->first();
+                        // $record->with(['selected_p_ses', 'selected_m_o_o_es', 'selected_c_os']);
 
                         if ($record) {
                             // Detach the relationships to avoid duplication
@@ -256,6 +256,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
             $total_co = $item->selected_c_os()->sum('amount');
             $year_total = ($total_ps  +$total_mooe + $total_co);
             return $year_total;
+
 
             // $project_total_budget += $year_total;
 
