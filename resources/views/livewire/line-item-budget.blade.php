@@ -228,7 +228,70 @@
                         Sub-total for MOOE
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                    {{ number_format($total_mooe) }}
+                        {{ number_format($total_mooe) }}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-6">
+            <p class="text-primary-600 text-3xl font-medium"> III Capital Outlay</p>
+            <div class="mt-4">
+                {{ $this->addCOAction }}
+            </div>
+            <div class="mt-4">
+                @forelse ($cos as $cost_type => $groups)
+                    <div class="">
+                        <p class="font-bold text-gray-600">
+
+                            {{ $cost_type }}
+                        </p>
+
+                        @foreach ($groups as $key => $expense)
+
+                            <div class="flex justify-between   items-center border-b hover:bg-gray-50">
+
+                                <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
+                                    <p class="italic">
+                                        {{ $expense->description }}
+                                    </p>
+                                    <p>
+                                        {{ number_format($expense->amount) }}
+                                    </p>
+
+                                </div>
+
+                                <div class="mb-2 flex">
+                                    <div class="mr-2">
+                                    {{ ($this->editMooeAction)(['mooe' => $expense->id]) }}
+                                </div>
+                                <div class="mr-2">
+                                    {{ ($this->deleteMooeAction)(['mooe' => $expense->id]) }}
+
+                                </div>
+
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @empty
+
+                @endforelse
+            </div>
+
+
+
+            <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
+                <div>
+
+                </div>
+                <div class="flex font-medium">
+
+                    <p class=" ">
+                        Sub-total for CO
+                    </p>
+                    <p class="w-[200px] text-end mr-6">
+                        {{ number_format($total_co) }}
                     </p>
                 </div>
             </div>
@@ -246,7 +309,7 @@
                         Total Proposed Budget:
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                        {{ number_format(($total_budet)) }}
+                        {{ number_format($total_budet) }}
                     </p>
                 </div>
             </div>

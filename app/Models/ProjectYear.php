@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Year;
 use App\Models\Project;
+use App\Models\SelectedCO;
 use App\Models\SelectedMOOE;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -25,5 +26,8 @@ class ProjectYear extends Model
     }
     public function selected_m_o_o_es(){
         return $this->hasMany(SelectedMOOE::class);
+    }
+    public function selected_c_o(){
+        return $this->hasMany(SelectedCO::class);
     }
 }

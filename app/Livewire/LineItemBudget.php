@@ -8,6 +8,7 @@ use Filament\Forms\Set;
 use Livewire\Component;
 use App\Models\MOOEGroup;
 use App\Models\PSExpense;
+use App\Models\SelectedCO;
 use App\Models\SelectedPS;
 use App\Models\MOOEExpense;
 use App\Models\ProjectYear;
@@ -379,6 +380,68 @@ class LineItemBudget extends Component implements HasForms, HasActions
         // ->action(fn () => dd('addPersonalService'));
     }
 
+    public function addCOAction(): Action
+    {
+        return Action::make('addCO')
+            ->extraAttributes([
+                'style' => 'border-radius: 100px;',
+            ])
+            ->icon('heroicon-m-plus')
+            ->label('Add CO')
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                    ])
+                    ->native(false)
+                    ->required(),
+
+
+                TextInput::make('description')
+                    ->required(),
+
+
+
+
+                TextInput::make('amount')
+                    ->required()
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->prefix('₱')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Allocated Amount')
+                    ->required(),
+
+
+
+            ])
+            ->modalHeading('Add/Edit CO')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data) {
+
+
+                $final_data = [
+                    'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'description' => $data['description'],
+                    'amount' => $data['amount'],
+                ];
+
+
+
+                // SelectedM::create($final_data);
+                SelectedCO::create($final_data);
+
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+            });
+    }
+
 
     public function render()
     {
@@ -443,7 +506,27 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
         $total_mooe = SelectedMOOE::sum('amount');
 
-        $total_budet = ($total_ps + $total_mooe);
+        $cos = SelectedCO::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        });
+
+
+        $total_co = SelectedCO::sum('amount');
+        // dd($cos);
+
+
+        $total_budet = ($total_ps + $total_mooe + $total_co);
+
+
         // MOOE INFORMATION
         return view('livewire.line-item-budget', [
             'record' => $this->record,
@@ -455,6 +538,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
             'mooes' => $mooes,
             'total_mooe' => $total_mooe,
             'total_budet' => $total_budet,
+            'cos' => $cos,
+            'total_co' => $total_co,
             // 'total_ps'=> $total_ps,
 
         ]);
