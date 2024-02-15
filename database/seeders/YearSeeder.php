@@ -13,7 +13,7 @@ class YearSeeder extends Seeder
      */
     public function run(): void
     {
-        $years = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
+        $years = ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5', 'Year 6'];
 
         foreach ($years as $year) {
             Year::create(['title'=> $year]);
