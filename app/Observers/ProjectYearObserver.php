@@ -30,6 +30,9 @@ class ProjectYearObserver
         $projectYear->p_s_expenses->each(function ($p_s_expense) {
             $p_s_expense->delete();
         });
+        $projectYear->p_s_expenses->each(function ($p_s_expense) {
+            $p_s_expense->delete();
+        });
     }
 
     /**

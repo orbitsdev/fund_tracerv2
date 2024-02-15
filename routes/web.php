@@ -44,7 +44,10 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-    Route::get('/dashboard', function () { return view('dashboard');})->name('dashboard');
+    Route::get('/dashboard', function () {
+            return redirect()->route('program.index');
+        // return view('dashboard');
+    })->name('dashboard');
     Route::get('/content-management', ContentManagement::class)->name('content-management');
     Route::get('/implementing-agencies', ListImplentinAgencies::class)->name('implementing-agencies');
     Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');

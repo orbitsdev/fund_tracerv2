@@ -6,13 +6,19 @@ use App\Models\PSGroup;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Livewire\Component;
+use App\Models\MOOEGroup;
 use App\Models\PSExpense;
 use App\Models\SelectedPS;
+use App\Models\MOOEExpense;
 use App\Models\ProjectYear;
+use Filament\Support\RawJs;
+use App\Models\SelectedMOOE;
 use Filament\Actions\Action;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Support\Enums\ActionSize;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -28,186 +34,349 @@ class LineItemBudget extends Component implements HasForms, HasActions
     public ProjectYear $record;
 
 
-public function deleteAction(): Action
-{
-    return Action::make('delete')
-    ->iconButton()
-    ->icon('heroicon-m-x-mark')
-    ->color('danger')
-        ->requiresConfirmation()
-        ->action(function (array $arguments) {
-            $ps = SelectedPS::find($arguments['ps']);
-            $ps?->delete();
+    public function deleteAction(): Action
+    {
+        return Action::make('delete')
+            ->size(ActionSize::Large)
+            ->iconButton()
+            ->icon('heroicon-m-x-mark')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->action(function (array $arguments) {
+                $ps = SelectedPS::find($arguments['ps']);
+                $ps?->delete();
 
-            Notification::make()
-            ->title('Delete successfully')
-            ->success()
-            ->send();
-        });
-}
+                Notification::make()
+                    ->title('Delete successfully')
+                    ->success()
+                    ->send();
+            });
+    }
+
+    public function deleteMooeAction(): Action
+    {
+        return Action::make('deleteMooe')
+            ->size(ActionSize::Large)
+            ->iconButton()
+            ->icon('heroicon-m-x-mark')
+            ->color('danger')
+            ->requiresConfirmation()
+            ->action(function (array $arguments) {
+                $ps = SelectedMOOE::find($arguments['mooe']);
+                $ps?->delete();
+
+                Notification::make()
+                    ->title('Delete successfully')
+                    ->success()
+                    ->send();
+            });
+    }
     public function editPersonalServiceAction(): Action
     {
         return Action::make('editPersonalService')
-        ->icon('heroicon-m-pencil-square')
-        ->iconButton()
-        ->fillForm(function (array $arguments){
-            $ps = SelectedPS::find($arguments['ps']);
-            return [
-                'cost_type' => $ps?->cost_type,
-                'p_s_group_id' => $ps?->p_s_group_id,
-                'p_s_expense_id' => $ps?->p_s_expense_id,
-            ];
-        })
-        ->form([
-            Select::make('cost_type')
-            ->options([
-                'Direct Cost' => 'Direct Cost',
-                'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                'Indirect Cost PCAARD' => 'Indirect Cost PCAARD',
+            ->size(ActionSize::Large)
+            ->icon('heroicon-m-pencil-square')
+            ->iconButton()
+            ->fillForm(function (array $arguments) {
+                $ps = SelectedPS::find($arguments['ps']);
+                return [
+                    'cost_type' => $ps?->cost_type,
+                    'p_s_group_id' => $ps?->p_s_group_id,
+                    'p_s_expense_id' => $ps?->p_s_expense_id,
+                ];
+            })
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARD' => 'Indirect Cost PCAARD',
+                    ])
+                    ->native(false)
+                    ->required(),
+                Select::make('p_s_group_id')
+                    ->label('PS Type')
+                    ->options(PSGroup::all()->pluck('title', 'id'))
+                    ->live()
+                    ->searchable()
+                    ->afterStateUpdated(function (Set $set) {
+                        $set('p_s_expense_id', null);
+                    })
+                    ->native(false)
+                    ->required()
+                    ->searchable(),
+                Select::make('p_s_expense_id')
+                    ->label('Position/Designation')
+                    ->required()
+                    ->options(function (Get $get, Set $set) {
+                        if (!empty($get('p_s_group_id'))) {
+                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->native(false)
+                    ->searchable()
             ])
-            ->native(false)
-             ->required(),
-             Select::make('p_s_group_id')
-             ->label('PS Type')
-             ->options(PSGroup::all()->pluck('title', 'id'))
-             ->live()
-             ->searchable()
-             ->afterStateUpdated(function(Set $set){
-                $set('p_s_expense_id', null);
-             })
-             ->native(false)
-             ->searchable(),
-             Select::make('p_s_expense_id')
-             ->label('Position/Designation')
+            ->modalHeading('Add/Edit Personnel Services')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data, array $arguments) {
 
-             ->options(function(Get $get ,Set $set){
-                if(!empty($get('p_s_group_id'))){
-                    return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                $ps = SelectedPS::find($arguments['ps']);
+                $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
+                $amount = $ps_expenses->amount;
 
-                }else{
-                    return [];
-                }
-             })
-             ->native(false)
-             ->searchable()
-        ])
-        ->modalHeading('Add/Edit Personnel Services')
-        ->modalWidth(MaxWidth::SixExtraLarge)
-        ->action(function (array $data, array $arguments) {
+                $final_data = [
+                    'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'p_s_group_id' => $data['p_s_group_id'],
+                    'p_s_expense_id' => $data['p_s_expense_id'],
+                    'amount' => $amount,
+                ];
 
-            $ps = SelectedPS::find($arguments['ps']);
-            $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
-            $amount = $ps_expenses->amount;
+                $ps->update($final_data); // Corrected update method
 
-            $final_data = [
-                'project_year_id' => $this->record->id,
-                'cost_type' => $data['cost_type'],
-                'p_s_group_id' => $data['p_s_group_id'],
-                'p_s_expense_id' => $data['p_s_expense_id'],
-                'amount' => $amount,
-            ];
-
-            $ps->update($final_data); // Corrected update method
-
-            Notification::make()
-                ->title('Saved successfully')
-                ->success()
-                ->send();
-            // $selected_record =SelectedPS::where('', $data[''])->first();
-
-
-            // $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
-            // $amount = $ps_expenses->amount;
-            // $final_data = [
-            //     'project_year_id'=> $this->record->id,
-            //     'cost_type'=> $data['cost_type'],
-            //     'p_s_group_id'=> $data['p_s_group_id'],
-            //     'p_s_expense_id'=> $data['p_s_expense_id'],
-            //     'amount'=> $amount,
-            // ];
-
-
-
-            // SelectedPS::create($final_data);
-
-            // Notification::make()
-            // ->title('Saved successfully')
-            // ->success()
-            // ->send();
-            // dd($data);
-        });
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+            });
         // ->action(fn () => dd('addPersonalService'));
     }
     public function addPersonalServiceAction(): Action
     {
         return Action::make('addPersonalService')
-        ->icon('heroicon-m-plus')
-        ->extraAttributes([
-            'style' => 'border-radius: 100px;',
-        ])
-        ->form([
-            Select::make('cost_type')
-            ->options([
-                'Direct Cost' => 'Direct Cost',
-                'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+            ->label('Add Personal Service')
+            ->icon('heroicon-m-plus')
+            ->extraAttributes([
+                'style' => 'border-radius: 100px;',
             ])
-            ->native(false)
-             ->required(),
-             Select::make('p_s_group_id')
-             ->label('PS Type')
-             ->options(PSGroup::all()->pluck('title', 'id'))
-             ->live()
-             ->afterStateUpdated(function(Set $set){
-                $set('p_s_expense_id', null);
-             })
-             ->native(false)
-             ->searchable(),
-             Select::make('p_s_expense_id')
-             ->label('Position/Designation')
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                    ])
+                    ->native(false)
+                    ->required(),
+                Select::make('p_s_group_id')
+                    ->label('PS Type')
+                    ->options(PSGroup::all()->pluck('title', 'id'))
+                    ->live()
+                    ->afterStateUpdated(function (Set $set) {
+                        $set('p_s_expense_id', null);
+                    })
 
-             ->options(function(Get $get ,Set $set){
-                if(!empty($get('p_s_group_id'))){
-                    return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                    ->native(false)
+                    ->searchable()
+                    ->required(),
+                Select::make('p_s_expense_id')
+                    ->required()
+                    ->label('Position/Designation')
 
-                }else{
-                    return [];
-                }
-             })
-             ->native(false)
-             ->searchable()
-        ])
-        ->modalHeading('Add/Edit Personnel Services')
-        ->modalWidth(MaxWidth::SixExtraLarge)
-        ->action(function (array $data) {
-            $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
-            $amount = $ps_expenses->amount;
-            $final_data = [
-                'project_year_id'=> $this->record->id,
-                'cost_type'=> $data['cost_type'],
-                'p_s_group_id'=> $data['p_s_group_id'],
-                'p_s_expense_id'=> $data['p_s_expense_id'],
-                'amount'=> $amount,
-            ];
+                    ->options(function (Get $get, Set $set) {
+                        if (!empty($get('p_s_group_id'))) {
+                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->native(false)
+                    ->searchable()
+            ])
+            ->modalHeading('Add/Edit Personnel Services')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data) {
+                $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
+                $amount = $ps_expenses->amount;
+                $final_data = [
+                    'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'p_s_group_id' => $data['p_s_group_id'],
+                    'p_s_expense_id' => $data['p_s_expense_id'],
+                    'amount' => $amount,
+                ];
 
 
 
-            SelectedPS::create($final_data);
+                SelectedPS::create($final_data);
 
-            Notification::make()
-            ->title('Saved successfully')
-            ->success()
-            ->send();
-            // dd($data);
-        });
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+                // dd($data);
+            });
         // ->action(fn () => dd('addPersonalService'));
     }
 
     public function addMOOEAction(): Action
     {
         return Action::make('addMOOE')
-        ->icon('heroicon-m-plus')
-        ->action(fn () => dd('addMOOE'));
+            ->extraAttributes([
+                'style' => 'border-radius: 100px;',
+            ])
+            ->icon('heroicon-m-plus')
+            ->label('Add MOOE')
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                    ])
+                    ->native(false)
+                    ->required(),
+                Select::make('m_o_o_e_group_id')
+                    ->label('MOOE Type')
+                    ->options(MOOEGroup::all()->pluck('title', 'id'))
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $set('m_o_o_e_expense_id', null);
+                    })
+                    ->required()
+                    ->native(false)
+                    ->searchable(),
+
+                Select::make('m_o_o_e_expense_id')
+                    ->label('MOOE Subcategories')
+                    ->required()
+                    ->options(function (Get $get, Set $set) {
+                        if (!empty($get('m_o_o_e_group_id'))) {
+                            return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->native(false)
+                    ->searchable(),
+
+                TextInput::make('amount')
+                    ->required()
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->prefix('₱')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Allocated Amount')
+                    ->required()
+
+
+
+            ])
+            ->modalHeading('Add/Edit MMOOE')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data) {
+
+                $ps_expenses = MOOEExpense::find($data['m_o_o_e_group_id']);
+                $final_data = [
+                    'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
+                    'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
+                    'amount' => $data['amount'],
+                ];
+
+
+
+                // SelectedM::create($final_data);
+                SelectedMOOE::create($final_data);
+
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+            });
+    }
+
+
+    public function editMooeAction(): Action
+    {
+        return Action::make('editMooe')
+
+            ->icon('heroicon-m-plus')
+            ->iconButton()
+            ->fillForm(function (array $arguments) {
+                $mooe = SelectedMOOE::find($arguments['mooe']);
+                return [
+                    'cost_type' => $mooe?->cost_type,
+                    'm_o_o_e_group_id' => $mooe?->m_o_o_e_group_id,
+                    'm_o_o_e_expense_id' => $mooe?->m_o_o_e_expense_id,
+                    'amount' => $mooe?->amount,
+                ];
+            })
+            ->form([
+                Select::make('cost_type')
+                    ->options([
+                        'Direct Cost' => 'Direct Cost',
+                        'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                    ])
+                    ->native(false)
+                    ->required(),
+                Select::make('m_o_o_e_group_id')
+                    ->label('MOOE Type')
+                    ->options(MOOEGroup::all()->pluck('title', 'id'))
+                    ->live()
+                    ->afterStateUpdated(function (Get $get, Set $set) {
+                        $set('m_o_o_e_expense_id', null);
+                    })
+                    ->required()
+                    ->native(false)
+                    ->searchable(),
+
+                Select::make('m_o_o_e_expense_id')
+                    ->label('MOOE Subcategories')
+                    ->required()
+                    ->options(function (Get $get, Set $set) {
+                        if (!empty($get('m_o_o_e_group_id'))) {
+                            return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
+                        } else {
+                            return [];
+                        }
+                    })
+                    ->native(false)
+                    ->searchable(),
+
+                TextInput::make('amount')
+                    ->required()
+                    ->mask(RawJs::make('$money($input)'))
+                    ->stripCharacters(',')
+                    ->prefix('₱')
+                    ->numeric()
+                    ->default(0)
+                    ->label('Allocated Amount')
+                    ->required()
+
+
+
+            ])
+            ->modalHeading('Add/Edit MMOOE')
+            ->icon('heroicon-m-pencil-square')
+            ->modalWidth(MaxWidth::SixExtraLarge)
+            ->action(function (array $data, array $arguments) {
+
+                $mooe = SelectedMOOE::find($arguments['mooe']);
+                $mooe_expense = MOOEExpense::where('id', $data['m_o_o_e_expense_id'])->first();
+
+
+                $final_data = [
+                    'project_year_id' => $this->record->id,
+                    'cost_type' => $data['cost_type'],
+                    'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
+                    'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
+                    'amount' => $data['amount'],
+                ];
+
+                $mooe->update($final_data); // Corrected update method
+
+                Notification::make()
+                    ->title('Saved successfully')
+                    ->success()
+                    ->send();
+            });
+        // ->action(fn () => dd('addPersonalService'));
     }
 
 
@@ -215,50 +384,77 @@ public function deleteAction(): Action
     {
 
 
-        // $personal_services = User::all()->groupBy('role')->map(function ($usersInRole) {
-        //     return $usersInRole->groupBy('age')->map(function ($usersByAge) {
-        //         return $usersByAge->groupBy(function ($user) {
-        //             return $user->parent->title;
-        //         });
+        // PERSONAL SERVICE INFORMATION
+
+        // $personal_services = SelectedPS::all()->groupBy('cost_type')->map(function ($cost_type) {
+        //     return $cost_type->groupBy(function($cost) {
+        //         return $cost->p_s_group->title;
         //     });
         // });
 
-        $personal_services = SelectedPS::all()->groupBy('cost_type')->map(function ($cost_type) {
-            return $cost_type->groupBy(function($cost) {
+         // $mooes = SelectedMOOE::all()->groupBy('cost_type')->map(function ($cost_type) {
+        //     return $cost_type->groupBy(function($cost) {
+        //         return $cost->m_o_o_e_group->title;
+        //     });
+        // });
+
+        $personal_services = SelectedPS::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        })->map(function ($cost_type) {
+            return $cost_type->groupBy(function ($cost) {
                 return $cost->p_s_group->title;
             });
         });
 
-
-        // $totalAmount = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->sum('p_s_expense.amount');
-        // $totalAmount = SelectedPS::with('p_s_expense')->get()->flatten()->sum(function ($selectedPS) {
-        //     return $selectedPS->p_s_expense->amount;
-        // });
-
         $total_ps = SelectedPS::with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_dc = SelectedPS::where('cost_type','Direct Cost')->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_sksu = SelectedPS::where('cost_type','Indirect Cost SKSU')->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_pcaarrd = SelectedPS::where('cost_type','Indirect Cost PCAARRD')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_dc = SelectedPS::where('cost_type', 'Direct Cost')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_sksu = SelectedPS::where('cost_type', 'Indirect Cost SKSU')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_pcaarrd = SelectedPS::where('cost_type', 'Indirect Cost PCAARRD')->with('p_s_expense')->get()->sum('p_s_expense.amount');
 
 
-        // dd($totalAmount);
-
-        // $total_ps = SelectedPS::sum(function ($item) {
-        //     // Check if the related p_s_expense exists and has an amount
-        //     return optional($item->p_s_expense)->amount ?? 0;
-        // });
-
-        // dd($total_ps);
 
 
-        //  dd('', $personal_services);
-        return view('livewire.line-item-budget',[
-            'record'=> $this->record,
-            'personal_services'=> $personal_services,
-            'total_ps'=> $total_ps,
-            'total_dc'=> $total_dc,
-            'total_sksu'=> $total_sksu,
-            'total_pcaarrd'=> $total_pcaarrd,
+        $mooes = SelectedMOOE::all()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        })->map(function ($cost_type) {
+            return $cost_type->groupBy(function ($cost) {
+                return $cost->m_o_o_e_group->title;
+            });
+        });
+
+
+        $total_mooe = SelectedMOOE::sum('amount');
+
+        $total_budet = ($total_ps + $total_mooe);
+        // MOOE INFORMATION
+        return view('livewire.line-item-budget', [
+            'record' => $this->record,
+            'personal_services' => $personal_services,
+            'total_ps' => $total_ps,
+            'total_dc' => $total_dc,
+            'total_sksu' => $total_sksu,
+            'total_pcaarrd' => $total_pcaarrd,
+            'mooes' => $mooes,
+            'total_mooe' => $total_mooe,
+            'total_budet' => $total_budet,
             // 'total_ps'=> $total_ps,
 
         ]);
