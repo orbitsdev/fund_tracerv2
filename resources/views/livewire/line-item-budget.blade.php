@@ -299,7 +299,7 @@
         </div>
         <div>
 
-            <div class="mt-4 pr-8 flex justify-between text-2xl mb-8  bg-indigo-600  p-2 text-white rounded">
+            <div class="mt-4 pr-8 flex justify-between text-2xl mb-8  bg-indigo-600  p-2 text-gray-100 rounded">
                 <div>
 
                 </div>
