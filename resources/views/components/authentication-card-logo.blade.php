@@ -1,3 +1,6 @@
-<a href="/" class="">
-    <img class="h-[250px] w-auto mx-auto" src="{{asset('images/dost.png')}}" alt="Your Company">
-</a>
+<div class="flex items-center justify-center">
+    <img class="h-[90px] w-auto mx-auto" src="{{asset('images/dost.png')}}" alt="Your Company">
+    <img class="h-[90px] w-auto mx-auto" src="{{asset('images/sksu.png')}}" alt="Your Company">
+
+    Fund Tracer
+</div>

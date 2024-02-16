@@ -156,4 +156,12 @@
     background: #3281cc;
 }
 
+.login-bg
+{
+    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98), #0490b3c7),
+    url('../../public/images/line.png') ;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 
