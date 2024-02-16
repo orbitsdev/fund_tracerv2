@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 w-full ">
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 w-full  ">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
@@ -102,7 +102,7 @@
                 </div>
             </div>
 
-            <div class="mt-3 space-y-1">
+            <div class="mt-3 space-y-1 ">
                 <!-- Account Management -->
                 <x-responsive-nav-link href="{{ route('profile.show') }}" :active="request()->routeIs('profile.show')">
                     {{ __('Profile') }}

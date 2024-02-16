@@ -118,5 +118,12 @@
 
 
   *{
-    font-family: 'Helvetica', sans-serif;
+    font-family: 'Poppins';
   }
+
+  .custom-nav
+{
+    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98), rgba(4, 144, 179, 0.78)),
+    url('../../public/images/line.png');
+}
+
