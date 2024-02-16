@@ -6,6 +6,9 @@
 
         $over_all = ($total_ps  +$total_mooe + $total_co);
     @endphp
-    {{ number_format($over_all)}}
+    <p class="text-xs">
+
+        {{ number_format($over_all)}}
+    </p>
 
 </div>

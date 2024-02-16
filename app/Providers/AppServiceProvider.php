@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         Model::unguard();
         FilamentColor::register([
-            'primary' => "#4338ca",
+            'primary' => "#0490b3c7",
         ]);
     }
 }

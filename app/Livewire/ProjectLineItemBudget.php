@@ -42,14 +42,14 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
         return $table
             ->query(ProjectYear::query())
             ->columns([
-                TextColumn::make('year.title'),
+                TextColumn::make('year.title') ->size(TextColumn\TextColumnSize::ExtraSmall),
                 ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget')
             ])
             ->filters([
                 // ...
             ])
             ->actions([
-                TAction::make('view')->icon('heroicon-m-eye')->label('View')->color('success')->button()
+                TAction::make('view')->icon('heroicon-m-eye')->label('View')->color('gray')->button()
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
@@ -63,7 +63,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
                 TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy Lib')->color('warning')->button()
                     ->extraAttributes([
-                        'style' => 'border-radius: 100px; background-color: #16a34a',
+                        'style' => 'border-radius: 100px; background-color: #06892e',
                     ])
 
 
@@ -188,7 +188,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 DeleteAction::make('delete')->icon('heroicon-m-x-mark')
 
                     ->extraAttributes([
-                        'style' => 'border-radius: 100px; background-color: #be123c',
+                        'style' => 'border-radius: 100px; ',
                     ])
                     ->button()->extraAttributes([
                         'style' => 'border-radius: 100px;',

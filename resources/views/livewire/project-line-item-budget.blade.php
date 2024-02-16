@@ -5,7 +5,7 @@
             Back
         </x-bacl-button>
     {{-- {{$record}} --}}
-    <p class="text-center text-3xl text-indigo-700 font-medium ">
+    <p class="text-center text-xl text-primary-700 font-medium ">
         Project Line-Item Budget
     </p>
     <div class="border-b border-gray-200 mt-6"></div>
