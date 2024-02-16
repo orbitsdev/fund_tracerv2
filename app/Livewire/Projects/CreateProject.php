@@ -183,22 +183,22 @@ class CreateProject extends Component implements HasForms
 
 
 
-                                    TextInput::make('allocated_fund')
-                                        ->mask(RawJs::make('$money($input)'))
-                                        ->stripCharacters(',')
-                                        ->prefix('₱')
-                                        ->numeric()
-                                        ->default(0)
-                                        ->label('Allocated Amount')
-                                        ->live()
-                                        ->debounce(700)
-                                        ->required()
+                                    // TextInput::make('allocated_fund')
+                                    //     ->mask(RawJs::make('$money($input)'))
+                                    //     ->stripCharacters(',')
+                                    //     ->prefix('₱')
+                                    //     ->numeric()
+                                    //     ->default(0)
+                                    //     ->label('Allocated Amount')
+                                    //     ->live()
+                                    //     ->debounce(700)
+                                    //     ->required()
 
-                                        ->afterStateUpdated(function (Get $get, Set $set, string $operation) {
+                                    //     ->afterStateUpdated(function (Get $get, Set $set, string $operation) {
 
-                                            // self::updateLeftAllocated($get, $set, $operation);
-                                        })
-                                        ->columnSpan(3)
+                                    //         // self::updateLeftAllocated($get, $set, $operation);
+                                    //     })
+                                    //     ->columnSpan(3)
                                     // ->rules([
                                     //     fn (Get $get, string $operation): Closure => function (string $attribute, $value, Closure $fail,) use ($get, $operation) {
 
@@ -245,8 +245,9 @@ class CreateProject extends Component implements HasForms
                                     //         }
                                     //     },
                                     // ])
+                                    //,
 
-                                    ,
+
 
 
 

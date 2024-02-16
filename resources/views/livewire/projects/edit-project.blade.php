@@ -3,9 +3,12 @@
         <form wire:submit="save">
             {{ $this->form }}
 
-            <button type="submit">
-                Submit
-            </button>
+            <div class="mt-4">
+
+                <x-custom-button type="submit">
+                    Submit
+                </x-custom-button>
+            </div>
         </form>
 
         <x-filament-actions::modals />

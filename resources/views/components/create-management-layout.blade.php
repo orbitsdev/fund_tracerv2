@@ -43,6 +43,12 @@
       </div>
 
 
+      <div class="mt-4">
+        <p class="text-2xl ">
+            {{ $header ?? '' }}
+
+        </p>
+      </div>
     <div class="mt-4">
         {{ $slot }}
     </div>

@@ -17,6 +17,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\DeleteAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,9 +65,29 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         Select::make('year_id')
 
                             ->label('Year')
-                            ->options(Year::query()->whereDoesntHave('project_years', function ($query) {
-                                $query->where('project_id', $this->record->id);
-                            })->pluck('title', 'id'))
+                            // ->options(Year::query()->whereDoesntHave('project_years', function ($query) {
+                            //     $query->where('project_id', $this->record->id);
+                            // })->pluck('title', 'id'))
+                            ->relationship(
+                                name: 'year',
+                                titleAttribute: 'title',
+                                modifyQueryUsing: fn (Builder $query) =>$query->whereDoesntHave('project_years', function ($query) {
+                                                $query->where('project_id', $this->record->id);
+                                            })
+                                )
+                            ->createOptionForm([
+                                TextInput::make('title')
+                                    ->required(),
+
+                            ])
+                            // ->relationship(
+                            //     name: 'year',
+                            //     titleAttribute: 'title',
+                            //     ignoreRecord: true,
+                            //     modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('project_years', function ($query) {
+                            //             $query->where('project_id', $this->record->id);
+                            //         }),
+                            //     )
                             ->rules([
                                 function () {
                                     return function (string $attribute, $value, Closure $fail) {

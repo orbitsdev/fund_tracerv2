@@ -10,6 +10,7 @@ use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Tables\Actions\ActionGroup;
@@ -38,14 +39,15 @@ class ListProjects extends Component implements HasForms, HasTable
 
             TextColumn::make('title')
                 ->searchable()->label('Project Title')->wrap(),
-            TextColumn::make('allocated_fund')
-                ->money('PHP')
-                ->numeric(
-                    decimalPlaces: 0,
-                )
+            // TextColumn::make('allocated_fund')
+            //     ->money('PHP')
+            //     ->numeric(
+            //         decimalPlaces: 0,
+            //     )
 
-                ->prefix('₱ ')
-                ->sortable(),
+            //     ->prefix('₱ ')
+            //     ->sortable(),
+            ViewColumn::make('')->view('tables.columns.project-total-budget')->label('Total Budget'),
 
             TextColumn::make('start_date')
                 ->date()
