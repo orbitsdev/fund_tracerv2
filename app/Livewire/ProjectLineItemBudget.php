@@ -43,12 +43,18 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
             ->query(ProjectYear::query())
             ->columns([
                 TextColumn::make('year.title'),
-                ViewColumn::make('')->label('Total')->view('tables.columns.total-line-item-budget')
+                ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget')
             ])
             ->filters([
                 // ...
             ])
             ->actions([
+                TAction::make('view')->icon('heroicon-m-eye')->label('View')->color('success')->button()
+                    ->extraAttributes([
+                        'style' => 'border-radius: 100px;',
+
+                    ])
+                    ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit')->color('info')->button()
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',

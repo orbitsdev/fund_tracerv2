@@ -21,6 +21,7 @@ use App\Livewire\Projects\CreateProject;
 use App\Livewire\Projects\EditProject;
 use App\Livewire\Projects\ListProjects;
 use App\Livewire\ViewProject;
+use App\Livewire\ViewProjectYearBudget;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,7 @@ Route::middleware([
          Route::get('/view/{record}', ViewProject::class)->name('view');
          Route::get('/line-item-budget/{record}', ProjectLineItemBudget::class)->name('line-item-budget');
          Route::get('/line-items/year/{record}', LineItemBudget::class)->name('line-items');
+         Route::get('/line-items/year/{record}/view', ViewProjectYearBudget::class)->name('line-items-view');
 
     });
 

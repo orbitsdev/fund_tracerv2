@@ -1,5 +1,6 @@
 <div>
     <x-create-management-layout>
+        <x-back-button :url="route('project.index')">BACK</x-back-button>RF                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         <form wire:submit="save">
             {{ $this->form }}
 

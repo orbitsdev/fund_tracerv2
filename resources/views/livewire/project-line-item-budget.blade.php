@@ -27,7 +27,7 @@
             <div class="flex font-medium">
 
                 <p class=" ">
-                    Total Budget :
+                    Total Project Budget :
                 </p>
                 <p class="w-[200px] text-end mr-6">
                     {{ number_format($project_total_budget) }}
