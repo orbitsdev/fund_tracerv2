@@ -123,7 +123,46 @@
 
   .custom-nav
 {
-    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98), rgba(4, 144, 179, 0.78)),
-    url('../../public/images/line.png');
+    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98), #0490b3c7),
+    url('../../public/images/line.png') ;
+    background-size: cover;
+    background-repeat: no-repeat;
 }
+
+.top-nav{
+
+    background-image:linear-gradient(to right bottom , #073c51, rgba(7, 60, 81, 0.95)), url('../../public/images/line.png') ;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.dost-text{
+    color:#0490b3c7;
+}
+.border-dost{
+    border-color: #0490b3c7;
+}
+
+.dost-100{
+    color:#89c8dd ;
+}
+
+.dost-bg{
+    background-color: #0490b3c7;
+}
+
+.dost-r-bg{
+    background: #3281cc;
+}
+
+
+.fi-btn{
+    background: #0490b3c7;
+}
+
+.fi-btn:hover{
+    background: #046c86c7 !important;
+}
+
 
