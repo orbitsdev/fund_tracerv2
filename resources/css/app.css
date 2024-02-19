@@ -158,7 +158,7 @@
 
 .login-bg
 {
-    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98), #0490b3c7),
+    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98),rgba(12, 61, 83, 0.9), #0490b3c7),
     url('../../public/images/line.png') ;
     background-size: cover;
     background-repeat: no-repeat;
