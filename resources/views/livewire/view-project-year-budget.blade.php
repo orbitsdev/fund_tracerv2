@@ -15,51 +15,51 @@
     {{-- {{$record}} --}}
 
     <x-back-button :url="route('project.line-item-budget',['record'=> $record->project_id])">Back</x-back-button>
-    <div class="text-sm flex flex-col items-center">
-        <p>Dost Form 4</p>
-        <p>Department OF SCIENCE AND TECHNOLOGY</p>
-        <p>Project Line Item Budget</p>
-        <p>{{now()->year}}</p>
+    {{-- <div>
+        <div class="text-sm flex flex-col items-center">
+            <p>Dost Form 4</p>
+            <p>Department OF SCIENCE AND TECHNOLOGY</p>
+            <p>Project Line Item Budget</p>
+            <p>{{now()->year}}</p>
 
-    </div>
+        </div>
 
-    <div class="flex items-center text-sm">
-        <div class="w-[200px] text-sm">
-            Project Title
+        <div class="flex items-center text-sm">
+            <div class="w-[200px] text-sm">
+                Project Title
+            </div>
+            <div class="h font-bold">
+                {{$record->project->title}}
+            </div>
         </div>
-        <div class="h font-bold">
-            {{$record->project->title}}
+        <div class="flex items-center text-sm">
+            <div class="w-[200px] text-sm">
+                Implementing Agency
+            </div>
+            <div class="h font-bold">
+                {{$record->project->implementing_agency}}
+            </div>
         </div>
-    </div>
-    <div class="flex items-center text-sm">
-        <div class="w-[200px] text-sm">
-            Implementing Agency
-        </div>
-        <div class="h font-bold">
-            {{$record->project->implementing_agency}}
-        </div>
-    </div>
-    <div class="flex items-center text-sm">
-        <div class="w-[200px] text-sm">
-            Total Duration
-        </div>
-        <div class="h font-bold">
-            @if ($record->project->start_date && $record->project->end_date)
+        <div class="flex items-center text-sm">
+            <div class="w-[200px] text-sm">
+                Total Duration
+            </div>
+            <div class="h font-bold">
+                @if ($record->project->start_date && $record->project->end_date)
 
-                @php
-                    $startDate = \Carbon\Carbon::parse($record->project->start_date);
-                    $endDate = \Carbon\Carbon::parse($record->project->end_date);
+                    @php
+                        $startDate = \Carbon\Carbon::parse($record->project->start_date);
+                        $endDate = \Carbon\Carbon::parse($record->project->end_date);
 
-                    // Calculate the difference in months
-                    $totalMonths = $endDate->diffInMonths($startDate);
-                @endphp
-                {{-- {{ $thirdlayer->parent_title }} --}}
-                {{ $totalMonths . ''}} months
+                        $totalMonths = $endDate->diffInMonths($startDate);
+                    @endphp
 
-        @endif
+                    {{ $totalMonths . ''}} months
+
+            @endif
+            </div>
         </div>
-    </div>
-    <div class="flex items-center">
+         <div class="flex items-center">
         <div class="w-[200px] text-sm">
             Project Leader
         </div>
@@ -67,6 +67,9 @@
             {{$record->project->project_leader}}
         </div>
     </div>
+    </div> --}}
+
+
 
 
     <div class="mt-4 ">
@@ -82,15 +85,66 @@
                     <p class="text-sm">    {{ $group_title }}  </p>
 
                     @foreach ($groups as $key => $expense)
+
+
                     <div class="ml-4  flex items-center justify-between">
-                        <p class="italic text-gray-600 text-sm">
-                            {{ $expense->p_s_expense->title }}
-                        </p>
+                        <div class="flex items-center">
+                            <p class="italic text-gray-600 text-sm">
+                                {{ $expense->p_s_expense->title }}
+                            </p>
+                            <div  class="ml-4">
+
+                                <div>
+                                    {{($this->addBreakDown)(['record' => $expense->id])}}
+
+                                </div>
+
+
+
+                            </div>
+                        </div>
+
                         <p class="text-gray-600 text-sm">
                             {{ $expense->p_s_expense->amount }}
                         </p>
 
                     </div>
+
+                    <div class="ml-8 text-xs text-gray-600">
+
+
+
+                        @foreach ($expense->s_p_s_breakdowns as $breakdown)
+                        <div class="ml-12  flex items-center ">
+                            <p class="italic text-gray-500 text-xs mr-6">
+                                {{$breakdown->description}} -
+                            </p>
+                            <p class="text-gray-500 text-xs italic">
+                                {{number_format($breakdown->amount ??0 )}}
+
+                            </p>
+
+
+
+
+                        </div>
+
+                        <div>
+                            Files
+
+                            @foreach ($breakdown->files as $file)
+                            <div class="border-b ">
+                                <a href="{{\Storage::disk('public')->url($file->file)}}" target="_blank"> {{$file->file_name}}
+                                </a>
+
+
+                            </div>
+                            @endforeach
+                        </div>
+
+                        @endforeach
+                    </div>
+
                         @endforeach
                 </div>
 
@@ -101,16 +155,10 @@
         @empty
         @endforelse
 
-        <div class="flex items-center justify-between">
-            <div></div>
-            <p class="text-sm">
-                Sub-total for PS
-            </p>
-            <p>
-                {{ number_format($total_ps) }}
+        <x-sub-total title="Sub-total for PS"  :amount="number_format($total_ps??0) "/>
 
-            </p>
-        </div>
+
+
     </div>
 
     <div class="mt-4 ">
@@ -127,6 +175,7 @@
 
                 </p>
                 @foreach ($groups as $key => $expense)
+
                     <div class="ml-4  flex items-center justify-between">
                         <p class="italic text-gray-600 text-sm">
                             {{ $expense->m_o_o_e_expense->title }}
@@ -145,16 +194,10 @@
         </div>
         @empty
         @endforelse
-        <div class="flex items-center justify-between">
-            <div></div>
-            <p class="text-sm">
-                Sub-total for MOOE
-            </p>
-            <p>
-                {{ number_format($total_mooe) }}
 
-            </p>
-        </div>
+
+        <x-sub-total title="Sub-total for MOOE"  :amount="number_format($total_mooe??0) "/>
+
     </div>
     <div class="mt-4 ">
         <p class="capitalize font-medium ">III. Capital Outlay</p>
@@ -188,16 +231,9 @@
         </div>
         @empty
         @endforelse
-        <div class="flex items-center justify-between">
-            <div></div>
-            <p class="text-sm">
-                Sub-total for MOOE
-            </p>
-            <p>
-                {{ number_format($total_co) }}
 
-            </p>
-        </div>
+        <x-sub-total title="Sub-total for CO"  :amount="number_format($total_co??0) "/>
+
     </div>
-
+    <x-filament-actions::modals />
 </div>

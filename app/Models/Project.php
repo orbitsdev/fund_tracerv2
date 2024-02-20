@@ -7,15 +7,16 @@ use App\Models\Program;
 use App\Models\ProjectYear;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Project extends Model
 {
     use HasFactory;
 
-    public function fileable(): MorphTo
+    public function files(): MorphMany
     {
-        return $this->morphTo();
+        return $this->morphMany(File::class, 'fileable');
     }
     public function program(){
         return $this->belongsTo(Program::class);

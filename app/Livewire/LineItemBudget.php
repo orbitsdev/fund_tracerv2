@@ -478,7 +478,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'amount' => $mooe?->amount,
                 ];
             })
-           
+
             ->label('Add CO')
             ->form([
                 Select::make('cost_type')
