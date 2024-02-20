@@ -4,7 +4,7 @@
         .h::before {
             content: ":";
             padding: 0px 10px;
-          font-weight: bold;
+            font-weight: bold;
         }
 
         .h {
@@ -14,7 +14,7 @@
     </style>
     {{-- {{$record}} --}}
 
-    <x-back-button :url="route('project.line-item-budget',['record'=> $record->project_id])">Back</x-back-button>
+    <x-back-button :url="route('project.line-item-budget', ['record' => $record->project_id])">Back</x-back-button>
     {{-- <div>
         <div class="text-sm flex flex-col items-center">
             <p>Dost Form 4</p>
@@ -76,86 +76,81 @@
         <p class="capitalize font-medium ">I. Personal Service</p>
         @forelse ($personal_services as $cost_type => $personal_service)
 
-        <div>
-            <p class=" text-sm font-medium ">{{ $cost_type }}</p>
-
             <div>
-                @foreach ($personal_service as $group_title => $groups)
+                <p class=" text-sm font-medium ">{{ $cost_type }}</p>
+
                 <div>
-                    <p class="text-sm">    {{ $group_title }}  </p>
+                    @foreach ($personal_service as $group_title => $groups)
+                        <div>
+                            <p class="text-sm"> {{ $group_title }} </p>
 
-                    @foreach ($groups as $key => $expense)
+                            @foreach ($groups as $key => $expense)
+                                <div class="ml-4  flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <p class="italic text-gray-600 text-sm">
+                                            {{ $expense->p_s_expense->title }}
+                                        </p>
+                                        <div class="ml-4">
+
+                                            <div>
+                                                {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
+
+                                            </div>
 
 
-                    <div class="ml-4  flex items-center justify-between">
-                        <div class="flex items-center">
-                            <p class="italic text-gray-600 text-sm">
-                                {{ $expense->p_s_expense->title }}
-                            </p>
-                            <div  class="ml-4">
 
-                                <div>
-                                    {{($this->addPSBreakDown)(['record' => $expense->id,])}}
+                                        </div>
+                                    </div>
+
+                                    <p class="text-gray-600 text-sm">
+                                        {{ $expense->p_s_expense->amount }}
+                                    </p>
 
                                 </div>
 
+                                <div class="ml-8 text-xs text-gray-600">
 
+                                     {{-- @dump($expense->breakdowns) --}}
 
-                            </div>
-                        </div>
+                                    @foreach ($expense->breakdowns as $breakdown)
+                                        <div class="ml-12  flex items-center ">
+                                            <p class="italic text-gray-500 text-xs mr-6">
+                                                {{ $breakdown->description }} -
+                                            </p>
+                                            <p class="text-gray-500 text-xs italic">
+                                                {{ number_format($breakdown->amount ?? 0) }}
 
-                        <p class="text-gray-600 text-sm">
-                            {{ $expense->p_s_expense->amount }}
-                        </p>
-
-                    </div>
-
-                    <div class="ml-8 text-xs text-gray-600">
-
-
-
-                        @foreach ($expense->s_p_s_breakdowns as $breakdown)
-                        <div class="ml-12  flex items-center ">
-                            <p class="italic text-gray-500 text-xs mr-6">
-                                {{$breakdown->description}} -
-                            </p>
-                            <p class="text-gray-500 text-xs italic">
-                                {{number_format($breakdown->amount ??0 )}}
-
-                            </p>
+                                            </p>
 
 
 
 
-                        </div>
+                                        </div>
 
-                        <div>
-                            Files
+                                        <div>
+                                            Files
 
-                            @foreach ($breakdown->files as $file)
-                            <div class="border-b ">
-                                <a href="{{\Storage::disk('public')->url($file->file)}}" target="_blank"> {{$file->file_name}}
-                                </a>
+                                            @foreach ($breakdown->files as $file)
+                                                <div class="border-b ">
+                                                    <a href="{{ \Storage::disk('public')->url($file->file) }}"
+                                                        target="_blank"> {{ $file->file_name }}
+                                                    </a>
 
 
-                            </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endforeach
+                                </div>
                             @endforeach
                         </div>
-
-                        @endforeach
-                    </div>
-
-                        @endforeach
+                    @endforeach
                 </div>
-
-
-                @endforeach
             </div>
-        </div>
         @empty
         @endforelse
 
-        <x-sub-total title="Sub-total for PS"  :amount="number_format($total_ps??0) "/>
+        <x-sub-total title="Sub-total for PS" :amount="number_format($total_ps ?? 0)" />
 
 
 
@@ -165,74 +160,117 @@
         <p class="capitalize font-medium ">II. Maintenance and Other Operating Expenses</p>
         @forelse ($mooes as $cost_type => $mooe)
 
-        <div>
-            <p class=" text-sm font-medium ">{{ $cost_type }}</p>
-
             <div>
-                @foreach ($mooe as $group_title => $groups)
+                <p class=" text-sm font-medium ">{{ $cost_type }}</p>
+
+
                 <div>
-                    <p class="text-sm">    {{ $group_title }}  </p>
+                    @foreach ($mooe as $group_title => $groups)
 
-                </p>
-                @foreach ($groups as $key => $expense)
 
-                    <div class="ml-4  flex items-center justify-between">
-                        <p class="italic text-gray-600 text-sm">
-                            {{ $expense->m_o_o_e_expense->title }}
-                        </p>
-                        <p class="text-gray-600 text-sm">
-                            {{ number_format($expense->amount) }}
-                        </p>
+                        <div>
+                            <p class="text-sm"> {{ $group_title }} </p>
 
-                    </div>
-                        @endforeach
+
+                            </p>
+
+
+
+                            @foreach ($groups as $key => $expense)
+
+                            {{ ($this->addMOOEBreakDown)(['record' => $expense->id]) }}
+                                <div class="ml-4  flex items-center justify-between">
+                                    <p class="italic text-gray-600 text-sm">
+                                        {{ $expense->m_o_o_e_expense->title }}
+                                    </p>
+                                    <p class="text-gray-600 text-sm">
+                                        {{ number_format($expense->amount) }}
+                                    </p>
+
+                                </div>
+
+                                <div class="ml-8 text-xs text-gray-600">
+
+                                    {{-- @dump($expense->breakdowns) --}}
+
+                                   @foreach ($expense->breakdowns as $breakdown)
+                                       <div class="ml-12  flex items-center ">
+                                           <p class="italic text-gray-500 text-xs mr-6">
+                                               {{ $breakdown->description }} -
+                                           </p>
+                                           <p class="text-gray-500 text-xs italic">
+                                               {{ number_format($breakdown->amount ?? 0) }}
+
+                                           </p>
+
+
+
+
+                                       </div>
+
+                                       <div>
+                                           Files
+
+                                           @foreach ($breakdown->files as $file)
+                                               <div class="border-b ">
+                                                   <a href="{{ \Storage::disk('public')->url($file->file) }}"
+                                                       target="_blank"> {{ $file->file_name }}
+                                                   </a>
+
+
+                                               </div>
+                                           @endforeach
+                                       </div>
+                                   @endforeach
+                               </div>
+                            @endforeach
+                        </div>
+                    @endforeach
+
+
                 </div>
-                @endforeach
-
-
             </div>
-        </div>
         @empty
         @endforelse
 
 
-        <x-sub-total title="Sub-total for MOOE"  :amount="number_format($total_mooe??0) "/>
+        <x-sub-total title="Sub-total for MOOE" :amount="number_format($total_mooe ?? 0)" />
 
     </div>
     <div class="mt-4 ">
         <p class="capitalize font-medium ">III. Capital Outlay</p>
         @forelse ($mooes as $cost_type => $mooe)
 
-        <div>
-            <p class=" text-sm font-medium ">{{ $cost_type }}</p>
-
             <div>
+                <p class=" text-sm font-medium ">{{ $cost_type }}</p>
 
                 <div>
-                    <p class="text-sm">    {{ $group_title }}  </p>
 
-                </p>
-                @foreach ($groups as $key => $expense)
-                    <div class="ml-4  flex items-center justify-between">
-                        <p class="italic text-gray-600 text-sm">
-                            {{ $expense->description }}
-                        </p>
-                        <p class="text-gray-600 text-sm">
-                            {{ number_format($expense->amount) }}
-                        </p>
+                    <div>
+                        <p class="text-sm"> {{ $group_title }} </p>
 
-                    </div>
+                        </p>
+                        @foreach ($groups as $key => $expense)
+                            <div class="ml-4  flex items-center justify-between">
+                                <p class="italic text-gray-600 text-sm">
+                                    {{ $expense->description }}
+                                </p>
+                                <p class="text-gray-600 text-sm">
+                                    {{ number_format($expense->amount) }}
+                                </p>
+
+                            </div>
                         @endforeach
+                    </div>
+
+
+
                 </div>
-
-
-
             </div>
-        </div>
         @empty
         @endforelse
 
-        <x-sub-total title="Sub-total for CO"  :amount="number_format($total_co??0) "/>
+        <x-sub-total title="Sub-total for CO" :amount="number_format($total_co ?? 0)" />
 
     </div>
     <x-filament-actions::modals />
