@@ -1,27 +1,28 @@
 <?php
 
 use App\Livewire\ListMOOE;
+use App\Livewire\TestPage;
 use App\Livewire\Particular;
+use App\Livewire\ViewProject;
+use App\Livewire\LineItemBudget;
 use App\Livewire\ListParticulars;
 use App\Livewire\CreateManagement;
 use App\Livewire\ContentManagement;
-use App\Livewire\LineItemBudget;
 use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ListPersonalServices;
 use App\Livewire\Programs\EditProgram;
 use App\Livewire\Programs\ViewProgram;
+use App\Livewire\Projects\EditProject;
 use App\Livewire\ListImplentinAgencies;
 use App\Livewire\Programs\ListPrograms;
+use App\Livewire\ProjectLineItemBudget;
+use App\Livewire\Projects\ListProjects;
+use App\Livewire\ViewProjectYearBudget;
 use App\Livewire\Programs\CreateProgram;
+use App\Livewire\Projects\CreateProject;
 use App\Livewire\MOOEGroup\EditMOOEGroup;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
-use App\Livewire\ProjectLineItemBudget;
-use App\Livewire\Projects\CreateProject;
-use App\Livewire\Projects\EditProject;
-use App\Livewire\Projects\ListProjects;
-use App\Livewire\ViewProject;
-use App\Livewire\ViewProjectYearBudget;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,8 @@ Route::get('/', function () {
     return redirect()->route('login');
     // return view('welcome');
 });
+
+Route::get('/test-page', TestPage::class);
 
 Route::middleware([
     'auth:sanctum',

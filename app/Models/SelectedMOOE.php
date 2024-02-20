@@ -8,6 +8,7 @@ use App\Models\ProjectYear;
 use App\Models\SPSBreakdown;
 use App\Models\MOOEBreakdown;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -27,6 +28,11 @@ class SelectedMOOE extends Model
 
     public function m_o_o_e_breakdowns(){
         return $this->hasMany(MOOEBreakdown::class);
+    }
+
+    public function breakdown(): MorphOne
+    {
+        return $this->morphOne(Breakdown::class, 'breakdownable');
     }
 
     public function breakdowns(): MorphMany

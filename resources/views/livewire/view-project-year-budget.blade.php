@@ -112,7 +112,9 @@
 
                                      {{-- @dump($expense->breakdowns) --}}
 
-                                    @foreach ($expense->breakdowns as $breakdown)
+                                    @foreach ($expense->breakdowns as $bk => $breakdown)
+                                    {{ ($this->editBreakDownAction)(['record' => $breakdown->id]) }}
+                                    {{ ($this->deleteBreakDown)(['record' => $breakdown->id]) }}
                                         <div class="ml-12  flex items-center ">
                                             <p class="italic text-gray-500 text-xs mr-6">
                                                 {{ $breakdown->description }} -
@@ -193,7 +195,9 @@
 
                                     {{-- @dump($expense->breakdowns) --}}
 
-                                   @foreach ($expense->breakdowns as $breakdown)
+                                   @foreach ($expense->breakdowns as $bk => $breakdown)
+                                   {{ ($this->editBreakDownAction)(['record' => $breakdown->id]) }}
+                                   {{ ($this->deleteBreakDown)(['record' => $breakdown->id]) }}
                                        <div class="ml-12  flex items-center ">
                                            <p class="italic text-gray-500 text-xs mr-6">
                                                {{ $breakdown->description }} -
@@ -239,36 +243,71 @@
     </div>
     <div class="mt-4 ">
         <p class="capitalize font-medium ">III. Capital Outlay</p>
-        @forelse ($mooes as $cost_type => $mooe)
+        @forelse ($cos as $cost_type => $co)
+
+        <div>
+            <p class=" text-sm font-medium ">{{ $cost_type }}</p>
+            {{-- {{ ($this->addCOBreakDown)(['record' => $co->id]) }}    --}}
 
             <div>
-                <p class=" text-sm font-medium ">{{ $cost_type }}</p>
-
-                <div>
-
-                    <div>
-                        <p class="text-sm"> {{ $group_title }} </p>
-
+            
+                @foreach ($co as $key => $expense)
+                    
+                {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
+                    <div class="ml-4  flex items-center justify-between">
+                        <p class="italic text-gray-600 text-sm">
+                            {{ $expense->description }}
                         </p>
-                        @foreach ($groups as $key => $expense)
-                            <div class="ml-4  flex items-center justify-between">
-                                <p class="italic text-gray-600 text-sm">
-                                    {{ $expense->description }}
-                                </p>
-                                <p class="text-gray-600 text-sm">
-                                    {{ number_format($expense->amount) }}
-                                </p>
+                        <p class="text-gray-600 text-sm">
+                            {{ number_format($expense->amount) }}
+                        </p>
 
-                            </div>
-                        @endforeach
                     </div>
 
+                    <div class="ml-8 text-xs text-gray-600">
+
+                        {{-- @dump($expense->breakdowns) --}}
+
+                       @foreach ($expense->breakdowns as $bk => $breakdown)
+                       {{ ($this->editBreakDownAction)(['record' => $breakdown->id]) }}
+                       {{ ($this->deleteBreakDown)(['record' => $breakdown->id]) }}
+                           <div class="ml-12  flex items-center ">
+                               <p class="italic text-gray-500 text-xs mr-6">
+                                   {{ $breakdown->description }} -
+                               </p>
+                               <p class="text-gray-500 text-xs italic">
+                                   {{ number_format($breakdown->amount ?? 0) }}
+
+                               </p>
 
 
-                </div>
+
+
+                           </div>
+
+                           <div>
+                               Files
+
+                               @foreach ($breakdown->files as $file)
+                                   <div class="border-b ">
+                                       <a href="{{ \Storage::disk('public')->url($file->file) }}"
+                                           target="_blank"> {{ $file->file_name }}
+                                       </a>
+
+
+                                   </div>
+                               @endforeach
+                           </div>
+                       @endforeach
+                   </div>
+                @endforeach
+
             </div>
-        @empty
-        @endforelse
+        </div>
+    @empty
+    @endforelse
+      
+       
 
         <x-sub-total title="Sub-total for CO" :amount="number_format($total_co ?? 0)" />
 
