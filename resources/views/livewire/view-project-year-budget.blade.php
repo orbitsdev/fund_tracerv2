@@ -95,7 +95,7 @@
                             <div  class="ml-4">
 
                                 <div>
-                                    {{($this->addBreakDown)(['record' => $expense->id])}}
+                                    {{($this->addPSBreakDown)(['record' => $expense->id,])}}
 
                                 </div>
 

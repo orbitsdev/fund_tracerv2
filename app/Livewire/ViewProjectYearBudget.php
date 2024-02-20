@@ -33,9 +33,9 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
 
 
-    public function addBreakDownAction(): Action
+    public function addPSBreakDownAction(): Action
     {
-        return CreateAction::make('addBreakDown')
+        return CreateAction::make('addPSBreakDown')
             ->label('Add Breakdown')
             ->size(ActionSize::ExtraSmall)
 

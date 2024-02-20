@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('s_p_s_breakdowns', function (Blueprint $table) {
+        Schema::create('c_o_breakdowns', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('selected_p_s_id')->nullable;
-            $table->foreign('selected_p_s_id')->references('id')->on('selected_p_s')->onDelete('cascade');
+            $table->unsignedBigInteger('selected_c_o_id')->nullable;
+            $table->foreign('selected_c_o_id')->references('id')->on('selected_c_o_s')->onDelete('cascade');
             $table->string('description')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->timestamps();
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('s_p_s_breakdowns');
+        Schema::dropIfExists('c_o_breakdowns');
     }
 };
