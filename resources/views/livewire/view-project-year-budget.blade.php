@@ -46,8 +46,6 @@
         <div class="h font-bold">
             @if ($record->project->start_date && $record->project->end_date)
 
-
-
                 @php
                     $startDate = \Carbon\Carbon::parse($record->project->start_date);
                     $endDate = \Carbon\Carbon::parse($record->project->end_date);

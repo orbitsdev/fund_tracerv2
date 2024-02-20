@@ -60,7 +60,7 @@ class ListPrograms extends Component implements HasForms, HasTable
                     ->limitList(2)
                     ->expandableLimitedList()
                     ->formatStateUsing(function ($state) {
-                        return $state->title . ' - ₱' . number_format($state->allocated_fund);
+                        return $state->title . ' - ₱' . number_format($state->allocated_fund ?? 0);
                         // return $state->title;
                     })
                     ->tooltip(function (Model $record): string {

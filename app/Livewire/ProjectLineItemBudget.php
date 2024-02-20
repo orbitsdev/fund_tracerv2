@@ -28,6 +28,8 @@ use Filament\Tables\Actions\Action as TAction;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Tables\Actions\ActionGroup;
+
 
 class ProjectLineItemBudget extends Component implements HasForms, HasActions, HasTable
 {
@@ -49,21 +51,16 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 // ...
             ])
             ->actions([
-                TAction::make('view')->icon('heroicon-m-eye')->label('View')->color('gray')->button()
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px;',
-
-                    ])
-                    ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
-                TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit')->color('info')->button()
+                ActionGroup::make([
+                    TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit Lib')->color('info')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
                     ])
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
-                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy Lib')->color('warning')->button()
+                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy Lib')->color('warning')
                     ->extraAttributes([
-                        'style' => 'border-radius: 100px; background-color: #06892e',
+                        'style' => 'border-radius: 100px; ',
                     ])
 
 
@@ -190,10 +187,18 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])
-                    ->button()->extraAttributes([
+                    ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
                     ]),
+                ]),
+                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('View')->color('gray')
+                    ->extraAttributes([
+                        'style' => 'border-radius: 100px; font-size: 14px',
+
+                    ])
+                    ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
+
             ])
             ->bulkActions([
                 BulkActionGroup::make([
@@ -233,9 +238,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     ])
                     ->required(),
             ])
-            ->action(function (array $data) {
-
-                DB::beginTransaction();
+            ->action(function (array $data) {DB::beginTransaction();
 
                 try {
                     // Perform database operations inside the transaction
@@ -244,13 +247,15 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         'year_id' => $data['year_id'],
                     ]);
 
-                    Notification::make()
-                        ->title('Saved successfully')
-                        ->success()
-                        ->send();
-
-                    // Redirect to the appropriate route
-                    return redirect()->route('project.line-items', ['record' => $new_record]);
+                    if (!empty($new_record)) {
+                        Notification::make()
+                            ->title('Saved successfully')
+                            ->success()
+                            ->send();
+                        // Commit the transaction
+                        DB::commit();
+                        return redirect()->route('project.line-items', ['record' => $new_record]);
+                    }
                 } catch (\Exception $e) {
                     // Handle exceptions within the transaction
                     // Rollback the transaction
@@ -263,6 +268,8 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         ->title('Failed to save data: ' . $e->getMessage())
                         ->danger()
                         ->send();
+
+                    return redirect()->route('project.line-items', ['record' => $new_record]);
 
                     // Redirect back or to an error page
                     // return redirect()->back()->with('error', 'Failed to save data.');
