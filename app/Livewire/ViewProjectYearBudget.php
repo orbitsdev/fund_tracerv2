@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Closure;
 use App\Models\Test;
 use Filament\Forms\Get;
 use Livewire\Component;
@@ -15,13 +16,13 @@ use App\Models\SPSBreakdown;
 use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\CreateAction;
-use Filament\Support\Enums\MaxWidth;
 
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\ActionSize;
-use Illuminate\Support\Facades\Storage;
 
+use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\FileUpload;
@@ -87,8 +88,38 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                             ->mask(RawJs::make('$money($input)'))
                             ->stripCharacters(',')
 
-                            // ->mask(RawJs::make('$money($input)'))
-                            // ->stripCharacters(',')
+                            // ->rules([   fn (Get $get, array $arguments): Closure => function (string $attribute, $value, Closure $fail, ) use ($get, $arguments) {
+
+                            //             $selected_ps = SelectedPS::find($arguments['record']);
+                            //             $current_budget = $selected_ps->amount;
+                            //             $current_breakdown = $selected_ps->breakdown->sum('amount');
+                            //             $new_amount =  (float) str_replace(',', '', $get('amount'));
+                            //             $over_all_total = $new_amount + $current_breakdown;
+                            //             $remaining_budget = $current_budget - $current_breakdown;
+
+                            //             if($over_all_total > $current_budget) {
+                            //                 $fail("The remaining budgget is only {$remaining_budget} and the total breakdown plus new amount {$over_all_total} which exceed to the total buget");
+                            //             }
+
+
+                            //         // if ($get('other_field') === 'foo' && $value !== 'bar') {
+                            //         //     $fail("The {$attribute} is invalid.");
+                            //         // }
+                            //     },
+                            // ])
+                            // ->rules([
+                            //     function (Get $get, array $arguments) {
+                            //         return function (string $attribute, $value, Closure $fail)  use($get, $arguments) {
+                            //              $fail("The :attribute is invalid. {$arguments['record']}");
+                            //         };
+                            //     },
+                            // ])
+                            ->live()
+                            // ->formatStateUsing(function($state){
+                            //     return $state->title;
+                            // })
+
+
                             ->prefix('₱')
                             ->numeric()
                             // ->maxValue(9999999999)
@@ -574,6 +605,9 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         return EditAction::make('editBreakDown')
             ->size(ActionSize::ExtraSmall)
             ->icon('heroicon-m-pencil-square')
+            ->record(function(array $arguments){
+                return BreakDown::find($arguments['record']);
+            })
             ->iconButton()
             ->fillForm(function (array $arguments) {
                 $model = BreakDown::find($arguments['record']);
@@ -730,26 +764,26 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                         ],
                     ),
             ])
-            ->action(function (array $data, array $arguments) {
-                $model = BreakDown::find($arguments['record']);
+            // ->action(function (array $data, array $arguments) {
+            //     $model = BreakDown::find($arguments['record']);
 
-                
-                // $final_data = [
-                //     // 'project_year_id' => $this->record->id,
-                //     'cost_type' => $data['cost_type'],
-                //     'p_s_group_id' => $data['p_s_group_id'],
-                //     'p_s_expense_id' => $data['p_s_expense_id'],
-                //     'amount' => $amount,
-                // ];
 
-                $model->update($data); 
-                Notification::make()
-                ->title('Update successfully')
-                ->success()
-                ->send();
-                // dd($model);
-            })
-            
+            //     // $final_data = [
+            //     //     // 'project_year_id' => $this->record->id,
+            //     //     'cost_type' => $data['cost_type'],
+            //     //     'p_s_group_id' => $data['p_s_group_id'],
+            //     //     'p_s_expense_id' => $data['p_s_expense_id'],
+            //     //     'amount' => $amount,
+            //     // ];
+
+            //     $model->update($data);
+            //     Notification::make()
+            //     ->title('Update successfully')
+            //     ->success()
+            //     ->send();
+            //     // dd($model);
+            // })
+
             ->model(Breakdown::class)
             ->modalHeading('Add BreakDown');
     }

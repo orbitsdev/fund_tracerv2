@@ -78,14 +78,14 @@ class ListProjects extends Component implements HasForms, HasTable
 
                 ->label('Click here to Add/Update LIB')
                 ->url(fn (Model $record): string => route('project.line-item-budget', ['record'=> $record])),
-                Action::make('monitor')
+                // Action::make('monitor')
 
-                ->label('Monitor Lib')
-                ->url(fn (Model $record): string => route('project.line-item-budget', ['record'=> $record]))
-                ->button()
-                ->color('gray')
-                ->outlined()
-                ,
+                // ->label('Monitor Lib')
+                // ->url(fn (Model $record): string => route('project.line-item-budget', ['record'=> $record]))
+                // ->button()
+                // ->color('gray')
+                // ->outlined()
+                // ,
 
                 ActionGroup::make([
                     Action::make('view')
