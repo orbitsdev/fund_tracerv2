@@ -923,6 +923,12 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         $total_budget = ($total_ps + $total_mooe + $total_co);
 
 
+
+        $startDate = \Carbon\Carbon::parse($this->record->project->start_date);
+        $endDate = \Carbon\Carbon::parse($this->record->project->end_date);
+
+        $total_months = $endDate->diffInMonths($startDate);
+
         return view('livewire.view-project-year-budget', compact(
             'total_ps',
             'total_mooe',
@@ -934,7 +940,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             'total_ps_breakdown',
             'remaining_budget_ps',
             'percentage_used_ps',
-            'remaining_percentage_ps'
+            'remaining_percentage_ps',
+            'total_months'
         ));
     }
 }

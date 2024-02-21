@@ -164,6 +164,9 @@
 .dost-bg{
     background-color: #0490b3c7;
 }
+.title-bg{
+  background-color: #073c51;
+}
 
 .dost-r-bg{
     background: #3281cc;
@@ -181,3 +184,7 @@
     padding: 20px;
 }
 
+
+.cb {
+  @apply border-gray-300 ;
+}
