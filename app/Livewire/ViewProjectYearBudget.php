@@ -603,7 +603,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public function editBreakDownAction(): Action
     {
         return EditAction::make('editBreakDown')
-            ->size(ActionSize::ExtraSmall)
+            ->size(ActionSize::Small)
             ->icon('heroicon-m-pencil-square')
             ->record(function(array $arguments){
                 return BreakDown::find($arguments['record']);
@@ -790,7 +790,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public function deleteBreakDownAction(): Action
     {
         return Action::make('deleteBreakDown')
-            ->size(ActionSize::ExtraSmall)
+            ->size(ActionSize::Small)
             ->iconButton()
             ->icon('heroicon-m-x-mark')
             ->color('danger')
