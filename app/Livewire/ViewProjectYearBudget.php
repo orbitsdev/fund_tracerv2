@@ -17,11 +17,13 @@ use Filament\Actions\Action;
 use Filament\Actions\EditAction;
 use Filament\Actions\CreateAction;
 
+use Filament\Actions\StaticAction;
+use Illuminate\Contracts\View\View;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Section;
+
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\ActionSize;
-
 use Illuminate\Support\Facades\Storage;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -48,19 +50,50 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
     public ProjectYear $record;
 
+    public function viewAttachmentAction(): Action
+    {
+        return Action::make('ViewAttachment')
+        ->label(function(array $arguments) {
+            $breakdown = BreakDown::find($arguments['record']);
+            $count = $breakdown ? $breakdown->files()->count() : 0;
+            $label = 'Attachment' . ($count > 0 ? '(' . $count . ')' : '');
+            return $label;
+            
+        })
+        ->color('info')
+        // ->action(function (array $arguments) {
+        //     return  $record = BreakDown::find($arguments['record']);
+        // })
+    ->modalContent(fn (array $arguments): View => view(
+        'livewire.attachment-view',
+        ['record' => BreakDown::find($arguments['record'])],
+    ))
+    ->modalSubmitAction(false)
+    ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+    ->disabledForm()
+        ->size(ActionSize::ExtraSmall)
+       ->button()
+        ->icon('heroicon-m-paper-clip')
+        ->outlined()
+        // ->iconButton()
+        ->extraAttributes([
+            'style' => 'outline: none;
+             box-shadow: none ; ',
+        ]);
+    }
+
     public function addPSBreakDownAction(): Action
     {
         return CreateAction::make('addPSBreakDown')
             ->label('Add Breakdown')
             ->size(ActionSize::ExtraSmall)
-
-            ->button()
+        ->button()
             ->icon('heroicon-m-plus')
             ->outlined()
             // ->iconButton()
             ->extraAttributes([
                 'style' => 'outline: none;
-                box-shadow: none ',
+                 box-shadow: none ; color:#9ca3af; font-weight: normal;',
             ])
 
             ->form([
