@@ -76,8 +76,11 @@
             the {{ $record->year->title }} project, outlining various line items and expenses. It serves as a
             comprehensive financial plan to track and manage expenses throughout the project lifecycle.</p>
 
-        <div class="border-t border-gray-200 pt-2">
-            <h2 class="text-md font-semibold mb-2 ">I. Personal Service</h2>
+        <div class="border-t border-gray-200 ">
+            <div class="flex items-center justify-between px-2 pt-4 mt-2 bg-[#0e343dfa] text-white">
+                <h2 class="text-md font-semibold mb-2 ">I. Personal Service</h2>
+                <h2 class="text-md font-semibold mb-2 ">{{number_format($total_budget)}}</h2>
+            </div>
             <div>
                 @forelse ($personal_services as $cost_type => $personal_service)
                     <div class="mb-4">
@@ -90,7 +93,7 @@
                                         <div class="">
 
                                             <div
-                                                class="bg-[#0e343dfa] mt-1 rounded-sm  px-6 ml-4 flex justify-between items-center  text-white  ">
+                                                class=" mt-1 rounded-sm  px-6 ml-4 flex justify-between items-center  text-white  ">
                                                 <div class=" flex items-center ">
                                                     <p class=" text-xs italic mr-4">
                                                         {{ $expense->p_s_expense->title }}</p>
@@ -211,7 +214,7 @@
 
             <div class="">
                 <x-sub-total title="Total Fund " :amount="number_format($total_ps ?? 0)" />
-                <x-sub-total title="Total Spend" :amount="number_format($total_breakdown ?? 0)" />
+                <x-sub-total title="Total Spend" :amount="number_format($total_ps_breakdown ?? 0)" />
                 <x-sub-total title="Remaining Fund" :amount="number_format($remaining_budget_ps ?? 0)" />
                 <x-sub-total title="Total Percentage Use" :amount="number_format($percentage_used_ps ?? 0) . '%'" />
                 <x-sub-total title="Total Percentage Left" :amount="number_format($remaining_percentage_ps ?? 0) . '%'" />
