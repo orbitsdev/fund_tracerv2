@@ -1,10 +1,10 @@
-<div class="flex items-center justify-between bg-gray-100 px-2 mt-2">
-    <div></div>
-    <p class="text-sm">
-       {{$title}}
-    </p>
-    <p>
-        {{$amount}}
+<div class="grid grid-cols-5 ">
+    <div class="col-span-3 ">
+        {{$title}}
+    </div>
+    <div class="col-span-2">
 
-    </p>
+        {{$amount}}
+    </div>
+
 </div>

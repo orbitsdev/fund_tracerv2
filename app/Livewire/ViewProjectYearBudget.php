@@ -605,7 +605,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         return EditAction::make('editBreakDown')
             ->size(ActionSize::Small)
             ->icon('heroicon-m-pencil-square')
-            ->record(function(array $arguments){
+            ->record(function (array $arguments) {
                 return BreakDown::find($arguments['record']);
             })
             ->iconButton()
@@ -617,7 +617,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     'description' => $model->description,
                     'amount' => $model->amount,
                     'break_down_files' => $model->files->map(function ($file) {
-                       return $file->toArray();
+                        return $file->toArray();
                     })->toArray(),
                 ];
 
@@ -907,6 +907,20 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         #total
 
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)
+            ->with('breakdowns') // Eager load the breakdowns relationship
+            ->get()
+            ->flatMap->breakdowns // Flatten the nested breakdowns collections into a single collection
+            ->sum('amount');
+
+        $total_budget = $total_ps;
+        $total_breakdown = $total_ps_breakdown;
+        $remaining_budget_ps = $total_budget - $total_breakdown;
+        $percentage_used_ps = ($total_breakdown / $total_budget) * 100;
+        $remaining_percentage_ps = 100 - $percentage_used_ps;
+
+
+        // $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdon')->get()->sum('p_s_expense.amount');
         $total_mooe = SelectedMOOE::where('project_year_id', $this->record->id)->sum('amount');
         $total_co = SelectedCO::where('project_year_id', $this->record->id)->sum('amount');
 
@@ -917,7 +931,12 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             'total_co',
             'personal_services',
             'mooes',
-            'cos'
+            'cos',
+            'total_budget',
+            'total_breakdown',
+           'remaining_budget_ps',
+           'percentage_used_ps',
+           'remaining_percentage_ps'
         ));
     }
 }

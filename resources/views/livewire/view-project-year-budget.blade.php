@@ -89,7 +89,8 @@
                                     @foreach ($groups as $key => $expense)
                                         <div class="">
 
-                                            <div class="bg-[#0e343dfa] px-6 ml-4 flex justify-between items-center  text-white  ">
+                                            <div
+                                                class="bg-[#0e343dfa] mt-1 rounded-sm  px-6 ml-4 flex justify-between items-center  text-white  ">
                                                 <div class=" flex items-center ">
                                                     <p class=" text-xs italic mr-4">
                                                         {{ $expense->p_s_expense->title }}</p>
@@ -110,9 +111,9 @@
 
                                                         <div class="flex items-center justify-between w-full pr-12">
 
-                                                            <p class="text-xs italic text-gray-400 ">
+                                                            <p class="text-xs italic text-gray-500 ">
                                                                 {{ $breakdown->description }}</p>
-                                                            <p class="text-right text-xs italic text-gray-400 ">
+                                                            <p class="text-right text-xs italic text-gray-500 ">
                                                                 {{ number_format($breakdown->amount ?? 0) }}</p>
 
                                                         </div>
@@ -152,57 +153,53 @@
 
                                         @php
 
-                                                    $budget = $expense->p_s_expense->amount;
-                                                    $total_breakdown = $expense->breakdowns()->sum('amount');
-                                                    $remaining = $budget - $total_breakdown;
+                                            $budget = $expense->p_s_expense->amount;
+                                            $total_breakdown = $expense->breakdowns()->sum('amount');
+                                            $remaining = $budget - $total_breakdown;
+                                            $percentageUsed = ($total_breakdown / $budget) * 100;
+                                            $remainingPercentage = 100 - $percentageUsed;
 
                                         @endphp
 
-                                        @if($total_breakdown > 0)
-                                        <div class="grid grid-cols-5  ">
-
-
-                                        <div class="ml-4 col-start-1 col-end-2    px-2 flex items-center">
-
-                                            <div class="mr-2 min-w-24 text-right">
-
-                                                <p class="text-xs ">
-                                                     Breakdown Total
-
-                                                </p>
+                                        @if ($total_breakdown > 0)
+                                            <div class="grid grid-cols-4">
+                                                <div class="ml-4 px-2 flex items-center">
+                                                    <div class="mr-2 min-w-24 text-right">
+                                                        <p class="text-xs">Breakdown Total</p>
+                                                    </div>
+                                                    <div class="min-w-28 text-left ml-4">
+                                                        <p class="text-xs">{{ number_format($total_breakdown) }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-4 p-4 flex items-center">
+                                                    <div class="mr-2 min-w-24 text-right">
+                                                        <p class="text-xs">Remaining</p>
+                                                    </div>
+                                                    <div class="min-w-28 text-left ml-4">
+                                                        <p class="text-xs">{{ number_format($remaining) }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-4  p-4 flex items-center">
+                                                    <div class="mr-2 min-w-24 text-right">
+                                                        <p class="text-xs">Percentage Used</p>
+                                                    </div>
+                                                    <div class="min-w-28 text-left ml-4">
+                                                        <p class="text-xs">
+                                                            {{ number_format($percentageUsed,2) }}
+                                                            %</p>
+                                                    </div>
+                                                </div>
+                                                <div class="ml-4  p-4 flex items-center">
+                                                    <div class="mr-2 min-w-24 text-right">
+                                                        <p class="text-xs">Remaining Percentage</p>
+                                                    </div>
+                                                    <div class="min-w-28 text-left ml-4">
+                                                        <p class="text-xs">{{ number_format($remainingPercentage,2) }}
+                                                            %</p>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div class="min-w-28 text-left ml-4">
-
-                                                <p class="text-xs">
-                                                    {{number_format($total_breakdown)}}
-
-                                                </p>
-
-                                            </div>
-                                        </div>
-
-                                        <div class="ml-4 col-start-2 col-end-4 p-4  flex items-center">
-
-                                            <div class="mr-2 min-w-24 text-right">
-
-                                                <p class="text-xs ">
-                                                    Remaining
-
-                                                </p>
-                                            </div>
-                                            <div class="min-w-28 text-left ml-4">
-
-
-                                                <p class="text-xs ">
-
-                                                    {{ number_format($remaining) }}
-                                                </p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
-
+                                        @endif
                                     @endforeach
                                 </div>
                             @endforeach
@@ -211,6 +208,19 @@
                 @empty
                 @endforelse
             </div>
+
+            <div class="">
+                <x-sub-total title="Total Fund " :amount="number_format($total_ps ?? 0)" />
+                <x-sub-total title="Total Spend" :amount="number_format($total_breakdown ?? 0)" />
+                <x-sub-total title="Remaining Fund" :amount="number_format($remaining_budget_ps ?? 0)" />
+                <x-sub-total title="Total Percentage Use" :amount="number_format($percentage_used_ps ?? 0) . '%'" />
+                <x-sub-total title="Total Percentage Left" :amount="number_format($remaining_percentage_ps ?? 0) . '%'" />
+            </div>
+
+            {{-- <div class="p-4 grid grid-cols-6">
+                <div class="col-span-4">Sub Total For PS</div>
+                <div class="col-span-4">dasd</div>
+            </div> --}}
         </div>
     </div>
 
