@@ -127,7 +127,7 @@
                                                                 @foreach ($breakdown->files as $file)
                                                                     <a href="{{ \Storage::disk('public')->url($file->file) }}"
                                                                         target="_blank"
-                                                                        class="mr-2  min-w-40 flex items-center  hover:bg-blue-600 hover:text-white rounded-lg  justify-start  text-blue-500 text-xs">
+                                                                        class="mr-2  min-w-40 flex items-center  hover:bg-[#0490b3c7] hover:text-white rounded-lg  justify-start  text-[#0490b3c7] text-xs">
                                                                         <svg xmlns="http://www.w3.org/2000/svg"
                                                                             fill="none" viewBox="0 0 24 24"
                                                                             stroke="currentColor" class="w-4 h-4 mr-1">
@@ -150,10 +150,19 @@
                                             @endforeach
                                         </div>
 
-                                        <div class="flex items-center  ">
+                                        @php
+
+                                                    $budget = $expense->p_s_expense->amount;
+                                                    $total_breakdown = $expense->breakdowns()->sum('amount');
+                                                    $remaining = $budget - $total_breakdown;
+
+                                        @endphp
+
+                                        @if($total_breakdown > 0)
+                                        <div class="grid grid-cols-5  ">
 
 
-                                        <div class="ml-4  px-2 flex items-center">
+                                        <div class="ml-4 col-start-1 col-end-2    px-2 flex items-center">
 
                                             <div class="mr-2 min-w-24 text-right">
 
@@ -165,14 +174,14 @@
                                             <div class="min-w-28 text-left ml-4">
 
                                                 <p class="text-xs">
-                                                    {{number_format($expense->breakdowns()->sum('amount'))}}
+                                                    {{number_format($total_breakdown)}}
 
                                                 </p>
 
                                             </div>
                                         </div>
 
-                                        <div class="ml-4  px-2 flex items-center">
+                                        <div class="ml-4 col-start-2 col-end-4 p-4  flex items-center">
 
                                             <div class="mr-2 min-w-24 text-right">
 
@@ -183,10 +192,7 @@
                                             </div>
                                             <div class="min-w-28 text-left ml-4">
 
-                                                @php
-                                                    $budget = $expense->p_s_expense->amount;
-                                                    $remaining = $budget - $expense->breakdowns()->sum('amount');
-                                                @endphp
+
                                                 <p class="text-xs ">
 
                                                     {{ number_format($remaining) }}
@@ -195,6 +201,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
 
                                     @endforeach
                                 </div>
