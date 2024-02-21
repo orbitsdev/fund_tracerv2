@@ -1,4 +1,4 @@
-<div>
+<div class="bg-white rounded-lg shadow-md p-4">
 
     <style>
         .h::before {
@@ -15,13 +15,21 @@
     {{-- {{$record}} --}}
 
     <x-back-button :url="route('project.line-item-budget', ['record' => $record->project_id])">Back</x-back-button>
-    {{-- <div>
-        <div class="text-sm flex flex-col items-center">
-            <p>Dost Form 4</p>
-            <p>Department OF SCIENCE AND TECHNOLOGY</p>
-            <p>Project Line Item Budget</p>
-            <p>{{now()->year}}</p>
+    <div>
+        <div class="grid grid-cols-3 text-gray-600">
+            <div class="flex items-center px-6 justify-end">
+                <img src="{{asset('images/dost.png')}}" alt="" class="h-12 w-12">
+            </div>
+            <div class="text-center">
+                <p>Dost Form 4</p>
+                <p class="uppercase text-2xl leading-relaxed ">Department OF SCIENCE AND TECHNOLOGY</p>
+                <p class="uppercase  text-sm leading-none ">Project Line Item Budget</p>
+                {{-- <p>{{ now()->year }}</p> --}}
+            </div>
+            <div class="flex items-center px-6 justify-start ">
+                <img src="{{asset('images/sksu.png')}}" alt="" class="h-12 w-12">
 
+            </div>
         </div>
 
         <div class="flex items-center text-sm">
@@ -29,7 +37,7 @@
                 Project Title
             </div>
             <div class="h font-bold">
-                {{$record->project->title}}
+                {{ $record->project->title }}
             </div>
         </div>
         <div class="flex items-center text-sm">
@@ -37,7 +45,7 @@
                 Implementing Agency
             </div>
             <div class="h font-bold">
-                {{$record->project->implementing_agency}}
+                {{ $record->project->implementing_agency }}
             </div>
         </div>
         <div class="flex items-center text-sm">
@@ -46,7 +54,6 @@
             </div>
             <div class="h font-bold">
                 @if ($record->project->start_date && $record->project->end_date)
-
                     @php
                         $startDate = \Carbon\Carbon::parse($record->project->start_date);
                         $endDate = \Carbon\Carbon::parse($record->project->end_date);
@@ -54,24 +61,23 @@
                         $totalMonths = $endDate->diffInMonths($startDate);
                     @endphp
 
-                    {{ $totalMonths . ''}} months
-
-            @endif
+                    {{ $totalMonths . '' }} months
+                @endif
             </div>
         </div>
-         <div class="flex items-center">
-        <div class="w-[200px] text-sm">
-            Project Leader
-        </div>
-        <div class="h font-bold">
-            {{$record->project->project_leader}}
+        <div class="flex items-center">
+            <div class="w-[200px] text-sm">
+                Project Leader
+            </div>
+            <div class="h font-bold">
+                {{ $record->project->project_leader }}
+            </div>
         </div>
     </div>
-    </div> --}}
 
 
-    <div class="bg-white rounded-lg shadow-md p-4">
-        <h1 class="text-xl font-medium mb-2">Project {{ $record->year->title }} Budget and Expenses Breakdown</h1>
+    <div class="">
+        <h1 class="text-xl font-medium mb-2">{{ $record->year->title }} Budget and Expenses Breakdown</h1>
         <p class=" mb-4 text-xs text-gray-600">This document provides a detailed breakdown of the budget allocation for
             the {{ $record->year->title }} project, outlining various line items and expenses. It serves as a
             comprehensive financial plan to track and manage expenses throughout the project lifecycle.</p>
@@ -79,7 +85,7 @@
         <div class="border-t border-gray-200 ">
             <div class="flex items-center justify-between px-2 pt-4 mt-2 bg-[#0e343dfa] text-white">
                 <h2 class="text-md font-semibold mb-2 ">I. Personal Service</h2>
-                <h2 class="text-md font-semibold mb-2 ">{{number_format($total_budget)}}</h2>
+                <h2 class="text-md font-semibold mb-2 ">{{ number_format($total_budget) }}</h2>
             </div>
             <div>
                 @forelse ($personal_services as $cost_type => $personal_service)
@@ -188,7 +194,7 @@
                                                     </div>
                                                     <div class="min-w-28 text-left ml-4">
                                                         <p class="text-xs">
-                                                            {{ number_format($percentageUsed,2) }}
+                                                            {{ number_format($percentageUsed, 2) }}
                                                             %</p>
                                                     </div>
                                                 </div>
@@ -197,7 +203,7 @@
                                                         <p class="text-xs">Remaining Percentage</p>
                                                     </div>
                                                     <div class="min-w-28 text-left ml-4">
-                                                        <p class="text-xs">{{ number_format($remainingPercentage,2) }}
+                                                        <p class="text-xs">{{ number_format($remainingPercentage, 2) }}
                                                             %</p>
                                                     </div>
                                                 </div>
