@@ -107,9 +107,11 @@
 
                                                             {{ number_format($expense->p_s_expense->amount) ?? 0 }}
                                                         </div>
+                                                        @if($expense->breakdowns->count() >0 )
                                                         <div class="col-span-12 border-r p-2 border-b">
                                                                 Breakdown
                                                         </div>
+                                                        @endif
 
                                                         @foreach ($expense->breakdowns as $bk => $breakdown)
                                                         <div class="text-sm col-span-12 grid grid-cols-12 border-b">
