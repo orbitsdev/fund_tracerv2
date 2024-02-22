@@ -12,6 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Enums\FiltersLayout;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\Summarizers\Sum;
@@ -102,19 +103,21 @@ class ListPrograms extends Component implements HasForms, HasTable
                     ->url(fn (): string => route('program.create'))
             ])
             ->actions([
-                //
-                Action::make('view')
-                ->icon('heroicon-m-eye')
-                ->label('View Program')
-                ->url(fn (Model $record): string => route('program.view', ['record'=> $record])),
-
-                Action::make('edit')
-                ->icon('heroicon-m-pencil')
-                ->label('Edit')
-                ->url(fn (Model $record): string => route('program.edit', ['record'=> $record])),
-
-                // Tables\Actions\EditAction::make()->label('Edit'),
-                Tables\Actions\DeleteAction::make(),
+                ActionGroup::make([
+                    Action::make('view')
+                    ->icon('heroicon-m-eye')
+                    ->label('View Program')
+                    ->url(fn (Model $record): string => route('program.view', ['record'=> $record])),
+    
+                    Action::make('edit')
+                    ->icon('heroicon-m-pencil')
+                    ->label('Edit')
+                    ->url(fn (Model $record): string => route('program.edit', ['record'=> $record])),
+    
+                    // Tables\Actions\EditAction::make()->label('Edit'),
+                    Tables\Actions\DeleteAction::make(),
+                ]), 
+               
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

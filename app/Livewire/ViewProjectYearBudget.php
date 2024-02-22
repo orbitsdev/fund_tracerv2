@@ -85,7 +85,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
                 'style' => 'outline: none;
                  box-shadow: none ;
-              font-size: 10px;
+                 font-size: 10px;
+                 color: #9ca3af;
 
              ',
             ]);
@@ -340,9 +341,10 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             })
             ->disableCreateAnother()
             ->model(Breakdown::class)
-            ->modalHeading(function(array $arguments) {
-                $model = SelectedMOOE::find($arguments['record']);
-                return 'Add Breakdown '.  $model->m_o_o_e_expense->title ?? '';
+            ->modalHeading(function (array $arguments) {
+                $model = SelectedPS::find($arguments['record']);
+              
+                return 'Add Breakdown ' .  $model->p_s_expense->title ?? '';
             })
             ->modalWidth(MaxWidth::SevenExtraLarge);
         // ->action(fn () => dd('addPersonalService'));
@@ -568,9 +570,9 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             })
             ->disableCreateAnother()
             ->model(Breakdown::class)
-            ->modalHeading(function(array $arguments) {
+            ->modalHeading(function (array $arguments) {
                 $model = SelectedMOOE::find($arguments['record']);
-                return 'Add Breakdown '. $model->m_o_o_e_expense->title ?? '';
+                return 'Add Breakdown ' . $model->m_o_o_e_expense->title ?? '';
             })
             ->modalWidth(MaxWidth::SevenExtraLarge);
         // ->action(fn () => dd('addPersonalService'));
@@ -578,14 +580,14 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public function addCOBreakDownAction(): Action
     {
         return CreateAction::make('addCOBreakDown')
-        ->extraAttributes([
-            'style' => 'outline: none;
+            ->extraAttributes([
+                'style' => 'outline: none;
             box-shadow: none ;
              font-weight: normal;
              color: #9ca3af;
              font-size: 10px;
              ',
-        ])
+            ])
             ->beforeFormFilled(function (array $arguments) {
                 $this->selectedps = $arguments['record'];
 
@@ -795,9 +797,9 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             })
             ->disableCreateAnother()
             ->model(Breakdown::class)
-            ->modalHeading(function(array $arguments) {
+            ->modalHeading(function (array $arguments) {
                 $model = SelectedCO::find($arguments['record']);
-                return 'Add Breakdown '. $model->description ?? '';
+                return 'Add Breakdown ' . $model->description ?? '';
             })
             ->modalWidth(MaxWidth::SevenExtraLarge);
         // ->action(fn () => dd('addPersonalService'));
@@ -942,11 +944,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                                     $fail("Attention: Your proposed expense exceeds the remaining budget. The remaining budget is {$remaining_budget}. Please adjust the new amount accordingly.");
                                                     return;
                                                 }
-
                                             }
-
-
-
                                         };
                                     }
                                 ]),
@@ -1177,12 +1175,12 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         });
 
         #total
-
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
         $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
         $remaining_budget_ps = $total_ps - $total_ps_breakdown;
         $percentage_used_ps = $total_ps != 0 ? ($total_ps_breakdown / $total_ps) * 100 : 0;
         $remaining_percentage_ps = 100 - $percentage_used_ps;
+
 
         $total_mooe = SelectedMOOE::where('project_year_id', $this->record->id)->sum('amount');
         $total_mooe_breakdown = SelectedMOOE::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
@@ -1216,7 +1214,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             // PS
             'total_ps_breakdown',
             'remaining_budget_ps',
-            'percentage_used_ps',
+        'percentage_used_ps',
             'remaining_percentage_ps',
             //MOOE
             'total_mooe_breakdown',

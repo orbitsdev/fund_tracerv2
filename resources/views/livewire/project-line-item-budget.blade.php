@@ -5,9 +5,15 @@
             Back
         </x-bacl-button>
     {{-- {{$record}} --}}
-    <p class="text-center text-xl text-primary-700 font-medium ">
-        Project Line-Item Budget
-    </p>
+    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+      <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+        <div class="ml-4 mt-4">
+          <h3 class="text-base font-semibold leading-6 text-gray-900">Line Item Budget</h3>
+          <p class="mt-1 text-sm text-gray-500">This section provides details about the Line Item Budget. It outlines specific expenditures and allocations.</p>
+        </div>
+       
+      </div>
+    </div>
     <div class="border-b border-gray-200 mt-6"></div>
     <div class="flex justify-end mt-6">
        {{$this->addAction}}

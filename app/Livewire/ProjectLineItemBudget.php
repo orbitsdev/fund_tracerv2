@@ -44,14 +44,22 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
         return $table
             ->query(ProjectYear::query())
             ->columns([
-                TextColumn::make('year.title') ->size(TextColumn\TextColumnSize::ExtraSmall),
+                TextColumn::make('year.title'),
                 ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget')
             ])
             ->filters([
                 // ...
             ])
             ->actions([
+                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('View  Details')
+                ->outlined()
+                // ->extraAttributes([
+                //     'style' => 'border-radius: 100px; font-size: 14px',
+
+                // ])
+                ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 ActionGroup::make([
+                    
                     TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit Lib')->color('info')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
@@ -192,12 +200,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
 
                     ]),
                 ]),
-                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('View')->color('gray')
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px; font-size: 14px',
-
-                    ])
-                    ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
+               
 
             ])
             ->bulkActions([
