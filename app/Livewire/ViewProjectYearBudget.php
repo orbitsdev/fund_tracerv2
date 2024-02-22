@@ -67,6 +67,11 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                 'livewire.attachment-view',
                 ['record' => BreakDown::find($arguments['record'])],
             ))
+            ->modalHeading(function(array $arguments){
+                $breakdown = BreakDown::find($arguments['record']);
+                return $breakdown->description. ' Attachment' ?? 'Attachment';
+            })
+
             ->modalSubmitAction(false)
             ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
             ->disabledForm()

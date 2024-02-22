@@ -60,11 +60,11 @@
             {{-- <x-title-with-b-g title="Line Item Budget Details" class="py-2 text-gray-600" /> --}}
             <div class="grid grid-cols-12">
                 <div class="col-span-12 grid grid-cols-12 border-l border-b ">
-                    <p class="col-span-10 flex items-center text-sm uppercase p-2">I. Personal Service</p>
+                    <div class="col-span-9 flex items-center text-sm uppercase p-2">I. Personal Service</div>
 
-                    <div class="uppercase col-span-2 border-l text-sm">
+                    <div class="uppercase col-span-3 border-l text-sm grid grid-cols-1">
                         <div class="border-r border-b py-2 flex justify-center items-center">
-                            Total FUND
+                            Total Budget
 
                         </div>
                         <div class="border-r  py-2 flex justify-center items-center">
@@ -88,7 +88,7 @@
                                         @foreach ($personal_service as $group_title => $groups)
                                             <div
                                                 class="col-span-12 grid grid-cols-12 {{ $loop->last ? '' : 'border-b' }}">
-                                                <div class="col-span-3 p-2 flex items-center border-r  ">
+                                                <div class="col-span-3 p-4 flex items-center   border-r  ">
                                                     {{ $group_title }}
 
                                                 </div>
@@ -106,7 +106,7 @@
                                                             class="col-span-3 border-l  grid grid-cols-1 border-b text-xs font-medium">
                                                             <div class="border-r  ">
                                                                 <div class=" p-2 border-b flex items-center justify-center">
-                                                                    BUDGET
+                                                                    Allocated Fund
                                                                 </div>
                                                                 <div class="p-2 flex items-center justify-center">
                                                                     {{ number_format($expense->p_s_expense->amount) ?? 0 }}
@@ -143,7 +143,7 @@
                                                             <div class="col-span-3  flex items-center justify-center ">
                                                                 {{ ($this->viewAttachment)(['record' => $breakdown->id]) }}
                                                              </div>
-                                                            <div class=" col-span-3 grid grid-cols-2 p-2 text-gray-300">
+                                                            <div class=" col-span-3 grid grid-cols-2 p-2 text-gray-400">
                                                                 <div class="flex items-center justify-center">
 
                                                                     {{ number_format($breakdown->amount ?? 0) }}
@@ -158,8 +158,8 @@
                                                         </div>
 
                                                         @endforeach
-                                                        <div class="col-span-12 grid grid-cols-12 border-b  bg-gray-50 text-gray-500">
-                                                            <div class="uppercase col-span-3  flex items-center  py-1  px-2 font-normal">
+                                                        <div class="col-span-12 grid grid-cols-12   bg-gray-50 text-gray-500">
+                                                            <div class="uppercase col-span-3 border-t flex items-center  py-1  px-2 font-normal">
                                                                 Summary Details
                                                             </div>
                                                             <div class=" col-span-3 flex items-center justify-center py-1 px-2">
@@ -171,9 +171,9 @@
 
 
                                                             <div
-                                                            class="col-span-3 border-l  grid grid-cols-2 border-b text-xs font-medium ">
-                                                            <div class="border-r  ">
-                                                                <div class="p-2 border-b flex items-center justify-center">
+                                                            class="col-span-3 border-l     grid grid-cols-2  text-xs font-medium ">
+                                                            <div class="border-r border-b ">
+                                                                <div class="p-2 border-b  flex items-center justify-center">
                                                                     Total Spent
 
                                                                 </div>
@@ -181,9 +181,9 @@
                                                                     {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
                                                                 </div>
                                                             </div>
-                                                            <div class="border-r ">
+                                                            <div class="border-r border-b  ">
                                                                 <div class="p-2  border-b flex items-center justify-center">
-                                                                    Remaning
+                                                                    Remaning Fund
                                                                 </div>
                                                                 <div class="p-2 flex items-center justify-center">
                                                                     {{ number_format($expense->p_s_expense->amount -$expense->breakdowns->sum('amount') ) ?? 0 }}
@@ -207,35 +207,30 @@
                 </div>
                 <x-title-with-b-g title="PS Budget Summary" class=" col-span-12 title-bg py-2 " />
 
-                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
-                    <div class="col-span-10 p-2">Total Spent  </div>
-                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($total_ps ?? 0)}} </div>
-
-                </div>
-                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
-                    <div class="col-span-10 p-2">Total Spent  </div>
-                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($total_ps_breakdown ?? 0)}} </div>
+                <div class="col-span-12 grid grid-cols-12 text-xs border-b  font-medium   uppercase border-l bg-gray-50  ">
+                    <div class="col-span-10 p-2">Total Budget  </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center">  {{number_format($total_ps ?? 0)}} </div>
 
                 </div>
 
+                <div class="col-span-12 grid grid-cols-12 text-xs border-b  font-medium   uppercase border-l bg-gray-50  ">
+                    <div class="col-span-10 p-2">Total Spent  </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center">  {{number_format($total_ps_breakdown ?? 0)}} </div>
 
-                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                </div>
+
+
+                <div class="col-span-12 grid grid-cols-12 text-xs border-b  font-medium   uppercase border-l bg-gray-50  ">
                     <div class="col-span-10 p-2"> Remaining Fund </div>
-                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($remaining_budget_ps ?? 0)}} </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center">  {{number_format($remaining_budget_ps ?? 0)}} </div>
 
                 </div>
-                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                <div class="col-span-12 grid grid-cols-12 text-xs border-b  font-medium   uppercase border-l bg-gray-50  ">
                     <div class="col-span-10 p-2">Total Percentage Left </div>
-                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($percentage_used_ps ?? 0) . '%'}} </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center">  {{number_format($percentage_used_ps ?? 0) . '%'}} </div>
 
                 </div>
 
-
-                 {{-- <x-sub-total title="Total Fund " :amount="number_format($total_ps ?? 0)" />
-                    <x-sub-total title="Total Spend" :amount="number_format($total_ps_breakdown ?? 0)" />
-                    <x-sub-total title="Remaining Fund" :amount="number_format($remaining_budget_ps ?? 0)" />
-                    <x-sub-total title="Total Percentage Use" :amount="number_format($percentage_used_ps ?? 0) . '%'" />
-                    <x-sub-total title="Total Percentage Left" :amount="number_format($remaining_percentage_ps ?? 0) . '%'" /> --}}
             </div>
         </div>
 
