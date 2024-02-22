@@ -145,9 +145,19 @@
     background-repeat: no-repeat;
 
 }
-
+.d-gradient{
+  background-image:linear-gradient(to bottom left, rgba(1, 53, 75, 0.98), #0490b3c7);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
 .dost-teaxt{
     color:#08637ac7;
+}
+
+.light-bg{
+  background-image:linear-gradient(to bottom left, #0490b3c7, #0490b3c7);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .dost-text{
