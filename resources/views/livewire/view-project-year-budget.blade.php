@@ -75,16 +75,16 @@
 
                 </div>
 
-                <div class="col-span-12 text-sm">
+                <div class="col-span-12 text-xs">
                     @forelse ($personal_services as $cost_type => $personal_service)
                         <div class=" border-l   ">
                             <div class="{{ $loop->first ? 'border-b' : '' }} {{ $loop->last ? '' : '' }}   ">
                                 <div class="grid grid-cols-12 border-b  ">
-                                    <div class="col-span-12 bg-gray-50 border-b py-1 px-2">
+                                    <div class="col-span-12 bg-gray-200 border-b py-1 px-2">
                                         {{ $cost_type }}
 
                                     </div>
-                                    <div class="col-span-12 grid grid-cols-12">
+                                    <div class="col-span-12 grid grid-cols-12 ">
                                         @foreach ($personal_service as $group_title => $groups)
                                             <div
                                                 class="col-span-12 grid grid-cols-12 {{ $loop->last ? '' : 'border-b' }}">
@@ -101,52 +101,97 @@
                                                             </span>
                                                             {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
                                                         </div>
-                                                        
-                                                        <div
-                                                            class="col-span-3 border-l p-3  flex items-center justify-center border-b ">
 
-                                                            {{ number_format($expense->p_s_expense->amount) ?? 0 }}
+                                                        <div
+                                                            class="col-span-3 border-l  grid grid-cols-1 border-b text-xs font-medium">
+                                                            <div class="border-r  ">
+                                                                <div class=" p-2 border-b flex items-center justify-center">
+                                                                    BUDGET
+                                                                </div>
+                                                                <div class="p-2 flex items-center justify-center">
+                                                                    {{ number_format($expense->p_s_expense->amount) ?? 0 }}
+                                                                </div>
+                                                            </div>
+                                                            {{-- <div class="border-r ">
+                                                                <div class="p-2  border-b flex items-center justify-center">
+                                                                    Remaining
+                                                                </div>
+                                                                <div class="p-2 flex items-center justify-center">
+                                                                    {{ number_format($expense->p_s_expense->amount) ?? 0 }}
+                                                                </div>
+                                                            </div> --}}
                                                         </div>
                                                         @if($expense->breakdowns->count() >0 )
-                                                        <div class="col-span-12 border-r p-2 border-b">
-                                                                Breakdown
+                                                        <div class="text-xs col-span-12 border-r p-2 border-b bg-gray-50 flex items-center text-gray-400">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                                                              </svg>
+
+                                                              <span class="text-xs px-2 ">List  </span>
                                                         </div>
                                                         @endif
 
                                                         @foreach ($expense->breakdowns as $bk => $breakdown)
-                                                        <div class="text-sm col-span-12 grid grid-cols-12 border-b">
-                                                            <div class=" col-span-3  p-2">
-                                                                {{ $breakdown->description }}</div>
-                                                            <div class=" col-span-3  p-2">
-                                                                {{ number_format($breakdown->amount ?? 0) }}
-                                                            </div>
-                                                             <div class="col-span-3  flex items-center justify-center ">
-                                                                {{ ($this->viewAttachment)(['record' => $breakdown->id]) }}
-                                                             </div>
-                                                            {{-- <div class="col-span-3  ">
-                                                                    
-                                                                    @foreach ($breakdown->files as $file)
-                                                                    <a href="{{ \Storage::disk('public')->url($file->file) }}"
-                                                                        target="_blank"
-                                                                        class=" p-2    flex items-center  hover:bg-[#0490b3c7] hover:text-white rounded-lg  justify-start  text-[#0490b3c7] text-xs">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                                                            fill="none" viewBox="0 0 24 24"
-                                                                            stroke="currentColor"
-                                                                            class="w-4 h-4 mr-1">
-                                                                            <path stroke-linecap="round"
-                                                                                stroke-linejoin="round"
-                                                                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-                                                                        </svg>
-                                                                        {{ $file->file_name }}
-                                                                    </a>
-                                                                @endforeach
-                                                            </div> --}}
-                                                            <div class=" col-span-3  p-2 flex items-center justify-center">
+                                                        <div class="col-span-12 grid grid-cols-12 border-b">
+                                                            <div class=" col-span-3  p-2 flex items-center justify-start">
                                                                 {{ ($this->editBreakDownAction)(['record' => $breakdown->id]) }}
                                                                 {{ ($this->deleteBreakDown)(['record' => $breakdown->id]) }}
                                                             </div>
+                                                            <div class=" col-span-3  p-2">
+                                                                {{ $breakdown->description }}
+                                                            </div>
+                                                            <div class="col-span-3  flex items-center justify-center ">
+                                                                {{ ($this->viewAttachment)(['record' => $breakdown->id]) }}
+                                                             </div>
+                                                            <div class=" col-span-3 grid grid-cols-2 p-2 text-gray-300">
+                                                                <div class="flex items-center justify-center">
+
+                                                                    {{ number_format($breakdown->amount ?? 0) }}
+                                                                </div>
+                                                                <div>
+
+
+                                                                </div>
+                                                            </div>
+
+
                                                         </div>
-                                                            @endforeach
+
+                                                        @endforeach
+                                                        <div class="col-span-12 grid grid-cols-12 border-b  bg-gray-50 text-gray-500">
+                                                            <div class="uppercase col-span-3  flex items-center  py-1  px-2 font-normal">
+                                                                Summary Details
+                                                            </div>
+                                                            <div class=" col-span-3 flex items-center justify-center py-1 px-2">
+
+                                                            </div>
+                                                            <div class=" col-span-3 flex items-center justify-center py-1 px-2">
+
+                                                            </div>
+
+
+                                                            <div
+                                                            class="col-span-3 border-l  grid grid-cols-2 border-b text-xs font-medium ">
+                                                            <div class="border-r  ">
+                                                                <div class="p-2 border-b flex items-center justify-center">
+                                                                    Total Spent
+
+                                                                </div>
+                                                                <div class="p-2 flex items-center justify-center">
+                                                                    {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="border-r ">
+                                                                <div class="p-2  border-b flex items-center justify-center">
+                                                                    Remaning
+                                                                </div>
+                                                                <div class="p-2 flex items-center justify-center">
+                                                                    {{ number_format($expense->p_s_expense->amount -$expense->breakdowns->sum('amount') ) ?? 0 }}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+
                                                     @endforeach
                                                 </div>
                                             </div>
@@ -160,27 +205,29 @@
                         </div>
                     @endforeach
                 </div>
-                <div class="col-span-12 grid grid-cols-12 text-sm border bg-gray-50  ">
-                    <div class="col-span-6 p-2">Total Spent  </div>
-                    <div class="col-span-6 border-l p-2"> {{number_format($total_ps ?? 0)}} </div>
-                   
+                <x-title-with-b-g title="PS Budget Summary" class=" col-span-12 title-bg py-2 " />
+
+                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                    <div class="col-span-10 p-2">Total Spent  </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($total_ps ?? 0)}} </div>
+
                 </div>
-                <div class="col-span-12 grid grid-cols-12 text-sm border bg-gray-50  ">
-                    <div class="col-span-6 p-2">Total Spent  </div>
-                    <div class="col-span-6 border-l p-2"> {{number_format($total_ps_breakdown ?? 0)}} </div>
-                   
+                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                    <div class="col-span-10 p-2">Total Spent  </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($total_ps_breakdown ?? 0)}} </div>
+
                 </div>
 
-             
-                <div class="col-span-12 grid grid-cols-12 text-sm border bg-gray-50  ">
-                    <div class="col-span-6 p-2"> Remaining Fund </div>
-                    <div class="col-span-6 border-l p-2"> {{number_format($remaining_budget_ps ?? 0)}} </div>
-                   
+
+                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                    <div class="col-span-10 p-2"> Remaining Fund </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($remaining_budget_ps ?? 0)}} </div>
+
                 </div>
-                <div class="col-span-12 grid grid-cols-12 text-sm border bg-gray-50  ">
-                    <div class="col-span-6 p-2">Total Percentage Left </div>
-                    <div class="col-span-6 border-l p-2"> {{number_format($percentage_used_ps ?? 0) . '%'}} </div>
-                   
+                <div class="col-span-12 grid grid-cols-12 text-xs border bg-gray-50  ">
+                    <div class="col-span-10 p-2">Total Percentage Left </div>
+                    <div class="col-span-2 border-l p-2 flex items-center justify-center"> {{number_format($percentage_used_ps ?? 0) . '%'}} </div>
+
                 </div>
 
 
@@ -346,7 +393,7 @@
                     <x-sub-total title="Total Percentage Left" :amount="number_format($remaining_percentage_ps ?? 0) . '%'" />
                 </div>
 
-           
+
             </div>
         </div> --}}
 

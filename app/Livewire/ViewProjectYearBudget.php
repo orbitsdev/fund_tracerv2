@@ -53,58 +53,62 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public function viewAttachmentAction(): Action
     {
         return Action::make('ViewAttachment')
-        ->label(function(array $arguments) {
-            $breakdown = BreakDown::find($arguments['record']);
-            $count = $breakdown ? $breakdown->files()->count() : 0;
-            $label = 'Attachment' . ($count > 0 ? '(' . $count . ')' : '');
-            return $label;
-            
-        })
-        ->color('info')
-        // ->action(function (array $arguments) {
-        //     return  $record = BreakDown::find($arguments['record']);
-        // })
-    ->modalContent(fn (array $arguments): View => view(
-        'livewire.attachment-view',
-        ['record' => BreakDown::find($arguments['record'])],
-    ))
-    ->modalSubmitAction(false)
-    ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
-    ->disabledForm()
-        ->size(ActionSize::ExtraSmall)
-       ->button()
-        ->icon('heroicon-m-paper-clip')
-        ->outlined()
-        // ->iconButton()
-        ->extraAttributes([
-            'style' => 'outline: none;
-             box-shadow: none ; ',
-        ]);
+            ->label(function (array $arguments) {
+                $breakdown = BreakDown::find($arguments['record']);
+                $count = $breakdown ? $breakdown->files()->count() : 0;
+                $label = 'Attachment' . ($count > 0 ? '(' . $count . ')' : '');
+                return $label;
+            })
+            ->color('info')
+            // ->action(function (array $arguments) {
+            //     return  $record = BreakDown::find($arguments['record']);
+            // })
+            ->modalContent(fn (array $arguments): View => view(
+                'livewire.attachment-view',
+                ['record' => BreakDown::find($arguments['record'])],
+            ))
+            ->modalSubmitAction(false)
+            ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+            ->disabledForm()
+            ->size(ActionSize::ExtraSmall)
+            ->button()
+            ->icon('heroicon-m-paper-clip')
+            ->outlined()
+            // ->iconButton()
+            ->extraAttributes([
+                // #9ca3af
+
+                'style' => 'outline: none;
+             box-shadow: none ;
+             font-size: 10px;
+
+             ',
+            ]);
     }
 
     public function addPSBreakDownAction(): Action
     {
         return CreateAction::make('addPSBreakDown')
-        ->beforeFormFilled(function (array $arguments) {
-            $this->selectedps = $arguments['record'];
-           
-            // Runs before the form fields are populated with their default values.
-        })
-       
-        ->fillForm(function (array $arguments) {
-            $selected_ps = SelectedPS::find($arguments['record']);
-            $remaining_budget = null;
-            
-            if ($selected_ps) {
-                $current_budget = $selected_ps->amount;
-                $current_breakdown = $selected_ps->breakdowns->sum('amount');
-                $remaining_budget = $current_budget - $current_breakdown;
-            }
-            
-            return [
-                'remaining' => number_format($remaining_budget),
-            ];
-        })
+            ->beforeFormFilled(function (array $arguments) {
+                $this->selectedps = $arguments['record'];
+
+                // Runs before the form fields are populated with their default values.
+            })
+
+            ->fillForm(function (array $arguments) {
+                $selected_ps = SelectedPS::find($arguments['record']);
+                $remaining_budget = null;
+
+                if ($selected_ps) {
+                    $current_budget = $selected_ps->amount;
+                    $current_breakdown = $selected_ps->breakdowns->sum('amount');
+                    $remaining_budget = $current_budget - $current_breakdown;
+                }
+
+                return [
+                    'remaining' => number_format($remaining_budget),
+                ];
+            })
             ->label('Add Breakdown')
             ->size(ActionSize::ExtraSmall)
             ->button()
@@ -112,24 +116,17 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ->outlined()
             // ->iconButton()
             ->extraAttributes([
+                // color: #9ca3af   color: #9ca3af;;
                 'style' => 'outline: none;
-                 box-shadow: none ; color:#9ca3af; font-weight: normal;',
+                 box-shadow: none ;
+                  font-weight: normal;
+                  color: #9ca3af;
+                  font-size: 10px;
+                  ',
             ])
 
             ->form([
-                
-                Section::make()
-                ->columns([
-                    'sm' => 3,
-                    'xl' => 6,
-                    '2xl' => 8,
-                ])
-                ->schema([
-                    TextInput::make('remaining')->required()
-                    ->columnSpanFull()->readonly()->disabled()
-                    
-                    ,
-                ]),
+
                 Section::make()
                     ->columns([
                         'sm' => 3,
@@ -137,7 +134,17 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                         '2xl' => 8,
                     ])
                     ->schema([
-                      
+                        TextInput::make('remaining')->required()
+                            ->columnSpanFull()->readonly()->disabled(),
+                    ]),
+                Section::make()
+                    ->columns([
+                        'sm' => 3,
+                        'xl' => 6,
+                        '2xl' => 8,
+                    ])
+                    ->schema([
+
                         TextInput::make('description')->required()
                             ->columnSpan(4),
                         TextInput::make('amount')
@@ -167,7 +174,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                             //     },
                             // ])
                             ->rules([
-                                function (Get $get){
+                                function (Get $get) {
                                     return function (string $attribute, $value, Closure $fail) use ($get) {
 
                                         $selected_ps = SelectedPS::find((int)$this->selectedps ?? null);
@@ -178,14 +185,15 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                             $new_amount = (float) str_replace(',', '', $get('amount'));
                                             $over_all_total = $new_amount + $current_breakdown;
                                             $remaining_budget = $current_budget - $current_breakdown;
-                                        
+
                                             if ($over_all_total > $current_budget) {
-                                                $fail("The remaining budget is only {$remaining_budget} and the overall total is {$over_all_total}");
+                                                $fail("Attention: Your proposed expense exceeds the allocated budget. The remaining budget is {$remaining_budget}, but including this new expense would bring the total to {$over_all_total}. Please be mindful of your spending limits.");
+
                                             }
                                         } else {
                                             $fail("Selected Personal Serivce not found");
                                         }
-                                        
+
                                         // if ($get('other_field') === 'foo' && $value !== 'bar') {
                                         // }
                                     };
@@ -320,7 +328,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                 $model = SelectedPS::find($arguments['record']);
                 $data['breakdownable_id'] = $model->id;
                 $data['breakdownable_type'] = get_class($model);
-                  unset($data['remaining']);
+                unset($data['remaining']);
                 unset($data['remaining']);
 
 
@@ -352,7 +360,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ])
 
             ->form([
-             
+
 
                 Section::make()
                     ->columns([
@@ -506,7 +514,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         return CreateAction::make('addCOBreakDown')
             ->label('Add Breakdown')
             ->size(ActionSize::ExtraSmall)
-           
+
             ->button()
             ->icon('heroicon-m-plus')
             ->outlined()
@@ -517,7 +525,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ])
 
             ->form([
-             
+
 
                 Section::make()
                     ->columns([
@@ -526,7 +534,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                         '2xl' => 8,
                     ])
                     ->schema([
-                     
+
                         TextInput::make('description')->required()
                             ->columnSpan(4),
                         TextInput::make('amount')
@@ -678,11 +686,11 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             })
             ->mutateFormDataUsing(function (array $data): array {
                 unset($data['remaining']);
-         
+
                 return $data;
             })
             ->iconButton()
-           
+
             ->fillForm(function (array $arguments) {
                 $model = BreakDown::find($arguments['record']);
                 $this->selectedps = $arguments['record'];
@@ -692,13 +700,13 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     $current_breakdown = $parent_model->breakdowns->sum('amount');
                     $current_budget = $parent_model->amount;
                     $remaining_budget = $current_budget - $current_breakdown;
-                  
+
                     // $breakdown is associated with a SelectedPS model
                     // Your code here
                 }
 
                 $filled_data = [
-                    'remaining'=> $remaining_budget,
+                    'remaining' => $remaining_budget,
                     'description' => $model->description,
                     'amount' => $model->amount,
                     'break_down_files' => $model->files->map(function ($file) {
@@ -713,20 +721,18 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             })
             ->color('info')
             ->form([
-             
+
                 Section::make()
-                ->columns([
-                    'sm' => 3,
-                    'xl' => 6,
-                    '2xl' => 8,
-                ])
-                ->schema([
-                    TextInput::make('remaining')->required()
-                    ->columnSpanFull()->readonly()->disabled()
-                   
-                    
-                    ,
-                ]),
+                    ->columns([
+                        'sm' => 3,
+                        'xl' => 6,
+                        '2xl' => 8,
+                    ])
+                    ->schema([
+                        TextInput::make('remaining')->required()
+
+                            ->columnSpanFull()->readonly()->disabled(),
+                    ]),
                 Section::make()
                     ->columns([
                         'sm' => 3,
@@ -752,8 +758,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                 ->columnSpan(4)
                                 ->required()
                                 ->rules([
-                                    function (Get $get){
-                                        return function (string $attribute, $value, Closure $fail) use ($get, ) {
+                                    function (Get $get) {
+                                        return function (string $attribute, $value, Closure $fail) use ($get,) {
                                             $model = BreakDown::find((int)$this->selectedps ?? null);
 
                                             if ($model) {
@@ -764,9 +770,11 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                                     $over_all_total = $new_amount + $current_breakdown;
                                                     $current_budget = $parent_model->amount;
                                                     $remaining_budget = $current_budget - $current_breakdown;
-                                                    
+
                                                     if ($over_all_total > $current_budget) {
-                                                        $fail("The remaining budget is only {$remaining_budget} and the overall total is {$over_all_total}");
+                                                        $fail("Attention: Your proposed expense exceeds the allocated budget. The remaining budget is {$remaining_budget}, but including this new expense would bring the total to {$over_all_total}. Please be mindful of your spending limits.");
+
+
                                                     }
                                                 } else {
                                                     // Handle the case where breakdown is not associated with a SelectedPS
@@ -776,15 +784,14 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                                 // Handle the case where the BreakDown record is not found
                                                 $fail("BreakDown record not found.");
                                             }
-                                           
-                    
-                                            
+
+
+
                                             // if ($get('other_field') === 'foo' && $value !== 'bar') {
                                             // }
                                         };
                                     },
-                                ])
-                                ,
+                                ]),
 
 
 
@@ -1032,7 +1039,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         #total
 
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id) ->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
+        $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
         $remaining_budget_ps = $total_ps - $total_ps_breakdown;
         $percentage_used_ps = ($total_ps_breakdown / $total_ps) * 100;
         $remaining_percentage_ps = 100 - $percentage_used_ps;
@@ -1040,7 +1047,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
         // $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdon')->get()->sum('p_s_expense.amount');
         $total_mooe = SelectedMOOE::where('project_year_id', $this->record->id)->sum('amount');
-        $total_mooe_breakdown = SelectedMOOE::where('project_year_id', $this->record->id) ->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
+        $total_mooe_breakdown = SelectedMOOE::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
         $remaining_budget_mooe = $total_mooe - $total_mooe_breakdown;
         $percentage_used_mooe = ($total_mooe_breakdown / $total_mooe) * 100;
         $remaining_percentage_mooe = 100 - $percentage_used_mooe;
