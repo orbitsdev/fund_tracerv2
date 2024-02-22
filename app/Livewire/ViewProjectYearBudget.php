@@ -342,7 +342,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ->model(Breakdown::class)
             ->modalHeading(function(array $arguments) {
                 $model = SelectedMOOE::find($arguments['record']);
-                return 'Add Breakdown '. $model->m_o_o_e_expense->title ?? '';
+                return 'Add Breakdown '.  $model->m_o_o_e_expense->title ?? '';
             })
             ->modalWidth(MaxWidth::SevenExtraLarge);
         // ->action(fn () => dd('addPersonalService'));
