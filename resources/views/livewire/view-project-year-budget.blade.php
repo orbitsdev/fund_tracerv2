@@ -73,7 +73,7 @@
             <div x-data="{ open: false }">
                 <h2 id="accordion-flush-heading-1">
                     <button x-on:click="open = ! open" type="button"
-                        class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-50 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                        class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
                         data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                         aria-controls="accordion-flush-body-1">
 
@@ -91,7 +91,7 @@
 
                             <div class=" font-medium   flex items-center justify-between  ">
                                 <div class="  flex justify-center items-center">
-                                    Allocated Budget
+                                    Budget
 
                                 </div>
                                 <div class=" flex justify-center items-center">
@@ -115,7 +115,7 @@
 
                                     <div class="border-r  font-medium   flex items-center justify-between p-2 ">
                                         <div class="  flex justify-center items-center">
-                                            Allocated Budget
+                                            Budget
 
                                         </div>
                                         <div class="   flex justify-center items-center">
@@ -134,8 +134,8 @@
                             @forelse ($personal_services as $cost_type => $personal_service)
                                 <div class=" border-l    ">
                                     <div class="{{ $loop->first ? 'border-b' : '' }} {{ $loop->last ? '' : '' }}   ">
-                                        <div class="grid grid-cols-12 border-b  ">
-                                            <div class="col-span-12  light-bg  text-white border-b py-1 px-2">
+                                        <div class="grid grid-cols-12 {{ $loop->last ? '' : ' border-b' }}  ">
+                                            <div class="col-span-12  light-bg  text-white   py-1 px-2">
                                                 {{ $cost_type }}
 
                                             </div>
@@ -149,7 +149,7 @@
                                                         <div class="col-span-10  grid grid-cols-12  ">
                                                             @foreach ($groups as $key => $expense)
                                                                 <div
-                                                                    class=" col-span-10  flex items-center  border-b px-2 py-1 border  ">
+                                                                    class=" col-span-10  flex items-center  border-b   px-2 py-1   ">
                                                                     <span class="mr-2">
                                                                         {{ $expense->p_s_expense->title }}
 
@@ -160,7 +160,7 @@
                                                                 </div>
 
                                                                 <div
-                                                                    class=" col-span-2  border-r  border-b text-xs font-medium">
+                                                                    class=" col-span-2  border-r   border-b text-xs font-medium">
                                                                     <div
                                                                         class="p-2 flex items-center font-medium justify-end">
                                                                         ₱
@@ -215,13 +215,13 @@
                                                                 {{-- <div class=" col-span-12 p-[0.5px] {{$loop->last ? '' :'light-bg' }} "></div> --}}
                                                                 <div
                                                                     class=" col-span-12 grid grid-cols-12 border-r border-b  bg-gray bg-gray-50 text-gray-400">
-                                                                    <div class="p-1  py-1 col-span-2   ">
+                                                                    <div class="p-1  py-1 col-span-2    ">
                                                                         Total
                                                                     </div>
                                                                     <div class="p-1 col-span-3 "></div>
                                                                     <div class="p-1 col-span-2"> </div>
                                                                     <div
-                                                                        class="p-1 col-span-3  border-l  text-right  text-gray-600 ">
+                                                                        class="px-2 py-1 col-span-3  border-l  text-right  text-gray-600 ">
                                                                         {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                                         ₱
                                                                         {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
@@ -245,14 +245,16 @@
                                                                     <div class="p-1 col-span-3 "> </div>
                                                                     <div class="p-1 col-span-2"> </div>
                                                                     <div
-                                                                        class="p-1  col-span-3  border-l border-r text-left ">
+                                                                        class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                                         ₱
                                                                         {{ number_format($expense->p_s_expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
                                                                     </div>
-                                                                    <div class="col-span-2  "></div>
+                                                                    <div class=" col-span-2 border-l border-r ">
+
+                                                                    </div>
                                                                 </div>
                                                                 <div
-                                                                    class=" col-span-12 p-[0.5px] {{ $loop->last ? '' : 'light-bg' }} ">
+                                                                    class=" col-span-12 p-[0.5px] light-bg{{ $loop->last ? '' : '' }} ">
                                                                 </div>
                                                             @endforeach
                                                         </div>
@@ -282,9 +284,9 @@
                                     </div>
                                     <div class="p-2 flex items-center col-span-3 ">
 
-                                        Budget Used {{ number_format($percentage_used_ps ?? 0) . '%' }}</div>
+                                        Used {{ number_format($percentage_used_ps ?? 0) . '%' }}</div>
                                     <div class="p-2 text-left col-span-2"> </div>
-                                    <div class="p-2 col-span-3 border-l ">
+                                    <div class="p-2 col-span-3 border-l border-r ">
                                         <div class="flex items-center justify-between">
 
                                             <p class="text-left">
@@ -296,7 +298,7 @@
 
                                             </p>
                                         </div>
-                                        <div class="flex items-center justify-between">
+                                        <div class="flex items-center justify-between ">
 
                                             <p class="text-left">
                                                 Remaining
@@ -339,7 +341,7 @@
             <div x-data="{ open: false }">
                 <h2 id="accordion-flush-heading-2">
                     <button x-on:click="open = ! open" type="button"
-                        class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-50 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                        class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
                         data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                         aria-controls="accordion-flush-body-1">
 
@@ -357,7 +359,7 @@
 
                             <div class=" font-medium   flex items-center justify-between  ">
                                 <div class="  flex justify-center items-center">
-                                    Allocated Budget
+                                    Budget
 
                                 </div>
                                 <div class=" flex justify-center items-center">
@@ -382,7 +384,7 @@
 
                                         <div class="border-r  font-medium   flex items-center justify-between p-2 ">
                                             <div class="  flex justify-center items-center">
-                                                Allocated Budget
+                                                Budget
 
                                             </div>
                                             <div class="   flex justify-center items-center">
@@ -400,7 +402,7 @@
                             @forelse ($mooes as $cost_type => $mooe)
                                 <div class=" border-l    ">
                                     <div class="{{ $loop->first ? 'border-b' : '' }} {{ $loop->last ? '' : '' }}   ">
-                                        <div class="grid grid-cols-12 border-b  ">
+                                        <div class="grid grid-cols-12   ">
                                             <div class="col-span-12  light-bg  text-white border-b py-1 px-2">
                                                 {{ $cost_type }}
 
@@ -415,7 +417,7 @@
                                                         <div class="col-span-10  grid grid-cols-12  ">
                                                             @foreach ($groups as $key => $expense)
                                                                 <div
-                                                                    class=" col-span-10  flex items-center  border-b px-2 py-1 border  ">
+                                                                    class=" col-span-10  flex items-center  border-b px-2 py-1   ">
                                                                     <span class="mr-2">
                                                                         {{ $expense->m_o_o_e_expense->title }}
 
@@ -489,7 +491,7 @@
                                                                     <div class="p-1 col-span-3 "></div>
                                                                     <div class="p-1 col-span-2"> </div>
                                                                     <div
-                                                                        class="p-1 col-span-3  border-l  text-right  text-gray-600 ">
+                                                                        class="px-2 py-1 col-span-3  border-l  text-right  text-gray-600 ">
                                                                         {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                                         ₱
                                                                         {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
@@ -513,15 +515,17 @@
                                                                     <div class="p-1 col-span-3 "> </div>
                                                                     <div class="p-1 col-span-2"> </div>
                                                                     <div
-                                                                        class="p-1  col-span-3  border-l border-r text-left ">
+                                                                        class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                                         ₱
                                                                         {{ number_format($expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
                                                                     </div>
-                                                                    <div class="col-span-2  "></div>
+                                                                    <div class=" col-span-2 border-l border-r ">
+
+                                                                    </div>
                                                                 </div>
                                                                 <div
-                                                                    class=" col-span-12 p-[0.5px] {{ $loop->last ? '' : 'light-bg' }} ">
-                                                                </div>
+                                                                class=" col-span-12 p-[0.5px] light-bg{{ $loop->last ? '' : '' }} ">
+                                                            </div>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -539,9 +543,11 @@
 
                         <div
                             class="col-span-12  grid grid-cols-12 text-xs font-medium transition border-t  d-gradient  text-white      uppercase">
-
+                            <div class="col-span-12 border-b p-2 flex items-center    ">
+                                MOOE Summary
+                            </div>
                             <div class="col-span-2  p-4 flex items-center   ">
-                                PS Summary
+
                             </div>
                             <div class="col-span-10  grid grid-cols-12 border-b  ">
 
@@ -550,9 +556,9 @@
                                     </div>
                                     <div class="p-2 flex items-center col-span-3 ">
 
-                                        Budget Used {{ number_format($percentage_used_mooe ?? 0) . '%' }}</div>
+                                         Used {{ number_format($percentage_used_mooe ?? 0) . '%' }}</div>
                                     <div class="p-2 text-left col-span-2"> </div>
-                                    <div class="p-2 col-span-3 border-l ">
+                                    <div class="p-2 col-span-3 border-l border-r">
                                         <div class="flex items-center justify-between">
 
                                             <p class="text-left">
@@ -579,7 +585,7 @@
                                     </div>
 
 
-                                    <div class="p-2  col-span-2 text-right border-r border-gray-400 ">
+                                    <div class="px-2 py-1 col-span-2 text-right border-r border-gray-400 ">
                                         <p>
                                             ₱ {{ number_format($total_mooe ?? 0) }}
 
@@ -598,6 +604,8 @@
 
                             </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>
@@ -605,7 +613,7 @@
         <div x-data="{ open: false }">
             <h2 id="accordion-flush-heading-3">
                 <button x-on:click="open = ! open" type="button"
-                class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-50 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
                 data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                 aria-controls="accordion-flush-body-1">
 
@@ -623,7 +631,7 @@
 
                     <div class=" font-medium   flex items-center justify-between  ">
                         <div class="  flex justify-center items-center">
-                            Allocated Budget
+                            Budget
 
                         </div>
                         <div class=" flex justify-center items-center">
@@ -648,7 +656,7 @@
 
                                 <div class="border-r  font-medium   flex items-center justify-between p-2 ">
                                     <div class="  flex justify-center items-center">
-                                        Allocated Budget
+                                        Budget
 
                                     </div>
                                     <div class="   flex justify-center items-center">
@@ -744,7 +752,7 @@
                                                         <div class="p-1 col-span-3 "></div>
                                                         <div class="p-1 col-span-2"> </div>
                                                         <div
-                                                            class="p-1 col-span-3  border-l  text-right  text-gray-400 ">
+                                                            class="px-2 py-1 col-span-3  border-l  text-right  text-gray-400 ">
                                                             {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                             ₱
                                                             {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
@@ -767,11 +775,13 @@
                                                         </div>
                                                         <div class="p-1 col-span-3 "> </div>
                                                         <div class="p-1 col-span-2"> </div>
-                                                        <div class="p-1  col-span-3  border-l border-r text-left ">
+                                                        <div class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                             ₱
                                                             {{ number_format($expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
                                                         </div>
-                                                        <div class="col-span-2  "></div>
+                                                        <div class=" col-span-2 border-l border-r ">
+
+                                                        </div>
                                                     </div>
                                                     <div
                                                         class=" col-span-12 p-[0.5px] {{ $loop->last ? '' : 'light-bg' }} ">
@@ -791,19 +801,17 @@
                         <div
                             class="col-span-12  grid grid-cols-12 text-xs font-medium transition border-t  d-gradient  text-white      uppercase">
 
-                            <div class="col-span-2  p-4 flex items-center   ">
+                            <div class="col-span-12  p-2 flex items-center    ">
                                 CO Summary
                             </div>
-                            <div class="col-span-12  grid grid-cols-12 border-b  ">
+                            <div class="col-span-12  grid grid-cols-12 border-t ">
 
                                 <div class=" col-span-12 grid grid-cols-12 ">
-                                    <div class="p-2 flex items-center col-span-2   ">
-                                    </div>
-                                    <div class="p-2 flex items-center col-span-3 ">
 
-                                        Budget Used {{ number_format($percentage_used_co ?? 0) . '%' }}</div>
-                                    <div class="p-2 text-left col-span-2"> </div>
-                                    <div class="p-2 col-span-3 border-l ">
+                                    <div class="p-4 flex items-center col-span-6 justify-center  ">
+
+                                         Used {{ number_format($percentage_used_co ?? 0) . '%' }}</div>
+                                    <div class="p-2 col-span-3 border-l border-r">
                                         <div class="flex items-center justify-between">
 
                                             <p class="text-left">
@@ -853,24 +861,30 @@
                 </div>
 
             </div>
-            <div type="button"
-                        class="border-r border-l pl-2 bg-2 text-white  grid grid-cols-12  w-full   transition rtl:text-right  border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
-                        data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
-                        aria-controls="accordion-flush-body-1">
+            <div class="bg-2">
+                    <p class="text-white uppercase font-medium p-4 border-b">
+                         {{$record->year->title}} Summary Details
+                    </p>
+                <div
+                class="  pl-2  text-white  grid grid-cols-12  w-full   transition rtl:text-right  border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
+                aria-controls="accordion-flush-body-1">
 
-                        <div class="col-span-9 grid grid-cols-12 p-3">
-
-                            <div class="col-span-4  uppercase text-center h-full   grid grid-cols-1 ">
-                                <div>
-                                {{$record->getBugdetPercentageUse()}} %
+                <div class="col-span-9 grid grid-cols-12 p-3">
+                    <div class="col-span-4  text-center h-full justify-center flex items-center">
+                        <div class="uppercase mr-2 text-xs">
+                                    USED
 
                                 </div>
-                                <div>
-                                    Used
-
+                                <div class="flex items-center w-full">
+                                    <div class="relative w-full bg-gray-200 rounded-full h-2">
+                                        <div class="absolute left-0 top-0 bg-green-500 rounded-full h-2" style="width: {{ $record->getBudgetPercentageUse() }}%;"></div>
+                                    </div>
+                                    <span class="ml-2">{{ number_format($record->getBudgetPercentageUse(), ) }}%</span>
                                 </div>
                             </div>
-                            <div class="col-span-4  uppercase text-center h-full   grid grid-cols-1 ">
+
+                            <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
                                 <div>
                                     ₱ {{ number_format($record->getYearRemainingBudget()) }}
 
@@ -880,36 +894,37 @@
 
                                 </div>
                             </div>
-                            <div class="col-span-4  uppercase text-center h-full   grid grid-cols-1 ">
+                            <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
                                 <div>
                                     ₱ {{ number_format($record->getYearTotalSpent()) }}
 
                                 </div>
                                 <div>
-                                    Spent
+                                    Total Spent
 
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-span-3  uppercase   border-l text-sm grid grid-cols-1 p-2">
+                        <div class="col-span-3     border-l  grid grid-cols-1 p-2">
 
                             <div class=" font-medium   flex items-center justify-between  ">
-                                <div class="  flex justify-center items-center">
-                                  Total Year Budget
+                                <div class="  flex justify-center items-center ">
+                                    Total Budget
 
                                 </div>
                                 <div class=" flex justify-center items-center">
-                                     ₱ {{ number_format($record->getYearTotalBudget()) }}
+                                    ₱ {{ number_format($record->getYearTotalBudget()) }}
                                 </div>
 
                             </div>
 
                         </div>
                     </button>
-        </div>
+                </div>
+            </div>
 
 
 
-        <x-filament-actions::modals />
+                <x-filament-actions::modals />
     </div>

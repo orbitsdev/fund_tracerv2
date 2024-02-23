@@ -76,13 +76,14 @@ class ProjectYear extends Model
 
         return $remaining;
     }
-    public function getBugdetPercentageUse()
-    {
-        $total_budget = $this->getYearTotalBudget();
-        $total_spent = $this->getYearTotalSpent();
+    public function getBudgetPercentageUse()
+{
+    $total_budget = $this->getYearTotalBudget();
+    $total_spent = $this->getYearTotalSpent();
 
-        $percentage_used =  $total_budget !=0 ? ($total_budget - $total_spent) * 100 : 0;
+    $percentage_used = ($total_budget != 0) ? ($total_spent / $total_budget) * 100 : 0;
 
-        return $percentage_used;
-    }
+    return $percentage_used;
+}
+
 }
