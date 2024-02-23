@@ -343,7 +343,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ->model(Breakdown::class)
             ->modalHeading(function (array $arguments) {
                 $model = SelectedPS::find($arguments['record']);
-              
+
                 return 'Add Breakdown ' .  $model->p_s_expense->title ?? '';
             })
             ->modalWidth(MaxWidth::SevenExtraLarge);
@@ -1214,7 +1214,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             // PS
             'total_ps_breakdown',
             'remaining_budget_ps',
-        'percentage_used_ps',
+             'percentage_used_ps',
             'remaining_percentage_ps',
             //MOOE
             'total_mooe_breakdown',
