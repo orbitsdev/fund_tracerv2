@@ -50,4 +50,18 @@ class SelectedPS extends Model
     {
         return $this->morphMany(Breakdown::class, 'breakdownable');
     }
+
+
+    public function getTotalBudget()
+{
+    return $this->with('p_s_expense')->get()->sum(function ($selectedPS) {
+        return $selectedPS->p_s_expense->amount ?? 0;
+    });
+}
+     public function totalSpent(){
+       return $this->breakdowns()->get()->sum('amount');
+     }
+
+
+
 }

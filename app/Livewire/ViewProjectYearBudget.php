@@ -1176,6 +1176,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
         #total
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        
         $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
         $remaining_budget_ps = $total_ps - $total_ps_breakdown;
         $percentage_used_ps = $total_ps != 0 ? ($total_ps_breakdown / $total_ps) * 100 : 0;
