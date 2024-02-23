@@ -179,7 +179,7 @@
 
                                                                 @foreach ($expense->breakdowns as $bk => $breakdown)
                                                                     <div
-                                                                        class=" col-span-12 border-b grid grid-cols-12   ">
+                                                                        class=" col-span-12 border-b grid grid-cols-12    ">
                                                                         <div
                                                                             class=" col-span-2   px-2 flex items-center justify-start">
                                                                             <div>
@@ -710,7 +710,7 @@
 
 
                                                     @foreach ($expense->breakdowns as $bk => $breakdown)
-                                                        <div class=" col-span-12 border-b grid grid-cols-12   ">
+                                                        <div class=" col-span-12 border-b grid grid-cols-12   transition ">
                                                             <div
                                                                 class=" col-span-2   px-2 flex items-center justify-start">
                                                                 <div>
