@@ -282,6 +282,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->default(0)
                     ->label('Allocated Amount')
                     ->required()
+                    ->maxLength(10)
 
 
 
