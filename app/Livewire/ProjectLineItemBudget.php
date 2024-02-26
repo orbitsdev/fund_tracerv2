@@ -51,7 +51,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 // ...
             ])
             ->actions([
-                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('View  Details')
+                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('Monitor Expenses')
                 ->outlined()
                 // ->extraAttributes([
                 //     'style' => 'border-radius: 100px; font-size: 14px',
@@ -59,7 +59,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 // ])
                 ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 ActionGroup::make([
-                    
+
                     TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit Lib')->color('info')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
@@ -200,7 +200,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
 
                     ]),
                 ]),
-               
+
 
             ])
             ->bulkActions([
