@@ -199,3 +199,12 @@
 .cb {
   @apply border-gray-300 ;
 }
+.bcg {
+  border-color: #d1d5db ;
+}
+.tg6 {
+  color: #475569 ;
+}
+.tg7 {
+  color: #334155 ;
+}
