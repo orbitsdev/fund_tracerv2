@@ -79,7 +79,7 @@
 
 
 
-                                Users & Permissions
+                                Assigned Projects
                             </a>
                         </li>
                     </ul>
