@@ -23,6 +23,7 @@ use App\Livewire\Programs\CreateProgram;
 use App\Livewire\Projects\CreateProject;
 use App\Livewire\MOOEGroup\EditMOOEGroup;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
+use App\Livewire\Users\ListUsers;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,10 +53,14 @@ Route::middleware([
             return redirect()->route('program.index');
         // return view('dashboard');
     })->name('dashboard');
-    Route::get('/content-management', ContentManagement::class)->name('content-management');
-    Route::get('/implementing-agencies', ListImplentinAgencies::class)->name('implementing-agencies');
-    Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');
-    Route::get('/create-management', CreateManagement::class)->name('create-management');
+
+    Route::prefix('manage')->name('manage.')->group(function(){
+        Route::get('/user', ListUsers::class)->name('users');
+        Route::get('/implementing-agencies', ListImplentinAgencies::class)->name('implementing-agencies');
+        Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');
+        Route::get('/program-project', CreateManagement::class)->name('program-project');
+        Route::get('/content', ContentManagement::class)->name('content-management');
+    });
 
     Route::prefix('program')->name('program.')->group(function(){
          Route::get('/', ListPrograms::class)->name('index');
@@ -72,8 +77,8 @@ Route::middleware([
          Route::get('/line-item-budget/{record}', ProjectLineItemBudget::class)->name('line-item-budget');
          Route::get('/line-items/year/{record}', LineItemBudget::class)->name('line-items');
          Route::get('/line-items/year/{record}/view', ViewProjectYearBudget::class)->name('line-items-view');
-
     });
+
 
     Route::prefix('personal-service')->name('personal-service.')->group(function(){
          Route::get('/', ListPersonalServices::class)->name('index');

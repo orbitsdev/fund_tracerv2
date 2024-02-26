@@ -22,7 +22,8 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
-        "livewire/livewire": "^3.0"
+        "livewire/livewire": "^3.0",
+        "rawilk/filament-password-input": "^2.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.10",

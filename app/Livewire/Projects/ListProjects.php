@@ -90,12 +90,15 @@ class ListProjects extends Component implements HasForms, HasTable
                 ActionGroup::make([
                     Action::make('view')
                     ->icon('heroicon-m-eye')
+                    ->color('primary')
                     ->label('View')
                     ->url(fn (Model $record): string => route('project.view', ['record'=> $record])),
 
                     Action::make('edit')
                     ->icon('heroicon-m-pencil')
                     ->label('Edit')
+                    ->color('primary')
+
                     ->url(fn (Model $record): string => route('project.edit', ['record'=> $record])),
 
                     // Tables\Actions\EditAction::make()->label('Edit'),
