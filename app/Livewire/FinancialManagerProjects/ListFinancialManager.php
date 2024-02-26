@@ -82,6 +82,11 @@ class ListFinancialManager extends Component implements HasForms, HasTable
 
     public function render(): View
     {
-        return view('livewire.financial-manager-projects.list-financial-manager');
+
+        $projects = Project::whereHas('assigned_project', function($query) {
+            return $query->where('assigned_projectable_id', Auth::user()->id);
+
+        });
+        return view('livewire.financial-manager-projects.list-financial-manager', compact('projects'));
     }
 }

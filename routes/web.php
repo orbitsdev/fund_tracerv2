@@ -27,6 +27,7 @@ use App\Livewire\MOOEGroup\EditMOOEGroup;
 use App\Livewire\FinancialManagerDashboard;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
+use App\Livewire\ForbiddenPage;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test-page', TestPage::class);
+Route::get('/no-project-assigned.forbidden', ForbiddenPage::class)->name('financial-manager.forbidden');
 
 Route::middleware([
     'auth:sanctum',
@@ -63,10 +65,9 @@ Route::middleware([
         // return view('dashboard');
     })->name('dashboard');
 
-    Route::prefix('financial-manager')->name('financial-manager.')->group(function(){
+    Route::middleware(['no-project-assigned'])->prefix('financial-manager')->name('financial-manager.')->group(function(){
         Route::get('/dashbooard', FinancialManagerDashboard::class)->name('dashboard');
         Route::get('/projects', ListFinancialManager::class)->name('projects');
-
     });
 
     Route::middleware(['can:is-admin'])->group(function(){
