@@ -57,7 +57,7 @@ class ListUsers extends Component implements HasForms, HasTable
                         if(!empty($state)){
                             return $state->project->title;
                         }else{
-                            return '';
+                            return 'No Project Assigned';
                         }
                     })
                     ->label(' Project')
