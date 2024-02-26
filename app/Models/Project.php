@@ -26,4 +26,12 @@ class Project extends Model
         return $this->hasMany(ProjectYear::class);
     }
 
+    public function assigned_project(){
+        return $this->hasOne(AssignedProject::class);
+    }
+
+
+
+
+
 }

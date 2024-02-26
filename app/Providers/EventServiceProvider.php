@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Models\PSGroup;
 use App\Models\MOOEGroup;
 use App\Models\ProjectYear;
+use App\Observers\UserObserver;
 use App\Observers\PSGroupObserver;
 use App\Observers\MOOEGroupObserver;
 use Illuminate\Support\Facades\Event;
@@ -31,7 +33,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        User::observe(UserObserver::class);
         PSGroup::observe(PSGroupObserver::class);
         MOOEGroup::observe(MOOEGroupObserver::class);
         ProjectYear::observe(ProjectYearObserver::class);

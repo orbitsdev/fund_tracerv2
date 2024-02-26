@@ -158,7 +158,7 @@ class ListUsers extends Component implements HasForms, HasTable
                                     ->relationship(
                                         name: 'project',
                                         titleAttribute: 'title',
-                                        // modifyQueryUsing: fn (Builder $query) => $query->withTrashed(),
+                                         modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('assigned_project'),
                                     )
                                     ->preload()
                                     ->searchable()
@@ -257,7 +257,7 @@ class ListUsers extends Component implements HasForms, HasTable
 
 
 
-            // ->modifyQueryUsing(fn (Builder $query) => $query->where('id', '!=', auth()->user()->id))
+             ->modifyQueryUsing(fn (Builder $query) => $query->where('id', '!=', auth()->user()->id)->latest())
             ;
     }
 
