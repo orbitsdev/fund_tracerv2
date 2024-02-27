@@ -70,7 +70,7 @@
         <div x-cloak id="accordion-flush" data-accordion="collapse"
             data-active-classes="  bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
             data-inactive-classes="text-gray-500 dark:text-gray-400">
-            <div x-data="{ open: false }">
+            <div x-data="{ open: true }">
                 <h2 id="accordion-flush-heading-1">
                     <button x-on:click="open = ! open" type="button"
                         class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
@@ -156,6 +156,7 @@
 
                                                                     </span>
                                                                     {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
+                                                                    {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'ps']) }}
 
                                                                 </div>
 
@@ -424,6 +425,7 @@
 
                                                                     </span>
                                                                     {{ ($this->addMOOEBreakDown)(['record' => $expense->id]) }}
+                                                                    {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'mooe']) }}
 
                                                                 </div>
 
@@ -689,6 +691,7 @@
 
                                                         </span>
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
+                                                        {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'co']) }}
 
                                                     </div>
 

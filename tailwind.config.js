@@ -1,5 +1,6 @@
 import preset from './vendor/filament/support/tailwind.config.preset'
 
+const colors = require('tailwindcss/colors')
 export default {
     presets: [preset],
     content: [
@@ -12,5 +13,17 @@ export default {
         './resources/views/**/*.blade.php',
         './vendor/filament/**/*.blade.php',
     ],
-    
+
+
+    theme: {
+        extend: {
+          colors: {
+
+            gray: colors.neutral,
+          }
+        }
+
+    }
+
+
 }

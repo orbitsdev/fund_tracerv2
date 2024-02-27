@@ -23,7 +23,8 @@
         "laravel/socialite": "^5.12",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
-        "rawilk/filament-password-input": "^2.0"
+        "rawilk/filament-password-input": "^2.0",
+        "spatie/laravel-pdf": "^1.2"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.10",

@@ -1,14 +1,15 @@
 <?php
 
-use App\Http\Controllers\SocialiteController;
 use App\Livewire\ListMOOE;
 use App\Livewire\TestPage;
 use App\Livewire\Particular;
 use App\Livewire\ViewProject;
+use App\Livewire\ForbiddenPage;
 use App\Livewire\LineItemBudget;
 use App\Livewire\ListParticulars;
 use App\Livewire\Users\ListUsers;
 use App\Livewire\CreateManagement;
+
 use App\Livewire\ContentManagement;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\PSGroup\EditPsGroup;
@@ -25,11 +26,12 @@ use App\Livewire\ViewProjectYearBudget;
 use App\Livewire\Programs\CreateProgram;
 use App\Livewire\Projects\CreateProject;
 use App\Livewire\MOOEGroup\EditMOOEGroup;
+use App\Http\Controllers\ReportController;
 use App\Livewire\FinancialManagerDashboard;
+use function Spatie\LaravelPdf\Support\pdf;
+use App\Http\Controllers\SocialiteController;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
-use App\Livewire\ForbiddenPage;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,6 +42,8 @@ use App\Livewire\ForbiddenPage;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
 
 Route::get('/', function () {
     return redirect()->route('login');
@@ -54,6 +58,49 @@ Route::get('/no-project-assigned.forbidden', ForbiddenPage::class)->name
 
 Route::get('/auth/google/redirect',[ SocialiteController::class,'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback',[ SocialiteController::class,'callback'])->name('google.callback');
+
+
+
+Route::prefix('reports')->name('report.')->group(function () {
+        Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
+});
+
+
+
+Route::get('/test', function(){
+    return view('report.breakdown')
+        ->name('invoice-2023-04-10.pdf'); // Ensure this is a string
+})->name('test');
+
+// Route::get('/test', function(){
+
+//     //     return view('report.breakdown',
+//     // [
+//     //     'invoiceNumber' => '1234',
+//     //         'customerName' => 'Grumpy Cat',
+//     // ]);
+
+//     return pdf()
+//     ->view('report.breakdown')
+//     ->name('invoice-2023-04-10.pdf')
+//     ->download();
+
+//     // return pdf()->view('report.breakdown', [
+//     //     'invoiceNumber' => '1234',
+//     //     'customerName' => 'Grumpy Cat',
+//     // ])
+//     // ->name('invoice-2023-04-10.pdf')
+//     // ->download();
+//     // return pdf('report.breakdown', [
+//     //     'invoiceNumber' => '1234',
+//     //     'customerName' => 'Grumpy Cat',
+//     // ]);
+// })->name('test');
+
+
+Route::get('/a', function(){
+    return view('report.test');
+})->name('a');
 
 
 Route::middleware([

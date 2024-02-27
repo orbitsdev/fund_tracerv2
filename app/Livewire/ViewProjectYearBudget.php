@@ -50,6 +50,32 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
     public ProjectYear $record;
 
+
+    public function downloadBreakdownAction(): Action
+    {
+        return Action::make('downloadBreakDown')
+            ->label('Download')
+            ->color('info')
+            ->button()
+            ->icon('heroicon-m-arrow-down-tray')
+            ->outlined()
+            ->size(ActionSize::ExtraSmall)
+            // ->iconButton()
+            ->extraAttributes([
+
+                'style' => 'outline: none;
+                 box-shadow: none ;
+                  font-weight: normal;
+                  color: #9ca3af;
+                  font-size: 10px;
+                  ',
+
+            ])
+            ->url(fn (array $arguments): string => route('report.breakdown.download', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
+             ->openUrlInNewTab()
+
+            ;
+    }
     public function viewAttachmentAction(): Action
     {
         return Action::make('ViewAttachment')
@@ -59,6 +85,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                 $label = 'Attachment' . ($count > 0 ? '(' . $count . ')' : '');
                 return $label;
             })
+
             ->color('info')
             // ->action(function (array $arguments) {
             //     return  $record = BreakDown::find($arguments['record']);
@@ -1176,7 +1203,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
         #total
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        
+
         $total_ps_breakdown = SelectedPS::where('project_year_id', $this->record->id)->with('breakdowns')->get()->flatMap->breakdowns->sum('amount');
         $remaining_budget_ps = $total_ps - $total_ps_breakdown;
         $percentage_used_ps = $total_ps != 0 ? ($total_ps_breakdown / $total_ps) * 100 : 0;
