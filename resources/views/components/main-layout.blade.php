@@ -64,7 +64,7 @@
                     @can('is-financial-manager')
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
                         <li>
-                            <div class="text-xs  leading-6 text-[#72def1]">Access</div>
+                            <div class="text-xs  leading-6 text-[#72def1]">Access </div>
                             <a href="{{ route('financial-manager.projects') }}"
                                 class="
                 {{ request()->routeIs('financial-manager.projects') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
@@ -90,7 +90,7 @@
 
                     <ul role="list" class="flex flex-1 flex-col gap-y-7">
                         <li>
-                            <div class="text-xs  leading-6 text-[#72def1]">Access</div>
+                            <div class="text-xs  leading-6 text-[#72def1]">Access Management</div>
                             <a href="{{ route('manage.users') }}"
                                 class="
                 {{ request()->routeIs('manage.users') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
