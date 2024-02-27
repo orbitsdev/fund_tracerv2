@@ -70,7 +70,7 @@
         <div x-cloak id="accordion-flush" data-accordion="collapse"
             data-active-classes="  bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
             data-inactive-classes="text-gray-500 dark:text-gray-400">
-            <div x-data="{ open: true }">
+            <div x-data="{ open: false }">
                 <h2 id="accordion-flush-heading-1">
                     <button x-on:click="open = ! open" type="button"
                         class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
@@ -156,7 +156,20 @@
 
                                                                     </span>
                                                                     {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
-                                                                    {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'ps']) }}
+                                                                    @if ($expense->breakdowns->count())
+                                                                        <x-filament-actions::group :actions="[
+                                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']), 
+                                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'ps']), 
+                                                                        ]" 
+                                                                          
+                                                                          color="gray"
+                                                                          size="xs"
+                                                                          tooltip="More actions"
+                                                                          
+                                                                        />
+                                                                   
+
+                                                                    @endif
 
                                                                 </div>
 
@@ -425,7 +438,20 @@
 
                                                                     </span>
                                                                     {{ ($this->addMOOEBreakDown)(['record' => $expense->id]) }}
-                                                                    {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'mooe']) }}
+
+                                                                    @if ($expense->breakdowns->count())
+                                                                    <x-filament-actions::group :actions="[
+                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']) 
+                                                                    ]" 
+                                                                      
+                                                                      color="gray"
+                                                                      size="xs"
+                                                                      tooltip="More actions"
+                                                                      
+                                                                    />
+                                                                @endif
+
+                                                             
 
                                                                 </div>
 
@@ -526,8 +552,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div
-                                                                class=" col-span-12 p-[0.5px] light-bg{{ $loop->last ? '' : '' }} ">
-                                                            </div>
+                                                                    class=" col-span-12 p-[0.5px] light-bg{{ $loop->last ? '' : '' }} ">
+                                                                </div>
                                                             @endforeach
                                                         </div>
                                                     </div>
@@ -558,7 +584,7 @@
                                     </div>
                                     <div class="p-2 flex items-center col-span-3 ">
 
-                                         Used {{ number_format($percentage_used_mooe ?? 0) . '%' }}</div>
+                                        Used {{ number_format($percentage_used_mooe ?? 0) . '%' }}</div>
                                     <div class="p-2 text-left col-span-2"> </div>
                                     <div class="p-2 col-span-3 border-l border-r">
                                         <div class="flex items-center justify-between">
@@ -615,34 +641,34 @@
         <div x-data="{ open: false }">
             <h2 id="accordion-flush-heading-3">
                 <button x-on:click="open = ! open" type="button"
-                class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
-                data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
-                aria-controls="accordion-flush-body-1">
+                    class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                    data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
+                    aria-controls="accordion-flush-body-1">
 
-                <div class="col-span-9 flex items-center h-full  p-2 ">
-                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 mr-4" aria-hidden="true"
-                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2" d="M9 5 5 1 1 5" />
-                    </svg>
-                    <p>   III. Capital Outlay</p>
-
-                </div>
-
-                <div class="col-span-3   uppercase   border-l text-sm grid grid-cols-1 p-2">
-
-                    <div class=" font-medium   flex items-center justify-between  ">
-                        <div class="  flex justify-center items-center">
-                            Budget
-
-                        </div>
-                        <div class=" flex justify-center items-center">
-                            ₱ {{ number_format($total_co) }}
-                        </div>
+                    <div class="col-span-9 flex items-center h-full  p-2 ">
+                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 mr-4" aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="M9 5 5 1 1 5" />
+                        </svg>
+                        <p> III. Capital Outlay</p>
 
                     </div>
-                </div>
-            </button>
+
+                    <div class="col-span-3   uppercase   border-l text-sm grid grid-cols-1 p-2">
+
+                        <div class=" font-medium   flex items-center justify-between  ">
+                            <div class="  flex justify-center items-center">
+                                Budget
+
+                            </div>
+                            <div class=" flex justify-center items-center">
+                                ₱ {{ number_format($total_co) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </button>
 
                 </button>
             </h2>
@@ -691,7 +717,7 @@
 
                                                         </span>
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
-                                                        {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type'=> 'co']) }}
+                                                        {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']) }}
 
                                                     </div>
 
@@ -713,7 +739,8 @@
 
 
                                                     @foreach ($expense->breakdowns as $bk => $breakdown)
-                                                        <div class=" col-span-12 border-b grid grid-cols-12   transition ">
+                                                        <div
+                                                            class=" col-span-12 border-b grid grid-cols-12   transition ">
                                                             <div
                                                                 class=" col-span-2   px-2 flex items-center justify-start">
                                                                 <div>
@@ -813,7 +840,7 @@
 
                                     <div class="p-4 flex items-center col-span-6 justify-center  ">
 
-                                         Used {{ number_format($percentage_used_co ?? 0) . '%' }}</div>
+                                        Used {{ number_format($percentage_used_co ?? 0) . '%' }}</div>
                                     <div class="p-2 col-span-3 border-l border-r">
                                         <div class="flex items-center justify-between">
 
@@ -865,69 +892,69 @@
 
             </div>
             <div class="bg-2">
-                    <p class="text-white uppercase font-medium p-4 border-b">
-                         {{$record->year->title}} Summary Details
-                    </p>
-                <div
-                class="  pl-2  text-white  grid grid-cols-12  w-full   transition rtl:text-right  border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
-                data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
-                aria-controls="accordion-flush-body-1">
+                <p class="text-white uppercase font-medium p-4 border-b">
+                    {{ $record->year->title }} Summary Details
+                </p>
+                <div class="  pl-2  text-white  grid grid-cols-12  w-full   transition rtl:text-right  border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
+                    data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
+                    aria-controls="accordion-flush-body-1">
 
-                <div class="col-span-9 grid grid-cols-12 p-3">
-                    <div class="col-span-4  text-center h-full justify-center flex items-center">
-                        <div class="uppercase mr-2 text-xs">
-                                    USED
+                    <div class="col-span-9 grid grid-cols-12 p-3">
+                        <div class="col-span-4  text-center h-full justify-center flex items-center">
+                            <div class="uppercase mr-2 text-xs">
+                                USED
 
-                                </div>
-                                <div class="flex items-center w-full">
-                                    <div class="relative w-full bg-gray-200 rounded-full h-2">
-                                        <div class="absolute left-0 top-0 bg-green-500 rounded-full h-2" style="width: {{ $record->getBudgetPercentageUse() }}%;"></div>
-                                    </div>
-                                    <span class="ml-2">{{ number_format($record->getBudgetPercentageUse(), ) }}%</span>
-                                </div>
                             </div>
-
-                            <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
-                                <div>
-                                    ₱ {{ number_format($record->getYearRemainingBudget()) }}
-
+                            <div class="flex items-center w-full">
+                                <div class="relative w-full bg-gray-200 rounded-full h-2">
+                                    <div class="absolute left-0 top-0 bg-green-500 rounded-full h-2"
+                                        style="width: {{ $record->getBudgetPercentageUse() }}%;"></div>
                                 </div>
-                                <div>
-                                    Remaining
-
-                                </div>
-                            </div>
-                            <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
-                                <div>
-                                    ₱ {{ number_format($record->getYearTotalSpent()) }}
-
-                                </div>
-                                <div>
-                                    Total Spent
-
-                                </div>
+                                <span class="ml-2">{{ number_format($record->getBudgetPercentageUse()) }}%</span>
                             </div>
                         </div>
 
-                        <div class="col-span-3     border-l  grid grid-cols-1 p-2">
+                        <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
+                            <div>
+                                ₱ {{ number_format($record->getYearRemainingBudget()) }}
 
-                            <div class=" font-medium   flex items-center justify-between  ">
-                                <div class="  flex justify-center items-center ">
-                                    Total Budget
+                            </div>
+                            <div>
+                                Remaining
 
-                                </div>
-                                <div class=" flex justify-center items-center">
-                                    ₱ {{ number_format($record->getYearTotalBudget()) }}
-                                </div>
+                            </div>
+                        </div>
+                        <div class="col-span-4   text-center h-full   grid grid-cols-1 ">
+                            <div>
+                                ₱ {{ number_format($record->getYearTotalSpent()) }}
 
+                            </div>
+                            <div>
+                                Total Spent
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-span-3     border-l  grid grid-cols-1 p-2" >
+
+                        <div class=" font-medium   flex items-center justify-between  ">
+                            <div class="  flex justify-center items-center ">
+                                Total Budget
+
+                            </div>
+                            <div class=" flex justify-center items-center">
+                                ₱ {{ number_format($record->getYearTotalBudget()) }}
                             </div>
 
                         </div>
+
+                    </div>
                     </button>
                 </div>
             </div>
+           
 
-
-
-                <x-filament-actions::modals />
-    </div>
+            <x-filament-actions::modals />
+           
+        </div>

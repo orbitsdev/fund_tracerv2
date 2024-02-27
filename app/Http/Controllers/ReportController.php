@@ -41,10 +41,12 @@ class ReportController extends Controller
 
         // dd($record,$type);
 
-        return view('report.breakdown', [
+        return pdf('report.pdf.breakdown', [
             'data' => $data,
             'type'=> $type,
             'selected'=> $selected,
         ]);
     }
+
+    
 }

@@ -17,17 +17,21 @@ class SelectedPS extends Model
 {
     use HasFactory;
 
-    public function p_s_group(){
+    public function p_s_group()
+    {
         return $this->belongsTo(PSGroup::class);
     }
-    public function p_s_expense(){
+    public function p_s_expense()
+    {
         return $this->belongsTo(PSExpense::class);
     }
-    public function project_year(){
+    public function project_year()
+    {
         return $this->belongsTo(ProjectYear::class);
     }
 
-    public function s_p_s_breakdowns(){
+    public function s_p_s_breakdowns()
+    {
         return $this->hasMany(SPSBreakdown::class);
     }
 
@@ -53,15 +57,42 @@ class SelectedPS extends Model
 
 
     public function getTotalBudget()
-{
-    return $this->with('p_s_expense')->get()->sum(function ($selectedPS) {
-        return $selectedPS->p_s_expense->amount ?? 0;
-    });
-}
-     public function totalSpent(){
-       return $this->breakdowns()->get()->sum('amount');
-     }
+    {
+        return $this->p_s_expense->amount;
+    }
+    public function totalSpent()
+    {
+        return $this->breakdowns()->sum('amount');
+    }
 
+    public function totalPercentageUse()
+    {
+        $budget = $this->p_s_expense->amount;
+        $totalExpense = $this->totalSpent();
 
+        // Calculate the percentage used
+        $totalPercentage = $budget != 0 ? ($totalExpense / $budget) * 100 : 0;
+        return $totalPercentage;
+    }
 
+    public function remainingBudget()
+    {
+        $budget = $this->p_s_expense->amount;
+        $totalExpense = $this->totalSpent();
+
+        // Calculate the remaining budget
+        $remainingBudget = $budget - $totalExpense;
+        return $remainingBudget;
+    }
+
+    public function remainingPercentage()
+    {
+        $budget = $this->p_s_expense->amount;
+        $totalExpense = $this->totalSpent();
+        $remainingBudget = $budget - $totalExpense;
+
+        // Calculate the remaining percentage
+        $remainingPercentage = $budget != 0 ? ($remainingBudget / $budget) * 100 : 0;
+        return $remainingPercentage;
+    }
 }

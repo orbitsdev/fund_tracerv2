@@ -51,12 +51,38 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public ProjectYear $record;
 
 
+    public function redirectToPrintPageAction(): Action
+    {
+        return Action::make('downloadBreakDown')
+            ->label('Print')
+            ->color('gray')
+            // ->button()
+            ->icon('heroicon-m-printer')
+            ->outlined()
+            ->size(ActionSize::ExtraSmall)
+            // ->iconButton()
+            ->extraAttributes([
+
+                'style' => 'outline: none;
+                 box-shadow: none ;
+                  font-weight: normal;
+                  color: #9ca3af;
+                  font-size: 10px;
+                  ',
+
+            ])
+            ->url(fn (array $arguments): string => route('report.breakdown.redirectoPrintPage', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
+             ->openUrlInNewTab()
+
+            ;
+    }
+
     public function downloadBreakdownAction(): Action
     {
         return Action::make('downloadBreakDown')
             ->label('Download')
-            ->color('info')
-            ->button()
+            ->color('gray')
+            // ->button()
             ->icon('heroicon-m-arrow-down-tray')
             ->outlined()
             ->size(ActionSize::ExtraSmall)

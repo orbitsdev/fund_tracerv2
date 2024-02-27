@@ -32,6 +32,8 @@ use function Spatie\LaravelPdf\Support\pdf;
 use App\Http\Controllers\SocialiteController;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
+use App\Livewire\Reports\Breakdown;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -63,6 +65,7 @@ Route::get('/auth/google/callback',[ SocialiteController::class,'callback'])->na
 
 Route::prefix('reports')->name('report.')->group(function () {
         Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
+        Route::get('/breakdown/print/{record}/{type}', Breakdown::class)->name('breakdown.redirectoPrintPage');
 });
 
 
