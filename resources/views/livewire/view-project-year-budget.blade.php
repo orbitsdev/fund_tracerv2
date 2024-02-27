@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg shadow-md p-4">
+<div class="bg-white rounded-lg p-12 py-8">
 
 
 
@@ -22,7 +22,7 @@
     {{-- {{$record}} --}}
 
     <x-back-button :url="route('project.line-item-budget', ['record' => $record->project_id])">Back</x-back-button>
-    <div>
+    <div class="">
         <div class="text-gray-700 flex items-start justify-center">
             <div class="flex items-center px-4 mt-6   justify-end">
                 <img src="{{ asset('images/dost.png') }}" alt="" class="h-12 w-12">
@@ -441,7 +441,8 @@
 
                                                                     @if ($expense->breakdowns->count())
                                                                     <x-filament-actions::group :actions="[
-                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']) 
+                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']), 
+                                                                      ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'mooe']), 
                                                                     ]" 
                                                                       
                                                                       color="gray"
@@ -717,7 +718,19 @@
 
                                                         </span>
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
-                                                        {{ ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']) }}
+                                                        @if ($expense->breakdowns->count())
+                                                        <x-filament-actions::group :actions="[
+                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']), 
+                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'co']), 
+                                                        ]" 
+                                                          
+                                                          color="gray"
+                                                          size="xs"
+                                                          tooltip="More actions"
+                                                          
+                                                        />
+                                                    @endif
+                                                      
 
                                                     </div>
 

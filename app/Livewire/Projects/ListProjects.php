@@ -37,6 +37,7 @@ class ListProjects extends Component implements HasForms, HasTable
                 // ->badge()
                 // ->color('primary'),
 
+                ViewColumn::make('')->view('tables.columns.project-total-budget')->label('Total Budget'),
             TextColumn::make('title')
                 ->searchable()->label('Project Title')->wrap(),
             // TextColumn::make('allocated_fund')
@@ -47,7 +48,6 @@ class ListProjects extends Component implements HasForms, HasTable
 
             //     ->prefix('₱ ')
             //     ->sortable(),
-            ViewColumn::make('')->view('tables.columns.project-total-budget')->label('Total Budget'),
 
             TextColumn::make('start_date')
                 ->date()

@@ -224,8 +224,8 @@
                 </div>
             </div>
 
-            <main class="py-10">
-                <div class="max-w-8xl  m-auto px-8 ">
+            <main class="py-10 bg-gray-100 min-h-screen">
+                <div class="max-w-7xl  m-auto  ">
                     {{ $slot }}
                     <!-- Your content -->
                 </div>

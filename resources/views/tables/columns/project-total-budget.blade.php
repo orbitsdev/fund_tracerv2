@@ -22,7 +22,7 @@
     // }
 
    @endphp
-   <p class=" p-1 px-2  bg-[#0490b3c7] rounded-full text-sm text-white ">
+   <p class=" px-2 p ">
        {{ number_format($project_total_budget)}}
 
    </p>

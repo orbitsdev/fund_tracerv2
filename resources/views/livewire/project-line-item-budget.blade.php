@@ -1,51 +1,50 @@
-<div>
+<div class="bg-white ">
+  <div class="p-10">
+
     <x-create-management-layout>
-            {{-- {{$record}} --}}
-        <x-back-button :url="route('project.index')" >
-            Back
-        </x-bacl-button>
-    {{-- {{$record}} --}}
-    <div class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-      <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
-        <div class="ml-4 mt-4">
-          <h3 class="text-base font-semibold leading-6 text-gray-900">Line Item Budget</h3>
-          <p class="mt-1 text-sm text-gray-500">This section provides details about the Line Item Budget. It outlines specific expenditures and allocations.</p>
+      {{-- {{$record}} --}}
+      <x-back-button :url="route('project.index')" >
+        Back
+      </x-bacl-button>
+      {{-- {{$record}} --}}
+      {{-- <div class=" bg-white px-4 py-5 sm:px-6">
+        <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
+          <div class="ml-4 mt-4">
+            <h3 class="text-base font-semibold leading-6 text-gray-900">Line Item Budget</h3>
+            <p class="mt-1 text-sm text-gray-500">This section provides details about the Line Item Budget. It outlines specific expenditures and allocations.</p>
+          </div>
+          
         </div>
-       
+      </div> --}}
+      <div class="flex justify-end mt-6">
+        {{$this->addAction}}
       </div>
-    </div>
-    <div class="border-b border-gray-200 mt-6"></div>
-    <div class="flex justify-end mt-6">
-       {{$this->addAction}}
-    </div>
-
-    <div class="mt-6">
+      
+      <div class="mt-6">
         {{ $this->table }}
-    </div>
-
-
-    <div>
-
-        <div class="mt-4 pr-8 flex justify-between text-2xl mb-8   p-2 text-gray-700 rounded">
-            <div>
-
-            </div>
-            <div class="flex font-medium">
-
-                <p class=" ">
-                    Total Project Budget :
-                </p>
-                <p class="w-[200px] text-end mr-6">
-                    {{ number_format($project_total_budget) }}
-                </p>
-            </div>
-        </div>
-
-    </div>
-
-
-
-</x-create-management-layout>
+      </div>
+      
+      
+    
+      </div>
+      
+      
+      
+      
+    </x-create-management-layout>
+    <div class="mt-4 px-8 py-4 bg-primary-600 text-white rounded-lg">
+      <div class="flex justify-between items-center">
+          <div>
+              <!-- Content here if needed -->
+          </div>
+          <div class="flex items-center">
+              <p class="text-lg font-medium mr-4">Total Project Budget:</p>
+              <p class="text-lg font-medium text-right">{{ number_format($project_total_budget) }}</p>
+          </div>
+      </div>
+  </div>
+  
+  </div>
 
     {{-- <div>
         @forelse ($project_years as $project_year)

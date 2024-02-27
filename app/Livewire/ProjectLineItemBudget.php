@@ -51,7 +51,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 // ...
             ])
             ->actions([
-                TAction::make('monitor')->icon('heroicon-m-document-magnifying-glass')->button()->label('Monitor Expenses')
+                TAction::make('monitor')->icon('heroicon-m-cursor-arrow-rays')->button()->label('Monitor Budget')
                 ->outlined()
                 // ->extraAttributes([
                 //     'style' => 'border-radius: 100px; font-size: 14px',

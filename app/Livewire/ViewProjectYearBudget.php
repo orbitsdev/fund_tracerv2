@@ -53,7 +53,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
     public function redirectToPrintPageAction(): Action
     {
-        return Action::make('downloadBreakDown')
+        return Action::make('print')
             ->label('Print')
             ->color('gray')
             // ->button()
