@@ -16,7 +16,7 @@
             <x-authentication-card-logo />
             <div class="flex items-center justify-center mt-6">
 
-                <p class="poppins-regular  uppercase  text-2xl font-bold leading-9 tg6 tracking-tight ">Sign in to your account</p>
+                <p class="poppins-regular  uppercase  text-2xl font-bold leading-9 tg6 tracking-tight ">FUND TRACER</p>
 
               </div>
             @csrf

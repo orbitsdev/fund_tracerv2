@@ -15,7 +15,7 @@
         "filament/infolists": "^3.2",
         "filament/notifications": "^3.2",
         "filament/tables": "^3.2",
-        "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.8",
         "koenhendriks/laravel-str-acronym": "^1.0",
         "laravel/framework": "^10.10",
         "laravel/jetstream": "^4.2",

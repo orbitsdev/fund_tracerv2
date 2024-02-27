@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -72,5 +73,28 @@ class User extends Authenticatable
     }
     public function is_financial(): bool{
         return $this->role == 'Financial Manager';
+    }
+
+    public function getUserImage(){
+
+        switch ($this->account_type) {
+            case 'Ordinary':
+                if(!empty($this->profile_photo_path)){
+                    return asset('images/sksu.png');
+                }else{
+
+                    Storage::disk('public')->url($this->profile_photo_path);
+                }
+              //code block
+              break;
+            case 'Google':
+
+                return $this->google_profile ?? '';
+              //code block;
+              break;
+
+            default:
+              //code block
+          }
     }
 }

@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('last_name')->nullable();
             $table->string('role')->nullable();
             $table->string('google_id')->nullable();
+            $table->string('provider')->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('provider_token')->nullable();
             $table->string('account_type')->nullable()->default('Ordinary');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
