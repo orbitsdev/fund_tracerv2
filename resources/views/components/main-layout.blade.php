@@ -51,14 +51,12 @@
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col custom-nav">
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             <div class="flex grow flex-col gap-y-5 overflow-y-auto   px-6 pb-4">
-                <div class="flex h-16 shrink-0 items-center">
-                    <img class="h-8 w-auto mr-4" src="{{ asset('images/dost.png') }}" alt="Your Company">
-                    <img class="h-8 w-auto mr-4" src="{{ asset('images/sksu.png') }}" alt="Your Company">
-                    <p class="text-lg text-white">
-                        Fund Tracer
-
-                    </p>
+                <div class="flex items-center justify-center h-16  text-white">
+                    <img class="h-10 w-auto mr-4" src="{{ asset('images/dost.png') }}" alt="DOST Logo">
+                    <img class="h-10 w-auto mr-4" src="{{ asset('images/sksu.png') }}" alt="SKSU Logo">
+                    <p class="text-lg font-semibold tex-white">Fund Tracer</p>
                 </div>
+                
                 <nav class="flex flex-1 flex-col">
 
                     @can('is-financial-manager')
@@ -178,13 +176,10 @@
                  ">
 
 
-
-
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Zm0 3h.008v.008h-.008v-.008Z" />
-                                        </svg>
+                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
+                  </svg>
+                  
 
 
 

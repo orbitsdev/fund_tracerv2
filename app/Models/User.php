@@ -75,26 +75,23 @@ class User extends Authenticatable
         return $this->role == 'Financial Manager';
     }
 
-    public function getUserImage(){
-
+    public function getUserImage()
+    {
         switch ($this->account_type) {
             case 'Ordinary':
-                if(!empty($this->profile_photo_path)){
+                if (!empty($this->profile_photo_path)) {
+                    return asset('storage/' . $this->profile_photo_path);
+                } else {
                     return asset('images/sksu.png');
-                }else{
-
-                    Storage::disk('public')->url($this->profile_photo_path);
                 }
-              //code block
-              break;
+                break;
             case 'Google':
-
                 return $this->google_profile ?? '';
-              //code block;
-              break;
-
+                break;
             default:
-              //code block
-          }
+                return asset('images/sksu.png');
+                break;
+        }
     }
+    
 }
