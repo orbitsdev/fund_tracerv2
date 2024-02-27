@@ -60,13 +60,13 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 ActionGroup::make([
 
-                    TAction::make('edit')->icon('heroicon-m-pencil')->label('Edit Lib')->color('info')
+                    TAction::make('edit')->icon('heroicon-m-pencil-square')->label('Edit Lib')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
                     ])
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
-                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy Lib')->color('warning')
+                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy Lib')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])

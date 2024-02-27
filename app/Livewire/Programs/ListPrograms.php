@@ -82,11 +82,11 @@ class ListPrograms extends Component implements HasForms, HasTable
 
 
 
-                TextColumn::make('total_budget')
-                    ->numeric()
-                    ->summarize([
-                        Sum::make()->label('Total')
-                    ]),
+                // TextColumn::make('total_budget')
+                //     ->numeric()
+                //     ->summarize([
+                //         Sum::make()->label('Total')
+                //     ]),
 
 
 
@@ -104,12 +104,15 @@ class ListPrograms extends Component implements HasForms, HasTable
             ])
             ->actions([
                 ActionGroup::make([
+
                     Action::make('view')
+                    ->color('primary')
                     ->icon('heroicon-m-eye')
                     ->label('View Program')
                     ->url(fn (Model $record): string => route('program.view', ['record'=> $record])),
     
                     Action::make('edit')
+                    ->color('primary')
                     ->icon('heroicon-m-pencil')
                     ->label('Edit')
                     ->url(fn (Model $record): string => route('program.edit', ['record'=> $record])),

@@ -136,9 +136,9 @@
                             <ul role="list" class="-mx-2 space-y-1">
 
                                 <li>
-                                    <a href="{{ route('manage.program-project') }}"
+                                    <a href="{{ route('manage.content-management') }}"
                                         class="
-                  {{ request()->routeIs('manage.program-project') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                {{ request()->routeIs('manage.content-management') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                  ">
 
 

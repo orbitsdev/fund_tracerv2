@@ -32,7 +32,7 @@
       
       
     </x-create-management-layout>
-    <div class="mt-4 px-8 py-4 bg-primary-600 text-white rounded-lg">
+    <div class="mt-4 px-8 py-4 d-gradient text-white rounded-lg">
       <div class="flex justify-between items-center">
           <div>
               <!-- Content here if needed -->
