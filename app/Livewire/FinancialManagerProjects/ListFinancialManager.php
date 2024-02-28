@@ -13,12 +13,34 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
+use Illuminate\Support\Carbon;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
+use Filament\Actions\Action;
 
-class ListFinancialManager extends Component implements HasForms, HasTable
+class ListFinancialManager extends Component implements HasForms, HasTable, HasActions
 {
     use InteractsWithForms;
     use InteractsWithTable;
+    use InteractsWithActions;
 
+
+    public function assignedProjectsAction(): Action
+    {
+        return Action::make('assignedProjects')
+            ->label('Manage')
+            ->url(fn () => route('financial-manager.assigned.projects'))
+            ->icon('heroicon-m-paper-clip')
+            // ->extraAttributes([
+            //     'style' => 'outline: none;
+            //      box-shadow: none ;
+            //      font-size: 10px;
+            //      color: #9ca3af;
+            //  ',
+            // ])
+            
+            ;
+    }
     public function table(Table $table): Table
     {
         return $table
@@ -74,19 +96,17 @@ class ListFinancialManager extends Component implements HasForms, HasTable
                     //
                 ]),
             ])
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('assigned_project', function($query){
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereHas('assigned_project', function ($query) {
                 $query->where('assigned_projectable_id', Auth::user()->id);
-            }))
-            ;
+            }));
     }
 
     public function render(): View
     {
-
-        $projects = Project::whereHas('assigned_project', function($query) {
+        $projects = Project::whereHas('assigned_project', function ($query) {
             return $query->where('assigned_projectable_id', Auth::user()->id);
+        })->get();
 
-        });
         return view('livewire.financial-manager-projects.list-financial-manager', compact('projects'));
     }
 }

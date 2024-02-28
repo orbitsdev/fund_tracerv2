@@ -18,14 +18,16 @@ class EnsureFinacialManagerHasAssignedProject
     {
 
         $user = Auth::user();
+
         if ($user && $user->is_financial()) {
-            if ($user->assigned_project()->count()) {
+            if ($user->assigned_project()->exists()) {
+                return $next($request);
+            } else {
                 return redirect()->route('financial-manager.forbidden');
             }
         }
 
         return $next($request);
-
 
     }
 }

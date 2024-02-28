@@ -34,6 +34,7 @@ use function Spatie\LaravelPdf\Support\pdf;
 use App\Http\Controllers\SocialiteController;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
+use App\Livewire\Project\ListAssignedProjects;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,10 +94,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
 
         if(Auth::user()->is_admin()){
-
             return redirect()->route('program.index');
         }else{
-            return redirect()->route('financial-manager.dashboard');
+            return redirect()->route('financial-manager.projects');
         }
         // return view('dashboard');
     })->name('dashboard');
@@ -104,6 +104,7 @@ Route::middleware([
     Route::middleware(['no-project-assigned'])->prefix('financial-manager')->name('financial-manager.')->group(function(){
         Route::get('/dashbooard', FinancialManagerDashboard::class)->name('dashboard');
         Route::get('/projects', ListFinancialManager::class)->name('projects');
+        Route::get('/assigned/projects', ListAssignedProjects::class)->name('assigned.projects');
     });
 
     Route::middleware(['can:is-admin'])->group(function(){

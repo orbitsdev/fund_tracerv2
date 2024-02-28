@@ -29,8 +29,13 @@ class AuthServiceProvider extends ServiceProvider
 
             return Auth::user()->role === 'Admin';
          });
+
         Gate::define('is-financial-manager', function () {
             return Auth::user()->role === 'Financial Manager';
+         });
+        Gate::define('admin-and-has-project-financial-manager', function () {
+            $user = Auth::user();
+            return ($user->role === 'Admin'|| $user->assigned_project()->exists());
          });
 
     }
