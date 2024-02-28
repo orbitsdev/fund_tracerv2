@@ -169,7 +169,7 @@
                                                                     {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
                                                                     @if ($expense->breakdowns->count())
                                                                         <x-filament-actions::group :actions="[
-                                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
+                                                                        //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
                                                                           ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'ps']),
                                                                         ]"
 
@@ -452,7 +452,7 @@
 
                                                                     @if ($expense->breakdowns->count())
                                                                     <x-filament-actions::group :actions="[
-                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']),
+                                                                    //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']),
                                                                       ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'mooe']),
                                                                     ]"
 
@@ -731,7 +731,7 @@
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
                                                         @if ($expense->breakdowns->count())
                                                         <x-filament-actions::group :actions="[
-                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']),
+                                                        //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']),
                                                           ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'co']),
                                                         ]"
 
