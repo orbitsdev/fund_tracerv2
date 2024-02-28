@@ -150,7 +150,7 @@
                                                             {{ $group_title }}
 
 
-                                                            {{($this->downloadGroup)(['record' => $groups[0]->id, 'type' => 'ps','year'=>$groups[0]->project_year_id])}}
+                                                            {{-- {{($this->downloadGroup)(['record' => $groups[0]->id, 'type' => 'ps','year'=>$groups[0]->project_year_id])}} --}}
 
                                                         </div>
                                                         <div class="col-span-10  grid grid-cols-12  ">
