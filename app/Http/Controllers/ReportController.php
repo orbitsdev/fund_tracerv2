@@ -45,8 +45,8 @@ class ReportController extends Controller
             'data' => $data,
             'type'=> $type,
             'selected'=> $selected,
-        ]);
+        ])->download('new.pdf');
     }
 
-    
+
 }

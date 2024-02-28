@@ -5,12 +5,14 @@ use App\Livewire\TestPage;
 use App\Livewire\Particular;
 use App\Livewire\ViewProject;
 use App\Livewire\ForbiddenPage;
+use App\Livewire\Reports\Group;
 use App\Livewire\LineItemBudget;
 use App\Livewire\ListParticulars;
 use App\Livewire\Users\ListUsers;
-use App\Livewire\CreateManagement;
 
+use App\Livewire\CreateManagement;
 use App\Livewire\ContentManagement;
+use App\Livewire\Reports\Breakdown;
 use Illuminate\Support\Facades\Auth;
 use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +34,6 @@ use function Spatie\LaravelPdf\Support\pdf;
 use App\Http\Controllers\SocialiteController;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
-use App\Livewire\Reports\Breakdown;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,6 +67,7 @@ Route::get('/auth/google/callback',[ SocialiteController::class,'callback'])->na
 Route::prefix('reports')->name('report.')->group(function () {
         Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
         Route::get('/breakdown/print/{record}/{type}', Breakdown::class)->name('breakdown.redirectoPrintPage');
+        Route::get('/group/{record}/{type}{year}', Group::class )->name('group.redirecttoPrintPage');
 });
 
 
@@ -75,30 +77,6 @@ Route::get('/test', function(){
         ->name('invoice-2023-04-10.pdf'); // Ensure this is a string
 })->name('test');
 
-// Route::get('/test', function(){
-
-//     //     return view('report.breakdown',
-//     // [
-//     //     'invoiceNumber' => '1234',
-//     //         'customerName' => 'Grumpy Cat',
-//     // ]);
-
-//     return pdf()
-//     ->view('report.breakdown')
-//     ->name('invoice-2023-04-10.pdf')
-//     ->download();
-
-//     // return pdf()->view('report.breakdown', [
-//     //     'invoiceNumber' => '1234',
-//     //     'customerName' => 'Grumpy Cat',
-//     // ])
-//     // ->name('invoice-2023-04-10.pdf')
-//     // ->download();
-//     // return pdf('report.breakdown', [
-//     //     'invoiceNumber' => '1234',
-//     //     'customerName' => 'Grumpy Cat',
-//     // ]);
-// })->name('test');
 
 
 Route::get('/a', function(){

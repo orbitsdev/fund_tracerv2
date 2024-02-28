@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Illuminate\Database\Eloquent\Builder;
 class SelectedPS extends Model
 {
     use HasFactory;
@@ -35,16 +35,7 @@ class SelectedPS extends Model
         return $this->hasMany(SPSBreakdown::class);
     }
 
-    // public function tests(): MorphMany
-    // {
-    //     return $this->morphMany(Test::class, 'testable');
-    // }
-
-    // public function test(): MorphOne
-    // {
-    //     return $this->morphOne(Test::class, 'testable');
-    // }
-
+ 
     public function breakdown(): MorphOne
     {
         return $this->morphOne(Breakdown::class, 'breakdownable');
@@ -95,4 +86,14 @@ class SelectedPS extends Model
         $remainingPercentage = $budget != 0 ? ($remainingBudget / $budget) * 100 : 0;
         return $remainingPercentage;
     }
+    public function scopeGroup($query, $record)
+{
+    return $query->where('id', $record)
+                 ->with('p_s_expense') // Ensure the relationship is eager loaded
+                 ->get()
+                 ->groupBy('p_s_expense.title');
+}
+
+
+
 }

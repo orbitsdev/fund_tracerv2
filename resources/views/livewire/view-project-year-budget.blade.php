@@ -70,7 +70,7 @@
         <div x-cloak id="accordion-flush" data-accordion="collapse"
             data-active-classes="  bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
             data-inactive-classes="text-gray-500 dark:text-gray-400">
-            <div x-data="{ open: false }">
+            <div x-data="{ open: true }">
                 <h2 id="accordion-flush-heading-1">
                     <button x-on:click="open = ! open" type="button"
                         class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
@@ -141,13 +141,24 @@
                                             </div>
                                             <div class="col-span-12 grid grid-cols-12 ">
                                                 @foreach ($personal_service as $group_title => $groups)
-                                                    <div
+                                                <div class="col-span-12">
+                                                    {{-- @dump( $groups[0]) --}}
+                                                </div>
+                                                <div
                                                         class="col-span-12  grid grid-cols-12  transition  {{ $loop->last ? '' : 'border-b' }}">
                                                         <div class="col-span-2  p-4 flex items-center   border-r  ">
                                                             {{ $group_title }}
+
+
+                                                            {{($this->downloadGroup)(['record' => $groups[0]->id, 'type' => 'ps','year'=>$groups[0]->project_year_id])}}
+
                                                         </div>
                                                         <div class="col-span-10  grid grid-cols-12  ">
                                                             @foreach ($groups as $key => $expense)
+                                                            <div class="col-span-10">
+
+
+                                                            </div>
                                                                 <div
                                                                     class=" col-span-10  flex items-center  border-b   px-2 py-1   ">
                                                                     <span class="mr-2">
@@ -158,16 +169,16 @@
                                                                     {{ ($this->addPSBreakDown)(['record' => $expense->id]) }}
                                                                     @if ($expense->breakdowns->count())
                                                                         <x-filament-actions::group :actions="[
-                                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']), 
-                                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'ps']), 
-                                                                        ]" 
-                                                                          
+                                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
+                                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'ps']),
+                                                                        ]"
+
                                                                           color="gray"
                                                                           size="xs"
                                                                           tooltip="More actions"
-                                                                          
+
                                                                         />
-                                                                   
+
 
                                                                     @endif
 
@@ -441,18 +452,18 @@
 
                                                                     @if ($expense->breakdowns->count())
                                                                     <x-filament-actions::group :actions="[
-                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']), 
-                                                                      ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'mooe']), 
-                                                                    ]" 
-                                                                      
+                                                                      ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']),
+                                                                      ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'mooe']),
+                                                                    ]"
+
                                                                       color="gray"
                                                                       size="xs"
                                                                       tooltip="More actions"
-                                                                      
+
                                                                     />
                                                                 @endif
 
-                                                             
+
 
                                                                 </div>
 
@@ -720,17 +731,17 @@
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
                                                         @if ($expense->breakdowns->count())
                                                         <x-filament-actions::group :actions="[
-                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']), 
-                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'co']), 
-                                                        ]" 
-                                                          
+                                                          ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']),
+                                                          ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'co']),
+                                                        ]"
+
                                                           color="gray"
                                                           size="xs"
                                                           tooltip="More actions"
-                                                          
+
                                                         />
                                                     @endif
-                                                      
+
 
                                                     </div>
 
@@ -966,8 +977,8 @@
                     </button>
                 </div>
             </div>
-           
+
 
             <x-filament-actions::modals />
-           
+
         </div>

@@ -51,6 +51,13 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public ProjectYear $record;
 
 
+    public function testAction(): Action
+    {
+        return Action::make('print')
+        ->modalContentFooter(view('filament.pages.actions.advance'))
+        ;
+    }
+
     public function redirectToPrintPageAction(): Action
     {
         return Action::make('print')
@@ -77,6 +84,31 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ;
     }
 
+    public function downloadGroupAction(): Action
+    {
+        return Action::make('downloadGroup')
+            ->label('Download')
+            ->color('gray')
+            // ->button()
+            ->icon('heroicon-m-arrow-down-tray')
+            ->outlined()
+            ->size(ActionSize::ExtraSmall)
+            // ->iconButton()
+            ->extraAttributes([
+
+                'style' => 'outline: none;
+                 box-shadow: none ;
+                  font-weight: normal;
+                  color: #9ca3af;
+                  font-size: 10px;
+                  ',
+
+            ])
+            ->url(fn (array $arguments): string => route('report.group.redirecttoPrintPage', ['record'=> $arguments['record'], 'type'=> $arguments['type'], 'year'=> $arguments['year']]))
+             ->openUrlInNewTab()
+
+            ;
+    }
     public function downloadBreakdownAction(): Action
     {
         return Action::make('downloadBreakDown')
