@@ -4,8 +4,10 @@ namespace App\Livewire\Reports;
 
 use App\Models\PSGroup;
 use Livewire\Component;
+use App\Models\MOOEGroup;
 use App\Models\SelectedCO;
 use App\Models\SelectedPS;
+use App\Models\ProjectYear;
 use App\Models\SelectedMOOE;
 
 class Group extends Component
@@ -14,20 +16,31 @@ class Group extends Component
     public $record;
     public $type;
     public $year;
+    public $yearContent;
 
-    public function mount($record, $type ,$year)
+    public function mount($record, $type, $year)
 
     {
 
-        // dd($record, $type, $year);
         $this->year = $year;
 
-        $this->record = PSGroup::whereHas('selected_p_ses', function ($query) use ($year) {
-            $query->where('project_year_id', $year);
-        })->find($record);
+        $this->yearContent = ProjectYear::find($this->year);
 
+        switch ($type) {
+            case 'ps':
+                $this->record = PSGroup::find($record);
 
-
+                break;
+            case 'mooe':
+                $this->record = MOOEGroup::find($record);
+                // dd($this->record);
+                break;
+            case 'co':
+                $this->record = SelectedCO::find($record);
+                break;
+            default:
+                $this->record = [];
+        }
     }
 
 

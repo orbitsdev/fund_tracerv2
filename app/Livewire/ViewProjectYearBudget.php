@@ -84,13 +84,13 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             ;
     }
 
-    public function downloadGroupAction(): Action
+    public function printGroupAction(): Action
     {
-        return Action::make('downloadGroup')
-            ->label('Download')
+        return Action::make('printGroup')
+            ->label('Print')
             ->color('gray')
             // ->button()
-            ->icon('heroicon-m-arrow-down-tray')
+            ->icon('heroicon-m-printer')
             ->outlined()
             ->size(ActionSize::ExtraSmall)
             // ->iconButton()

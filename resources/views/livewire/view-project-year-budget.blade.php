@@ -70,7 +70,7 @@
         <div x-cloak id="accordion-flush" data-accordion="collapse"
             data-active-classes="  bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
             data-inactive-classes="text-gray-500 dark:text-gray-400">
-            <div x-data="{ open: true }">
+            <div x-data="{ open: false }">
                 <h2 id="accordion-flush-heading-1">
                     <button x-on:click="open = ! open" type="button"
                         class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
@@ -142,15 +142,23 @@
                                             <div class="col-span-12 grid grid-cols-12 ">
                                                 @foreach ($personal_service as $group_title => $groups)
                                                 <div class="col-span-12">
-                                                    {{-- @dump( $groups[0]) --}}
+
                                                 </div>
                                                 <div
                                                         class="col-span-12  grid grid-cols-12  transition  {{ $loop->last ? '' : 'border-b' }}">
                                                         <div class="col-span-2  p-4 flex items-center   border-r  ">
                                                             {{ $group_title }}
+                                                            <x-filament-actions::group :actions="[
+                                                                //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
+                                                                ($this->printGroup)(['record' => $groups[0]->p_s_group_id, 'type' => 'ps','year'=>$groups[0]->project_year_id])
+                                                                ]"
 
+                                                                  color="gray"
+                                                                  size="xs"
+                                                                  tooltip="More actions"
 
-                                                            {{-- {{($this->downloadGroup)(['record' => $groups[0]->id, 'type' => 'ps','year'=>$groups[0]->project_year_id])}} --}}
+                                                                />
+
 
                                                         </div>
                                                         <div class="col-span-10  grid grid-cols-12  ">
@@ -434,10 +442,25 @@
                                             </div>
                                             <div class="col-span-12 grid grid-cols-12 ">
                                                 @foreach ($mooe as $group_title => $groups)
+                                            <div class="col-span-12">
+                                                {{-- @dump($groups) --}}
+                                            </div>
                                                     <div
                                                         class="col-span-12  grid grid-cols-12  transition  {{ $loop->last ? '' : 'border-b' }}">
                                                         <div class="col-span-2  p-4 flex items-center   border-r  ">
                                                             {{ $group_title }}
+
+                                                            <x-filament-actions::group :actions="[
+
+                                                                //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
+                                                                ($this->printGroup)(['record' => $groups[0]->m_o_o_e_group_id, 'type' => 'mooe','year'=>$groups[0]->project_year_id])
+                                                                ]"
+
+                                                                  color="gray"
+                                                                  size="xs"
+                                                                  tooltip="More actions"
+
+                                                                />
                                                         </div>
                                                         <div class="col-span-10  grid grid-cols-12  ">
                                                             @foreach ($groups as $key => $expense)
@@ -650,7 +673,7 @@
                 </div>
             </div>
         </div>
-        <div x-data="{ open: false }">
+        <div x-data="{ open: true }">
             <h2 id="accordion-flush-heading-3">
                 <button x-on:click="open = ! open" type="button"
                     class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
