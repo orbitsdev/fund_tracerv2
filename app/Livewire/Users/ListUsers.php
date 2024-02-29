@@ -6,9 +6,11 @@ use App\Models\User;
 use Filament\Tables;
 use Livewire\Component;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Group;
 use Filament\Support\Enums\MaxWidth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
@@ -26,7 +28,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rawilk\FilamentPasswordInput\Password;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
-
+use Filament\Notifications\Notification;
 class ListUsers extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
@@ -138,9 +140,30 @@ class ListUsers extends Component implements HasForms, HasTable
             ])
             ->actions([
 
+                Action::make('remove_assigned')
+                    ->label('Remove Assigned')
+                    ->requiresConfirmation()
+                    ->action(function(Model $record){
+
+
+                        if($record->assigned_project()->exists()){
+                            $record->assigned_project()->delete();
+                            Notification::make()
+                            ->title('Saved successfully')
+                            ->success()
+                            ->send();
+                        }
+                        // $record->assigned_project()->delete();
+                    })
+                    ->hidden(function ($record) {
+                        return $record->assigned_project()->doesntExist();
+                    })
+
+                // ->modalWidth(MaxWidth::SevenExtraLarge)
+                ,
                 EditAction::make('assigne_to_project')
                     ->modalHeading('Assigne to Project')
-                    ->label("Assigned Poject")
+                    ->label("Assigned Project")
                     // ->diabledicon()
                     ->icon(function(){
                         return "";
@@ -171,9 +194,11 @@ class ListUsers extends Component implements HasForms, HasTable
 
                         // TextInput::make('abbreviation')->maxLength(191)->required()->columnSpanFull(),
                     ])
-                    ->hidden(function(Model $record) {
-                        return $record->is_admin();
+                    ->hidden(function ($record) {
+                        return $record->assigned_project()->exists();
+
                     })
+
 
                 // ->modalWidth(MaxWidth::SevenExtraLarge)
                 ,

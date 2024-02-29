@@ -29,7 +29,7 @@
                             {{-- @dump($personal_service) --}}
                             @foreach ($personal_service as $group_title => $groups)
                                 <div class="ml-4 ">
-                                    <p class="font-medium text-gray-600">
+                                    <p clwess="font-medium text-gray-600">
                                         {{ $group_title }}
 
                                     </p>

@@ -30,12 +30,20 @@ class ListProjects extends Component implements HasForms, HasTable
             ->query(Project::query())
             ->columns([
 
-                // TextColumn::make('program.title')
-                // ->numeric()
-                // ->sortable()
-                // ->searchable()
-                // ->badge()
-                // ->color('primary'),
+                TextColumn::make('assigned_project')
+                ->formatStateUsing(function ($state) {
+                    if(!empty($state->assigned_projectable)){
+
+                        return $state->assigned_projectable->first_name.' '.$state->assigned_projectable->first_name;
+                    }else{
+                        return '';
+                    }
+                })
+
+
+
+                ->badge()
+                ->color('primary'),
 
                 ViewColumn::make('')->view('tables.columns.project-total-budget')->label('Total Budget'),
             TextColumn::make('title')

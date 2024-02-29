@@ -3,9 +3,10 @@
 
     <x-create-management-layout>
       {{-- {{$record}} --}}
-      <x-back-button :url="route('project.index')" >
+      <x-back-button :url="Auth::user()->is_admin() ? route('project.index') : (Auth::user()->is_financial() ? route('financial-manager.projects') : '#')" >
         Back
-      </x-bacl-button>
+    </x-back-button>
+
       {{-- {{$record}} --}}
       {{-- <div class=" bg-white px-4 py-5 sm:px-6">
         <div class="-ml-4 -mt-4 flex flex-wrap items-center justify-between sm:flex-nowrap">
@@ -13,24 +14,24 @@
             <h3 class="text-base font-semibold leading-6 text-gray-900">Line Item Budget</h3>
             <p class="mt-1 text-sm text-gray-500">This section provides details about the Line Item Budget. It outlines specific expenditures and allocations.</p>
           </div>
-          
+
         </div>
       </div> --}}
       <div class="flex justify-end mt-6">
         {{$this->addAction}}
       </div>
-      
+
       <div class="mt-6">
         {{ $this->table }}
       </div>
-      
-      
-    
+
+
+
       </div>
-      
-      
-      
-      
+
+
+
+
     </x-create-management-layout>
     <div class="mt-4 px-8 py-4 d-gradient text-white rounded-lg">
       <div class="flex justify-between items-center">
@@ -43,7 +44,7 @@
           </div>
       </div>
   </div>
-  
+
   </div>
 
     {{-- <div>

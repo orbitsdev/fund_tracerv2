@@ -56,7 +56,7 @@
                     <img class="h-10 w-auto mr-4" src="{{ asset('images/sksu.png') }}" alt="SKSU Logo">
                     <p class="text-lg font-semibold tex-white">Fund Tracer</p>
                 </div>
-                
+
                 <nav class="flex flex-1 flex-col">
 
                     @can('is-financial-manager')
@@ -65,7 +65,7 @@
                             <div class="text-xs  leading-6 text-[#72def1]">Auhtorize Features </div>
                             <a href="{{ route('financial-manager.projects') }}"
                                 class="
-                {{ request()->routeIs('financial-manager.projects') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                {{ (request()->routeIs('financial-manager.projects') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view') ) ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                ">
 
 
@@ -115,7 +115,7 @@
                                     <!-- Current: " bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition", Default: "text-gray-700 hover:text-[#003449] hover:bg-gray-50" -->
                                     <a href="{{ route('manage.program-project') }}"
                                         class="
-                    {{ request()->routeIs('manage.program-project') || request()->routeIs('program.index') || request()->routeIs('program.create') || request()->routeIs('program.edit') || request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                    {{ (request()->routeIs('manage.program-project') || request()->routeIs('program.index') || request()->routeIs('program.create') || request()->routeIs('program.edit') || request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view')) ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                    ">
                                         <span
                                             class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] text-blue0-700 ">C</span>
@@ -179,7 +179,7 @@
                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205 3 1m1.5.5-1.5-.5M6.75 7.364V3h-3v18m3-13.636 10.5-3.819" />
                   </svg>
-                  
+
 
 
 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('assigned_projectable_id')->nullable();
             $table->string('assigned_projectable_type')->nullable();
-            $table->foreignId('project_id')->constrained()->cascadeOnDelete()->nullable();
+            $table->foreignId('project_id')->nullable();
 
             $table->timestamps();
         });

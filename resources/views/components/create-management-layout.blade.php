@@ -1,4 +1,5 @@
 <div>
+    @can('is-admin')
     <div>
         <div class="sm:hidden">
           <label for="tabs" class="sr-only">Select a tab</label>
@@ -15,7 +16,7 @@
           <div class="border-b border-gray-200">
             <nav class="-mb-px flex space-x-8" aria-label="Tabs">
 
-                
+
 
               <a href="{{route('program.index')}}" class="{{(request()->routeIs('program.index')||request()->routeIs('program.create')|| request()->routeIs('program.edit') ) ? 'border-dost dost-text flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium' : 'border-transparent text-gray-500 hover:border-gray-200 hover:text-gray-700 flex whitespace-nowrap border-b-2 py-4 px-1 text-sm font-medium'}}" >
                 Programs
@@ -51,6 +52,8 @@
 
         </p>
       </div>
+      @endcan
+
     <div class="mt-12">
         {{ $slot }}
     </div>

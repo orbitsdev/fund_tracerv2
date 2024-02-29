@@ -65,12 +65,6 @@ Route::get('/auth/google/callback',[ SocialiteController::class,'callback'])->na
 
 
 
-Route::prefix('reports')->name('report.')->group(function () {
-        Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
-        Route::get('/breakdown/print/{record}/{type}', Breakdown::class)->name('breakdown.redirectoPrintPage');
-        Route::get('/group/{record}/{type}{year}', Group::class )->name('group.redirecttoPrintPage');
-});
-
 
 
 Route::get('/test', function(){
@@ -91,6 +85,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+
+
+Route::prefix('reports')->name('report.')->group(function () {
+    Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
+    Route::get('/breakdown/print/{record}/{type}', Breakdown::class)->name('breakdown.redirectoPrintPage');
+    Route::get('/group/{record}/{type}{year}', Group::class )->name('group.redirecttoPrintPage');
+});
+
     Route::get('/dashboard', function () {
 
         if(Auth::user()->is_admin()){
@@ -107,7 +109,7 @@ Route::middleware([
         Route::get('/assigned/projects', ListAssignedProjects::class)->name('assigned.projects');
     });
 
-    Route::middleware(['can:is-admin'])->group(function(){
+    Route::middleware(['can:admin-and-has-project-financial-manager'])->group(function(){
         Route::prefix('manage')->name('manage.')->group(function(){
             Route::get('/user', ListUsers::class)->name('users');
             Route::get('/implementing-agencies', ListImplentinAgencies::class)->name('implementing-agencies');

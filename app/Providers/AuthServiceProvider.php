@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
          });
         Gate::define('admin-and-has-project-financial-manager', function () {
             $user = Auth::user();
-            return ($user->role === 'Admin'|| $user->assigned_project()->exists());
+            return($user->role === 'Admin'|| ($user->role === 'Financial Manager' && $user->assigned_project()->exists())  );
          });
 
     }
