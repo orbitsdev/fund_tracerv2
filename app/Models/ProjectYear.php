@@ -37,6 +37,60 @@ class ProjectYear extends Model
         return $this->hasMany(SelectedCO::class);
     }
 
+    public function getSelectedPersonalService()
+    {
+        return  $this->selected_p_ses()->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        })->map(function ($cost_type) {
+            return $cost_type->groupBy(function ($cost) {
+                return $cost->p_s_group->title;
+            });
+        });
+    }
+    public function getSelectedMOOE()
+    {
+        return  $this->selected_m_o_o_es()->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        })->map(function ($cost_type) {
+            return $cost_type->groupBy(function ($cost) {
+                return $cost->m_o_o_e_group->title;
+            });
+        });
+    }
+    public function getSelectedCO()
+    {
+        return  $this->selected_c_os()->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
+            switch ($key) {
+                case 'Direct Cost':
+                    return 1;
+                case 'Indirect Cost SKSU':
+                    return 2;
+                case 'Indirect Cost PCAARRD':
+                    return 3;
+                default:
+                    return 4; // Handle any other cases if needed
+            }
+        });
+    }
+
     public function getYearTotalBudget()
     {
         $total_ps = $this->selected_p_ses()->with('p_s_expense')->get()->sum(function ($selectedPS) {
@@ -77,13 +131,12 @@ class ProjectYear extends Model
         return $remaining;
     }
     public function getBudgetPercentageUse()
-{
-    $total_budget = $this->getYearTotalBudget();
-    $total_spent = $this->getYearTotalSpent();
+    {
+        $total_budget = $this->getYearTotalBudget();
+        $total_spent = $this->getYearTotalSpent();
 
-    $percentage_used = ($total_budget != 0) ? ($total_spent / $total_budget) * 100 : 0;
+        $percentage_used = ($total_budget != 0) ? ($total_spent / $total_budget) * 100 : 0;
 
-    return $percentage_used;
-}
-
+        return $percentage_used;
+    }
 }

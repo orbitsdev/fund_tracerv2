@@ -77,13 +77,17 @@
                         data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                         aria-controls="accordion-flush-body-1">
 
-                        <div class="col-span-9 flex items-center h-full  p-2 ">
+                        <div class="col-span-9 flex items-center justify-between h-full px-2 ">
+                            <div class="flex items-center ">
                             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 mr-4" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M9 5 5 1 1 5" />
                             </svg>
                             <p> I. Personal Service </p>
+
+                            </div>
+                            {{($this->redirectToPrintParticularPage)(['record' => $record, 'type' => 'ps'])}}
 
                         </div>
 
@@ -378,13 +382,18 @@
                         data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                         aria-controls="accordion-flush-body-1">
 
-                        <div class="col-span-9 flex items-center h-full  p-2 ">
+
+                        <div class="col-span-9 flex items-center justify-between h-full px-2 ">
+                            <div class="flex items-center ">
                             <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 mr-4" aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                     stroke-width="2" d="M9 5 5 1 1 5" />
                             </svg>
                             <p> II. Maintenance and Other Operating Expenses </p>
+
+                            </div>
+                            {{($this->redirectToPrintParticularPage)(['record' => $record, 'type' => 'mooe'])}}
 
                         </div>
 
@@ -680,13 +689,19 @@
                     data-accordion-target="#accordion-flush-body-1" aria-expanded="true"
                     aria-controls="accordion-flush-body-1">
 
-                    <div class="col-span-9 flex items-center h-full  p-2 ">
+
+
+                    <div class="col-span-9 flex items-center justify-between h-full px-2 ">
+                        <div class="flex items-center ">
                         <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0 mr-4" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                                 stroke-width="2" d="M9 5 5 1 1 5" />
                         </svg>
                         <p> III. Capital Outlay</p>
+
+                        </div>
+                        {{($this->redirectToPrintParticularPage)(['record' => $record, 'type' => 'co'])}}
 
                     </div>
 

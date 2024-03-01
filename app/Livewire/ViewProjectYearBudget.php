@@ -51,6 +51,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public ProjectYear $record;
 
 
+
+
     public function testAction(): Action
     {
         return Action::make('print')
@@ -58,9 +60,34 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
         ;
     }
 
+    public function redirectToPrintParticularPageAction(): Action
+    {
+        return Action::make('redirectToPrintParticular')
+            ->label('Print')
+            ->color('gray')
+            // ->button()
+            ->icon('heroicon-m-printer')
+            ->outlined()
+            ->size(ActionSize::ExtraSmall)
+            // ->iconButton()
+            ->extraAttributes([
+
+                'style' => 'outline: none;
+                 box-shadow: none ;
+                  font-weight: normal;
+                  color: #9ca3af;
+                  font-size: 10px;
+                  ',
+
+            ])
+            ->url(fn (array $arguments): string => route('report.redirect-to-year-particular-report', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
+             ->openUrlInNewTab()
+
+            ;
+    }
     public function redirectToPrintPageAction(): Action
     {
-        return Action::make('print')
+        return Action::make('redirectToPrintPage')
             ->label('Print')
             ->color('gray')
             // ->button()

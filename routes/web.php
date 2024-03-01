@@ -35,6 +35,7 @@ use App\Http\Controllers\SocialiteController;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
 use App\Livewire\Project\ListAssignedProjects;
+use App\Livewire\Reports\YearParticularReport;
 
 /*
 |--------------------------------------------------------------------------
@@ -91,6 +92,7 @@ Route::prefix('reports')->name('report.')->group(function () {
     Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');
     Route::get('/breakdown/print/{record}/{type}', Breakdown::class)->name('breakdown.redirectoPrintPage');
     Route::get('/group/{record}/{type}{year}', Group::class )->name('group.redirecttoPrintPage');
+    Route::get('/year-particulars/{record}/{type}', YearParticularReport::class)->name('redirect-to-year-particular-report');
 });
 
     Route::get('/dashboard', function () {
