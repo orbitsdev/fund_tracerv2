@@ -92,9 +92,7 @@
                 <!-- Additional information can be added here if needed -->
             </div>
         </div>
-    </div>
-
-
+        
     <script>
         function printDiv(divName) {
             var printContents = document.getElementById(divName).innerHTML;
@@ -105,3 +103,6 @@
 
         }
     </script>
+    </div>
+
+

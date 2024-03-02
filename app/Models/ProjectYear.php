@@ -37,6 +37,8 @@ class ProjectYear extends Model
         return $this->hasMany(SelectedCO::class);
     }
 
+
+    
     public function getSelectedPersonalService()
     {
         return  $this->selected_p_ses()->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
@@ -104,6 +106,36 @@ class ProjectYear extends Model
     }
 
 
+    public function getYearTotalPS()
+    {
+        $total_spent_ps = $this->selected_p_ses()->with('breakdowns')->get()->sum(function ($selectedPS) {
+            return $selectedPS->breakdowns->sum('amount') ?? 0;
+        });
+
+      
+
+        return $total_spent_ps;
+    }
+    public function getYearTotalMOOE()
+    {
+        $total_spent_mooe = $this->selected_m_o_o_es()->with('breakdowns')->get()->sum(function ($selectedMOOE) {
+            return $selectedMOOE->breakdowns->sum('amount') ?? 0;
+        });
+
+      
+
+        return $total_spent_mooe;
+    }
+    public function getYearTotalCO()
+    {
+        $total_spent_co = $this->selected_c_os()->with('breakdowns')->get()->sum(function ($selectedCO) {
+            return $selectedCO->breakdowns->sum('amount') ?? 0;
+        });
+
+      
+
+        return $total_spent_co;
+    }
     public function getYearTotalSpent()
     {
         $total_spent_ps = $this->selected_p_ses()->with('breakdowns')->get()->sum(function ($selectedPS) {
