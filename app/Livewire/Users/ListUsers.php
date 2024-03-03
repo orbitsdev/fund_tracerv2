@@ -117,6 +117,7 @@ class ListUsers extends Component implements HasForms, HasTable
 
                                 FileUpload::make('profile_photo_path')
                                     ->disk('public')
+                                    ->label('Profile')
                                     ->directory('user-profile')
                                     ->image()
                                     ->imageEditor()
