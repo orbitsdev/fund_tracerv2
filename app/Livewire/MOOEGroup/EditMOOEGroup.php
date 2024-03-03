@@ -67,7 +67,7 @@ class EditMOOEGroup extends Component implements HasForms
         ->success()
         ->send();
 
-        return redirect()->route('manage.content-management');
+        return redirect()->route('mooe.index');
     }
 
     public function render(): View

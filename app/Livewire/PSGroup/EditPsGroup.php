@@ -91,7 +91,7 @@ class EditPsGroup extends Component implements HasForms
             ->success()
             ->send();
 
-             return redirect()->route('content-management');
+             return redirect()->route('personal-service.index');
     }
 
 

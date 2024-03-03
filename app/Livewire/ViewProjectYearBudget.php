@@ -56,8 +56,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
     public function testAction(): Action
     {
         return Action::make('print')
-        ->modalContentFooter(view('filament.pages.actions.advance'))
-        ;
+            ->modalContentFooter(view('filament.pages.actions.advance'));
     }
 
     public function redirectToPrintParticularPageAction(): Action
@@ -80,10 +79,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                   ',
 
             ])
-            ->url(fn (array $arguments): string => route('report.redirect-to-year-particular-report', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
-             ->openUrlInNewTab()
-
-            ;
+            ->url(fn (array $arguments): string => route('report.redirect-to-year-particular-report', ['record' => $arguments['record'], 'type' => $arguments['type']]))
+            ->openUrlInNewTab();
     }
     public function redirectToPrintPageAction(): Action
     {
@@ -105,10 +102,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                   ',
 
             ])
-            ->url(fn (array $arguments): string => route('report.breakdown.redirectoPrintPage', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
-             ->openUrlInNewTab()
-
-            ;
+            ->url(fn (array $arguments): string => route('report.breakdown.redirectoPrintPage', ['record' => $arguments['record'], 'type' => $arguments['type']]))
+            ->openUrlInNewTab();
     }
 
     public function printGroupAction(): Action
@@ -131,10 +126,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                   ',
 
             ])
-            ->url(fn (array $arguments): string => route('report.group.redirecttoPrintPage', ['record'=> $arguments['record'], 'type'=> $arguments['type'], 'year'=> $arguments['year']]))
-             ->openUrlInNewTab()
-
-            ;
+            ->url(fn (array $arguments): string => route('report.group.redirecttoPrintPage', ['record' => $arguments['record'], 'type' => $arguments['type'], 'year' => $arguments['year']]))
+            ->openUrlInNewTab();
     }
     public function downloadBreakdownAction(): Action
     {
@@ -156,10 +149,8 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                   ',
 
             ])
-            ->url(fn (array $arguments): string => route('report.breakdown.download', ['record'=> $arguments['record'], 'type'=> $arguments['type']]))
-             ->openUrlInNewTab()
-
-            ;
+            ->url(fn (array $arguments): string => route('report.breakdown.download', ['record' => $arguments['record'], 'type' => $arguments['type']]))
+            ->openUrlInNewTab();
     }
     public function viewAttachmentAction(): Action
     {
@@ -1327,7 +1318,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
             // PS
             'total_ps_breakdown',
             'remaining_budget_ps',
-             'percentage_used_ps',
+            'percentage_used_ps',
             'remaining_percentage_ps',
             //MOOE
             'total_mooe_breakdown',
