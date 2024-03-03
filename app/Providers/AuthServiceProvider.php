@@ -38,5 +38,7 @@ class AuthServiceProvider extends ServiceProvider
             return($user->role === 'Admin'|| ($user->role === 'Financial Manager' && $user->assigned_project()->exists())  );
          });
 
+
+
     }
 }

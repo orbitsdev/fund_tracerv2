@@ -56,10 +56,7 @@ Route::get('/', function () {
 });
 
 Route::get('/test-page', TestPage::class);
-Route::get('/no-project-assigned.forbidden', ForbiddenPage::class)->name
-
-
-('financial-manager.forbidden');
+Route::get('/no-project-assigned.forbidden', ForbiddenPage::class)->name('financial-manager.forbidden');
 
 Route::get('/auth/google/redirect',[ SocialiteController::class,'redirect'])->name('google.redirect');
 Route::get('/auth/google/callback',[ SocialiteController::class,'callback'])->name('google.callback');

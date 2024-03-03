@@ -44,9 +44,10 @@
     <!-- component -->
 <div class="w-full h-screen flex flex-col lg:flex-row items-center justify-center space-y-16 lg:space-y-0 space-x-8 2xl:space-x-0 light-bg">
     <div class="w-full lg:w-1/2 flex flex-col items-center justify-center lg:px-2 xl:px-0 text-center ">
-        <p class="text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider ">404</p>
-        <p class="text-4xl font-bold tracking-wider  mt-2">Page Not Found</p>
-        <p class="text-lg md:text-xl lg:text-2xl text-gray-500 my-6">Sorry, the page you are looking for could not be found.</p>
+        <p class="text-7xl md:text-8xl lg:text-9xl font-bold tracking-wider ">403</p>
+        <p class="text-4xl font-bold tracking-wider  mt-2">NOT AUTHORIZE</p>
+        <p class="text-lg md:text-xl lg:text-2xl text-gray-700 my-6">YOU MUST HAVE AT LEAST ONE ASSIGNED PROJECT TO ACCESS THE PAGE</p>
+
         <form action="{{ route('logout') }}" method="POST" class="">
             @csrf
             <button type="submit" class="mt-4 dost-bg p-2  border border-white rounded-xl text-white font-medium  transition hover:bg-[#073c51] hover:scale-105 hover:drop-shadow-xl w-[300px]">LOG OUT</button>
