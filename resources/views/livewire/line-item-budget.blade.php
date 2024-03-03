@@ -10,7 +10,9 @@
         </x-bacl-button>
         {{-- {{$record}} --}}
         <div class="mb-4">
-            <p class="text-primary-700 text-4xl  font-medium"> {{ $record->year->title }}</p>
+            {{-- <p>{{$record->project->title}}</p> --}}
+            <p class="uppercase text-primary-700 text-4xl  font-medium"> {{ $record->project->title }}</p>
+            <p class="text-primary-700 text-4xl  font-medium mt-2"> {{ $record->year->title }}</p>
         </div>
         <div>
             <p class="text-primary-600 text-2xl font-medium"> I. Personal Service</p>
