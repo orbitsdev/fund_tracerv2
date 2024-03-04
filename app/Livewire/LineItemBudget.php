@@ -104,6 +104,9 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $ps?->cost_type,
                     'p_s_group_id' => $ps?->p_s_group_id,
                     'p_s_expense_id' => $ps?->p_s_expense_id,
+                    'number_of_positions' => $ps?->number_of_positions,
+                    'duration' => $ps?->duration,
+                    'amount' => $ps?->amount,
                 ];
             })
             ->form([
@@ -131,13 +134,34 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->required()
                     ->options(function (Get $get, Set $set) {
                         if (!empty($get('p_s_group_id'))) {
-                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->map(function($item) {
+                                return [
+                                    'id' => $item->id,
+                                    'title' => $item->title . ' - ' . number_format($item->amount),
+                                ];
+                            })->pluck('title', 'id');
                         } else {
                             return [];
                         }
                     })
                     ->native(false)
-                    ->searchable()
+                    ->searchable(),
+
+
+
+                    TextInput::make('number_of_positions')
+                    ->numeric()
+
+                    ->default(1)
+                    ->label('Number of Position/s')
+                    ->required(),
+
+                    TextInput::make('duration')
+                    ->required()
+                    ->numeric()
+                    ->default(1)
+                    ->label('Duration')
+                    ,
             ])
             ->modalHeading('Add/Edit Personnel Services')
             ->modalWidth(MaxWidth::SixExtraLarge)
@@ -145,13 +169,22 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
                 $ps = SelectedPS::find($arguments['ps']);
                 $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
-                $amount = $ps_expenses->amount;
+                $number_of_positions = $data['number_of_positions'];
+                $duration = $data['duration'];
+
+
+
+                $amount_by_position = ($ps_expenses->amount * $number_of_positions);
+                $amount = ($amount_by_position * $duration);
+
 
                 $final_data = [
                     // 'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'p_s_group_id' => $data['p_s_group_id'],
                     'p_s_expense_id' => $data['p_s_expense_id'],
+                    'number_of_positions' => $number_of_positions,
+                    'duration' =>$duration,
                     'amount' => $amount,
                 ];
 
@@ -173,6 +206,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
                 'style' => 'border-radius: 100px;',
             ])
             ->form([
+
+
                 Select::make('cost_type')
                     ->options([
                         'Direct Cost' => 'Direct Cost',
@@ -198,24 +233,62 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
                     ->options(function (Get $get, Set $set) {
                         if (!empty($get('p_s_group_id'))) {
-                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->pluck('title', 'id');
+                            return PSExpense::where('p_s_group_id', $get('p_s_group_id'))->get()->map(function($item) {
+                                return [
+                                    'id' => $item->id,
+                                    'title' => $item->title . ' - ' . number_format($item->amount),
+                                ];
+                            })->pluck('title', 'id');
                         } else {
                             return [];
                         }
                     })
                     ->native(false)
-                    ->searchable()
+                    ->searchable(),
+
+                    TextInput::make('number_of_positions')
+                    ->numeric()
+
+                    ->default(1)
+                    ->label('Number of Position/s')
+                    ->required(),
+
+                    TextInput::make('duration')
+                    ->required()
+                    ->numeric()
+                    ->default(1)
+                    ->label('Duration')
+                    ,
+                    // TextInput::make('total')
+                    // ->disabled()
+                    // // ->required()
+                    // ->numeric()
+                    // ->default(0)
+                    // ->label('Duration')
+                    // ->required()
+                    // ,
             ])
             ->modalHeading('Add/Edit Personnel Services')
             ->modalWidth(MaxWidth::SixExtraLarge)
             ->action(function (array $data) {
                 $ps_expenses = PSExpense::where('id', $data['p_s_expense_id'])->first();
-                $amount = $ps_expenses->amount;
+
+                $number_of_positions = $data['number_of_positions'];
+                $duration = $data['duration'];
+
+
+
+                $amount_by_position = ($ps_expenses->amount * $number_of_positions);
+                $amount = ($amount_by_position * $duration);
+
+                // $amount = ;
                 $final_data = [
                     'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'p_s_group_id' => $data['p_s_group_id'],
                     'p_s_expense_id' => $data['p_s_expense_id'],
+                    'number_of_positions' => $number_of_positions,
+                    'duration' =>$duration,
                     'amount' => $amount,
                 ];
 
@@ -282,7 +355,9 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->default(0)
                     ->label('Allocated Amount')
                     ->required()
-                    ->maxLength(10)
+                    ->maxLength(10),
+
+
 
 
 
@@ -292,6 +367,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->action(function (array $data) {
 
                 $ps_expenses = MOOEExpense::find($data['m_o_o_e_group_id']);
+
+
                 $final_data = [
                     'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
@@ -650,4 +727,6 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
         ]);
     }
+
+
 }

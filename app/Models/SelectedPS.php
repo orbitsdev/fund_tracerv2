@@ -35,7 +35,7 @@ class SelectedPS extends Model
         return $this->hasMany(SPSBreakdown::class);
     }
 
- 
+
     public function breakdown(): MorphOne
     {
         return $this->morphOne(Breakdown::class, 'breakdownable');
@@ -49,7 +49,7 @@ class SelectedPS extends Model
 
     public function getTotalBudget()
     {
-        return $this->p_s_expense->amount;
+        return $this->amount;
     }
     public function totalSpent()
     {
@@ -58,7 +58,7 @@ class SelectedPS extends Model
 
     public function totalPercentageUse()
     {
-        $budget = $this->p_s_expense->amount;
+        $budget = $this->amount;
         $totalExpense = $this->totalSpent();
 
         // Calculate the percentage used
@@ -68,7 +68,7 @@ class SelectedPS extends Model
 
     public function remainingBudget()
     {
-        $budget = $this->p_s_expense->amount;
+        $budget = $this->amount;
         $totalExpense = $this->totalSpent();
 
         // Calculate the remaining budget
@@ -78,7 +78,7 @@ class SelectedPS extends Model
 
     public function remainingPercentage()
     {
-        $budget = $this->p_s_expense->amount;
+        $budget = $this->amount;
         $totalExpense = $this->totalSpent();
         $remainingBudget = $budget - $totalExpense;
 

@@ -40,10 +40,10 @@
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
-                                                    {{ $expense->p_s_expense->title }}
+                                                   ({{$expense->number_of_positions}})  {{ $expense->p_s_expense->title }} - {{ $expense->amount}} x  {{$expense->duration}} (month/s)
                                                 </p>
                                                 <p>
-                                                    {{ number_format($expense->p_s_expense->amount) }}
+                                                    {{ number_format($expense->amount) }}
                                                 </p>
 
                                             </div>

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreignId('project_year_id')->nullable();
             $table->foreignId('p_s_group_id')->nullable();
             $table->foreignId('p_s_expense_id')->nullable();
+            $table->unsignedBigInteger('number_of_positions')->default(0)->nullable();
+            $table->unsignedBigInteger('duration')->default(0)->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->timestamps();
         });
