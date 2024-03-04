@@ -2,7 +2,7 @@
  
     <p class="">
 
-        {{ number_format($getRecord()->getYearNoBreakDownTotalBudget())}}
+        {{ number_format($getRecord()->getYearActualBudget())}}
     </p>
 
 </div>
