@@ -656,7 +656,7 @@
                 </div>
             </div>
         </div>
-        <div x-data="{ open: true }">
+        <div x-data="{ open: false }">
             <h2 id="accordion-flush-heading-3">
                 <button x-on:click="open = ! open" type="button"
                     class="border-r border-l pl-2  grid grid-cols-12  w-full  hover:bg-gray-100 transition rtl:text-right text-gray-600 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 "
