@@ -15,6 +15,7 @@ use App\Models\ProjectYear;
 use Filament\Support\RawJs;
 use App\Models\SelectedMOOE;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Group;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
@@ -345,6 +346,13 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     })
                     ->native(false)
                     ->searchable(),
+                    
+                    TextInput::make('specification')
+                    ->required()
+                    ->numeric()
+                    ->default(1)
+                    ->label('MOOE Specification')
+                    ,
 
                 TextInput::make('amount')
                     ->required()
@@ -374,6 +382,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $data['cost_type'],
                     'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
                     'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
+                    'specification' => $data['specification'],
                     'amount' => $data['amount'],
                 ];
 
@@ -402,6 +411,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $mooe?->cost_type,
                     'm_o_o_e_group_id' => $mooe?->m_o_o_e_group_id,
                     'm_o_o_e_expense_id' => $mooe?->m_o_o_e_expense_id,
+                    'specification' => $mooe?->specification,
                     'amount' => $mooe?->amount,
                 ];
             })
@@ -437,7 +447,12 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     })
                     ->native(false)
                     ->searchable(),
-
+                    
+                    TextInput::make('specification')
+                    ->required()
+                    ->numeric()
+                    ->label('MOOE Specification')
+                    ,
                 TextInput::make('amount')
                     ->required()
                     ->mask(RawJs::make('$money($input)'))
@@ -446,7 +461,10 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->numeric()
                     ->default(0)
                     ->label('Allocated Amount')
-                    ->required()
+                    ->required(),
+
+                 
+
 
 
 
@@ -457,7 +475,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->action(function (array $data, array $arguments) {
 
                 $mooe = SelectedMOOE::find($arguments['mooe']);
-                $mooe_expense = MOOEExpense::where('id', $data['m_o_o_e_expense_id'])->first();
+                // $mooe_expense = MOOEExpense::where('id', $data['m_o_o_e_expense_id'])->first();
 
 
                 $final_data = [
@@ -465,6 +483,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $data['cost_type'],
                     'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
                     'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
+                    'specification' => $data['specification'],
                     'amount' => $data['amount'],
                 ];
 
@@ -487,31 +506,53 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->icon('heroicon-m-plus')
             ->label('Add CO')
             ->form([
-                Select::make('cost_type')
+                Group::make()
+                ->columns([
+                    'sm' => 3,
+                    'xl' => 6,
+                    '2xl' => 8,
+                ])
+                ->schema([
+                    Select::make('cost_type')
                     ->options([
                         'Direct Cost' => 'Direct Cost',
                         'Indirect Cost SKSU' => 'Indirect Cost SKSU',
                         'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
                     ])
+                    ->columnSpanFull()
                     ->native(false)
+                   
                     ->required(),
-
-
+    
+    
                 TextInput::make('description')
-                    ->required(),
-
-
-
-
-                TextInput::make('amount')
                     ->required()
-                    ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters(',')
-                    ->prefix('₱')
+                    ->columnSpanFull()
+                    ,
+    
+    
+                    TextInput::make('amount')
+                        ->required()
+                        ->columnSpanFull()
+        
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters(',')
+                        ->prefix('₱')
+                        ->numeric()
+                        ->default(0)
+                        ->label('Allocated Amount')
+                        ->required()
+                        ->columnSpan(6)
+    
+                        ,
+                    TextInput::make('quantity')
+                    ->required()
+                    ->columnSpan(2)
+                    ->default(1)
                     ->numeric()
-                    ->default(0)
-                    ->label('Allocated Amount')
-                    ->required(),
+                    ->label('Quantity')
+                    ,
+                ])  
 
 
 
@@ -521,11 +562,16 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->action(function (array $data) {
 
 
+
+                $quantity = $data['quantity'];
+                $calculated_amount  = ($data['amount'] * $quantity); 
                 $final_data = [
                     'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'description' => $data['description'],
+                    'quantity' => $data['quantity'],
                     'amount' => $data['amount'],
+                    'new_amount' => $calculated_amount,
                 ];
 
 
@@ -553,11 +599,12 @@ class LineItemBudget extends Component implements HasForms, HasActions
                 return [
                     'cost_type' => $mooe?->cost_type,
                     'description' => $mooe?->description,
+                    'quantity' => $mooe?->quantity,
                     'amount' => $mooe?->amount,
                 ];
             })
 
-            ->label('Add CO')
+            ->label('Edit CO')
             ->form([
                 Select::make('cost_type')
                     ->options([
@@ -565,25 +612,39 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         'Indirect Cost SKSU' => 'Indirect Cost SKSU',
                         'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
                     ])
+                    ->columnSpanFull()
                     ->native(false)
+                   
                     ->required(),
-
-
+    
+    
                 TextInput::make('description')
-                    ->required(),
-
-
-
-
-                TextInput::make('amount')
                     ->required()
-                    ->mask(RawJs::make('$money($input)'))
-                    ->stripCharacters(',')
-                    ->prefix('₱')
+                    ->columnSpanFull()
+                    ,
+    
+    
+                    TextInput::make('amount')
+                        ->required()
+                        ->columnSpanFull()
+        
+                        ->mask(RawJs::make('$money($input)'))
+                        ->stripCharacters(',')
+                        ->prefix('₱')
+                        ->numeric()
+                        ->default(0)
+                        ->label('Allocated Amount')
+                        ->required()
+                        ->columnSpan(6)
+    
+                        ,
+                    TextInput::make('quantity')
+                    ->required()
+                    ->columnSpan(2)
+                    ->default(1)
                     ->numeric()
-                    ->default(0)
-                    ->label('Allocated Amount')
-                    ->required(),
+                    ->label('Quantity')
+                    ,
 
 
 
@@ -595,28 +656,27 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
                 $co = SelectedCO::find($arguments['co']);
 
-
+                $quantity = $data['quantity'];
+                $calculated_amount  = ($data['amount'] * $quantity); 
 
                 $final_data = [
                     // 'project_year_id' => $this->record->id,
                     'cost_type' => $data['cost_type'],
                     'description' => $data['description'],
+                    'quantity' => $data['quantity'],
                     'amount' => $data['amount'],
+                    'new_amount' => $calculated_amount,
                 ];
 
 
                 $co->update($final_data); // Corrected update method
 
-                Notification::make()
-                    ->title('Saved successfully')
-                    ->success()
-                    ->send();
+               
 
 
 
 
-                // SelectedM::create($final_data);
-                SelectedCO::create($final_data);
+          
 
                 Notification::make()
                     ->title('Saved successfully')
@@ -703,11 +763,13 @@ class LineItemBudget extends Component implements HasForms, HasActions
         });
 
 
-        $total_co = SelectedCO::where('project_year_id', $this->record->id)->sum('amount');
+        $total_co = SelectedCO::where('project_year_id', $this->record->id)->sum('new_amount');
         // dd($cos);
 
 
         $total_budet = ($total_ps + $total_mooe + $total_co);
+
+        
 
 
         // MOOE INFORMATION

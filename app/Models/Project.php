@@ -31,6 +31,12 @@ class Project extends Model
     }
 
 
+    public function getTotalAllYearsBudget()
+    {
+        return $this->project_years->sum->getYearActualBudget();
+    }
+
+
 
 
 

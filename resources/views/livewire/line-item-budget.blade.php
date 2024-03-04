@@ -40,7 +40,7 @@
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
-                                                   ({{$expense->number_of_positions}})  {{ $expense->p_s_expense->title }} - {{ $expense->amount}} x  {{$expense->duration}} (month/s)
+                                                   ({{$expense->number_of_positions}})  {{ $expense->p_s_expense->title }} at {{ number_format($expense->p_s_expense->amount)}} x  {{$expense->duration}}/month(s)
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}
@@ -111,7 +111,7 @@
                 </div>
             </div>
            --}}
-           @if($total_ps > 0)
+           @if($record->getActualTotalPS() > 0)
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
                 <div>
 
@@ -122,7 +122,7 @@
                         Sub-total for PS
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                        {{ number_format($total_ps) }}
+                        {{ number_format($record->getActualTotalPS()) }}
                     </p>
                 </div>
             </div>
@@ -155,7 +155,7 @@
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
-                                                    {{ $expense->m_o_o_e_expense->title }}
+                                                  ({{$expense->specification}})  {{ $expense->m_o_o_e_expense->title }}
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}
@@ -228,7 +228,7 @@
                 </div>
             </div>
            --}}
-           @if($total_mooe > 0)
+           @if($record->getActualTotalMOOE() > 0)
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
                 <div>
 
@@ -239,7 +239,7 @@
                         Sub-total for MOOE
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                        {{ number_format($total_mooe) }}
+                        {{ number_format($record->getActualTotalMOOE()) }}
                     </p>
                 </div>
             </div>
@@ -265,10 +265,10 @@
 
                                 <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                     <p class="italic text-sm text-gray-500">
-                                        {{ $expense->description }}
+                                       ({{$expense->quantity}}) {{ $expense->description }} <span class="text-xs">({{number_format($expense->amount)}} / Per item)</span>
                                     </p>
                                     <p>
-                                        {{ number_format($expense->amount) }}
+                                        {{ number_format($expense->new_amount) }}
                                     </p>
 
                                 </div>
@@ -290,7 +290,7 @@
 
                 @endforelse
             </div>
-            @if($total_co > 0)
+            @if($record->getActualTotalCO() > 0)
 
 
             <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
@@ -303,27 +303,29 @@
                         Sub-total for CO
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                        {{ number_format($total_co) }}
+                        {{ number_format($record->getActualTotalCO()) }}
                     </p>
                 </div>
             </div>
             @endif
 
         </div>
-        @if($total_budet> 0)
+        @if($record->getYearActualBudget()> 0)
         <div>
 
-            <div class="mt-4 pr-8 flex justify-between text-xl mb-8   p-2 text-gray-600 rounded">
+            <div class="mt-4 pr-8 flex justify-between text-xl mb-8   p-2 text-system-800 rounded">
                 <div>
-
+                    <p class=" font-bold">
+                        {{$record->year->title}} 
+                    </p>
                 </div>
-                <div class="flex font-medium">
+                <div class="flex font-bold">
 
                     <p class=" ">
-                        Year Total Budget:
+                        Total Budget:
                     </p>
                     <p class="w-[200px] text-end mr-6">
-                        {{ number_format($total_budet) }}
+                        {{ number_format($record->getYearActualBudget()) }}
                     </p>
                 </div>
             </div>

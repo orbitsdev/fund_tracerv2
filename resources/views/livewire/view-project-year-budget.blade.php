@@ -1,4 +1,4 @@
-<div class="bg-white rounded-lg p-12 py-8">
+<div class="bg-white rounded-lg px-12 py-8">
 
 
 
@@ -99,7 +99,7 @@
 
                                 </div>
                                 <div class=" flex justify-center items-center">
-                                    ₱ {{ number_format($total_ps) }}
+                                    ₱ {{ number_format($record->getActualTotalPS()) }}
                                 </div>
 
                             </div>
@@ -174,7 +174,7 @@
                                                                 <div
                                                                     class=" col-span-10  flex items-center  border-b   px-2 py-1   ">
                                                                     <span class="mr-2">
-                                                                        {{ $expense->p_s_expense->title }}
+                                                                        ({{$expense->number_of_positions}})  {{ $expense->p_s_expense->title }} at {{ number_format($expense->p_s_expense->amount)}} x  {{$expense->duration}}/month(s)
 
 
                                                                     </span>
@@ -201,7 +201,7 @@
                                                                     <div
                                                                         class="p-2 flex items-center font-medium justify-end">
                                                                         ₱
-                                                                        {{ number_format($expense->p_s_expense->amount) ?? 0 }}
+                                                                        {{ number_format($expense->amount) ?? 0 }}
                                                                     </div>
                                                                     {{-- <div class="border-r ">
                                                                             <div class="p-2  border-b flex items-center justify-center">
@@ -251,8 +251,9 @@
                                                                 @endforeach
                                                                 {{-- <div class=" col-span-12 p-[0.5px] {{$loop->last ? '' :'light-bg' }} "></div> --}}
                                                                 <div
-                                                                    class=" col-span-12 grid grid-cols-12 border-r border-b  bg-gray bg-gray-50 text-gray-400">
-                                                                    <div class="p-1  py-1 col-span-2    ">
+                                                                class=" col-span-12 grid grid-cols-12 border-r border-b  bg-gray bg-gray-50 text-gray-400">
+                                                                <div class="p-1  py-1 col-span-2    ">
+                                                                       
                                                                         Total
                                                                     </div>
                                                                     <div class="p-1 col-span-3 "></div>
@@ -261,7 +262,7 @@
                                                                         class="px-2 py-1 col-span-3  border-l  text-right  text-gray-600 ">
                                                                         {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                                         ₱
-                                                                        {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
+                                                                        {{ number_format($expense->totalSpent() ?? 0) }}
                                                                         {{-- @endif --}}
 
                                                                     </div>
@@ -284,7 +285,7 @@
                                                                     <div
                                                                         class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                                         ₱
-                                                                        {{ number_format($expense->p_s_expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
+                                                                        {{ number_format($expense->remainingBudget()) ?? 0 }}
                                                                     </div>
                                                                     <div class=" col-span-2 border-l border-r ">
 
@@ -320,18 +321,18 @@
                                     <div class="p-2 flex items-center col-span-2   ">
                                     </div>
                                     <div class="p-2 flex items-center col-span-3 ">
-
-                                        Used {{ number_format($percentage_used_ps ?? 0) . '%' }}</div>
+                                        Used {{ intval($record->getPSTotalUsePercentage()) . '%' }}</div>
                                     <div class="p-2 text-left col-span-2"> </div>
                                     <div class="p-2 col-span-3 border-l border-r ">
                                         <div class="flex items-center justify-between">
 
                                             <p class="text-left">
-                                                ₱ {{ number_format($remaining_budget_ps ?? 0) }}
+                                                
+                                                ₱ {{ number_format($record->getPSTotalRemainingBudget() ?? 0) }}
 
                                             </p>
                                             <p class="text-right">
-                                                ₱ {{ number_format($total_ps_breakdown ?? 0) }}
+                                                ₱ {{ number_format($record->getYearTotalPsBreakDown() ?? 0) }}
 
                                             </p>
                                         </div>
@@ -352,7 +353,7 @@
 
                                     <div class="p-2  col-span-2 text-right border-r border-gray-400 ">
                                         <p>
-                                            ₱ {{ number_format($total_ps ?? 0) }}
+                                            ₱ {{ number_format($record->getActualTotalPS() ?? 0) }}
 
                                         </p>
                                         <p class="text-right">
@@ -405,7 +406,7 @@
 
                                 </div>
                                 <div class=" flex justify-center items-center">
-                                    ₱ {{ number_format($total_mooe) }}
+                                    ₱ {{ number_format($record->getActualTotalMOOE()) }}
                                 </div>
 
                             </div>
@@ -416,28 +417,7 @@
                 <div id="accordion-flush-body-2" x-show="open" aria-labelledby="accordion-flush-heading-2">
                     <div class="text-gray-600">
 
-                        {{-- <div class="grid grid-cols-12">
-                                <div class="col-span-12 grid grid-cols-12 border-l border-b ">
-                                    <div
-                                        class="col-span-10 flex items-center font-medium uppercase p-2 text-md text-center">
-                                        II. Maintenance and Other Operating Expenses</div>
-
-                                    <div class="uppercase col-span-2 border-l text-sm grid grid-cols-1">
-
-                                        <div class="border-r  font-medium   flex items-center justify-between p-2 ">
-                                            <div class="  flex justify-center items-center">
-                                                Budget
-
-                                            </div>
-                                            <div class="   flex justify-center items-center">
-
-                                                ₱ {{ number_format($total_mooe ?? 0) }}
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                </div> --}}
+                    
 
                         <div class="col-span-12 text-xs">
 
@@ -452,7 +432,7 @@
                                             <div class="col-span-12 grid grid-cols-12 ">
                                                 @foreach ($mooe as $group_title => $groups)
                                             <div class="col-span-12">
-                                                {{-- @dump($groups) --}}
+                                               
                                             </div>
                                                     <div
                                                         class="col-span-12  grid grid-cols-12  transition  {{ $loop->last ? '' : 'border-b' }}">
@@ -461,7 +441,7 @@
 
                                                             <x-filament-actions::group :actions="[
 
-                                                                //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'ps']),
+                                                              
                                                                 ($this->printGroup)(['record' => $groups[0]->m_o_o_e_group_id, 'type' => 'mooe','year'=>$groups[0]->project_year_id])
                                                                 ]"
 
@@ -476,7 +456,7 @@
                                                                 <div
                                                                     class=" col-span-10  flex items-center  border-b px-2 py-1   ">
                                                                     <span class="mr-2">
-                                                                        {{ $expense->m_o_o_e_expense->title }}
+                                                                        ({{$expense->specification}})  {{ $expense->m_o_o_e_expense->title }}
 
 
                                                                     </span>
@@ -484,7 +464,7 @@
 
                                                                     @if ($expense->breakdowns->count())
                                                                     <x-filament-actions::group :actions="[
-                                                                    //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'mooe']),
+                                                                 
                                                                       ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'mooe']),
                                                                     ]"
 
@@ -507,14 +487,7 @@
                                                                         <span class="mr-2">
                                                                             {{ number_format($expense->amount) ?? 0 }}
                                                                     </div>
-                                                                    {{-- <div class="border-r ">
-                                                                                <div class="p-2  border-b flex items-center justify-center">
-                                                                                    Remaining
-                                                                                </div>
-                                                                                <div class="p-2 flex items-center justify-center">
-                                                                                    {{ number_format($expense->p_s_expense->amount) ?? 0 }}
-                                                                                </div>
-                                                                            </div> --}}
+                                                               
                                                                 </div>
 
 
@@ -566,7 +539,7 @@
                                                                         class="px-2 py-1 col-span-3  border-l  text-right  text-gray-600 ">
                                                                         {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                                         ₱
-                                                                        {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
+                                                                        {{ number_format($expense->totalSpent() ?? 0) }}
                                                                         {{-- @endif --}}
 
                                                                     </div>
@@ -589,7 +562,7 @@
                                                                     <div
                                                                         class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                                         ₱
-                                                                        {{ number_format($expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
+                                                                        {{ number_format($expense->remainingBudget()) ?? 0 }}
                                                                     </div>
                                                                     <div class=" col-span-2 border-l border-r ">
 
@@ -628,17 +601,17 @@
                                     </div>
                                     <div class="p-2 flex items-center col-span-3 ">
 
-                                        Used {{ number_format($percentage_used_mooe ?? 0) . '%' }}</div>
+                                        Used {{ intVal($record->getMOOETotalUsePercentage() ?? 0) . '%' }}</div>
                                     <div class="p-2 text-left col-span-2"> </div>
                                     <div class="p-2 col-span-3 border-l border-r">
                                         <div class="flex items-center justify-between">
 
                                             <p class="text-left">
-                                                ₱ {{ number_format($remaining_budget_mooe ?? 0) }}
+                                                ₱ {{ number_format($record->getMOOETotalRemainingBudget() ?? 0) }}
 
                                             </p>
                                             <p class="text-right">
-                                                ₱ {{ number_format($total_mooe_breakdown ?? 0) }}
+                                                ₱ {{ number_format($record->getYearTotalMOOEBreakDown() ?? 0) }}
 
                                             </p>
                                         </div>
@@ -659,7 +632,8 @@
 
                                     <div class="px-2 py-1 col-span-2 text-right border-r border-gray-400 ">
                                         <p>
-                                            ₱ {{ number_format($total_mooe ?? 0) }}
+    
+                                            ₱ {{ number_format($record->getActualTotalMOOE() ?? 0) }}
 
                                         </p>
                                         <p class="text-right">
@@ -713,7 +687,7 @@
 
                             </div>
                             <div class=" flex justify-center items-center">
-                                ₱ {{ number_format($total_co) }}
+                                ₱ {{ number_format($record->getActualTotalCO()) }}
                             </div>
 
                         </div>
@@ -726,28 +700,10 @@
                 <div class="text-gray-600">
 
                     <div class="grid grid-cols-12">
-                        {{-- <div class="col-span-12 grid grid-cols-12 border-l border-b ">
-                            <div class="col-span-10 flex items-center font-medium uppercase p-2 text-md text-center">
-                                III. Capital Outlay</div>
-
-                            <div class="uppercase col-span-2 border-l text-sm grid grid-cols-1">
-
-                                <div class="border-r  font-medium   flex items-center justify-between p-2 ">
-                                    <div class="  flex justify-center items-center">
-                                        Budget
-
-                                    </div>
-                                    <div class="   flex justify-center items-center">
-
-                                        ₱ {{ number_format($total_co ?? 0) }}
-                                    </div>
-
-                                </div>
-                            </div>
-
-                        </div> --}}
-
-                        <div class="col-span-12 text-xs">
+                        <div class="col-span-2 text-xs  p-4 flex items-center border-l justify-center   text-gray-600  ">
+                            NO Category
+                        </div>
+                        <div class="col-span-10 text-xs">
 
                             @forelse ($cos as $cost_type => $co)
                                 <div class=" border-l    ">
@@ -760,16 +716,15 @@
                                             <div class="col-span-12  grid grid-cols-12  ">
                                                 @foreach ($co as $key => $expense)
                                                     <div
-                                                        class=" col-span-10  flex items-center  border-b px-2 py-1 border  ">
+                                                        class=" col-span-10  flex items-center  border-b px-2 py-1   ">
                                                         <span class="mr-2">
-                                                            {{ $expense->description }}
+                                                            ({{$expense->quantity}}) {{ $expense->description }} <span class="text-xs">({{number_format($expense->amount)}}/Per item)</span>
 
 
                                                         </span>
                                                         {{ ($this->addCOBreakDown)(['record' => $expense->id]) }}
                                                         @if ($expense->breakdowns->count())
                                                         <x-filament-actions::group :actions="[
-                                                        //   ($this->downloadBreakDown)(['record' => $expense->id, 'type' => 'co']),
                                                           ($this->redirectToPrintPage)(['record' => $expense->id, 'type' => 'co']),
                                                         ]"
 
@@ -787,16 +742,9 @@
                                                         <div class="p-2 flex items-center font-medium justify-end">
                                                             ₱
                                                             <span class="mr-2">
-                                                                {{ number_format($expense->amount) ?? 0 }}
+                                                                {{ number_format($expense->new_amount) ?? 0 }}
                                                         </div>
-                                                        {{-- <div class="border-r ">
-                                                                    <div class="p-2  border-b flex items-center justify-center">
-                                                                        Remaining
-                                                                    </div>
-                                                                    <div class="p-2 flex items-center justify-center">
-                                                                        {{ number_format($expense->p_s_expense->amount) ?? 0 }}
-                                                                    </div>
-                                                                </div> --}}
+                                                      
                                                     </div>
 
 
@@ -835,7 +783,6 @@
 
                                                         </div>
                                                     @endforeach
-                                                    {{-- <div class=" col-span-12 p-[0.5px] {{$loop->last ? '' :'light-bg' }} "></div> --}}
                                                     <div
                                                         class=" col-span-12 grid grid-cols-12 border-r border-b  bg-gray bg-gray-50 text-gray-400">
                                                         <div class="p-1  py-1 col-span-2   ">
@@ -845,10 +792,8 @@
                                                         <div class="p-1 col-span-2"> </div>
                                                         <div
                                                             class="px-2 py-1 col-span-3  border-l  text-right  text-gray-400 ">
-                                                            {{-- @if (($expense->breakdowns->sum('amount') ?? 0) > 0) --}}
                                                             ₱
-                                                            {{ number_format($expense->breakdowns->sum('amount') ?? 0) }}
-                                                            {{-- @endif --}}
+                                                            {{ number_format($expense->totalSpent() ?? 0) }}
 
                                                         </div>
                                                         <div class=" col-span-2 border-l border-r ">
@@ -858,7 +803,6 @@
 
 
 
-                                                    {{-- <div class=" col-span-12 p-[0.5px] {{$loop->last ? '' :'light-bg' }} "></div> --}}
                                                     <div
                                                         class=" col-span-12 grid grid-cols-12 border-r   bg-gray bg-gray-50 text-gray-600">
                                                         <div class="p-1 col-span-2  ">
@@ -869,7 +813,7 @@
                                                         <div class="p-1 col-span-2"> </div>
                                                         <div class="px-2 py-1 col-span-3  border-l  text-left  ">
                                                             ₱
-                                                            {{ number_format($expense->amount - $expense->breakdowns->sum('amount')) ?? 0 }}
+                                                            {{ number_format($expense->remainingBudget()) ?? 0 }}
                                                         </div>
                                                         <div class=" col-span-2 border-l border-r ">
 
@@ -890,70 +834,146 @@
                         </div>
 
 
+                  
+
                         <div
-                            class="col-span-12  grid grid-cols-12 text-xs font-medium transition border-t  d-gradient  text-white      uppercase">
+                        class="col-span-12  grid grid-cols-12 text-xs font-medium transition border-t  d-gradient  text-white      uppercase">
+                        <div class="col-span-12 border-b p-2 flex items-center    ">
+                            CO Summary
+                        </div>
+                        <div class="col-span-2  p-4 flex items-center   ">
 
-                            <div class="col-span-12  p-2 flex items-center    ">
-                                CO Summary
-                            </div>
-                            <div class="col-span-12  grid grid-cols-12 border-t ">
+                        </div>
+                        <div class="col-span-10  grid grid-cols-12   ">
 
-                                <div class=" col-span-12 grid grid-cols-12 ">
+                            <div class=" col-span-12 grid grid-cols-12 ">
+                                <div class="p-2 flex items-center col-span-2   ">
+                                </div>
+                                <div class="p-2 flex items-center col-span-3 ">
 
-                                    <div class="p-4 flex items-center col-span-6 justify-center  ">
+                                    Used {{ intVal($record->getCOTotalUsePercentage() ?? 0) . '%' }}</div>
+                                <div class="p-2 text-left col-span-2"> </div>
+                                <div class="p-2 col-span-3 border-l border-r">
+                                    <div class="flex items-center justify-between">
 
-                                        Used {{ number_format($percentage_used_co ?? 0) . '%' }}</div>
-                                    <div class="p-2 col-span-3 border-l border-r">
-                                        <div class="flex items-center justify-between">
-
-                                            <p class="text-left">
-                                                ₱ {{ number_format($remaining_budget_co ?? 0) }}
-
-                                            </p>
-                                            <p class="text-right">
-                                                ₱ {{ number_format($total_co_breakdown ?? 0) }}
-
-                                            </p>
-                                        </div>
-                                        <div class="flex items-center justify-between">
-
-                                            <p class="text-left">
-                                                Remaining
-
-                                            </p>
-                                            <p class="text-right">
-                                                Total Spent
-
-                                            </p>
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="p-2  col-span-2 text-right border-r border-gray-400 ">
-                                        <p>
-                                            ₱ {{ number_format($total_co ?? 0) }}
+                                        <p class="text-left">
+                                            ₱ {{ number_format($record->getCOTotalRemainingBudget() ?? 0) }}
 
                                         </p>
                                         <p class="text-right">
-                                            TOTAL
+                                            ₱ {{ number_format($record->getYearTotalCOBreakDown() ?? 0) }}
 
                                         </p>
-
                                     </div>
+                                    <div class="flex items-center justify-between">
+
+                                        <p class="text-left">
+                                            Remaining
+
+                                        </p>
+                                        <p class="text-right">
+                                            Total Spent
+
+                                        </p>
+                                    </div>
+
                                 </div>
-                                <div>
+
+
+                                <div class="px-2 py-1 col-span-2 text-right border-r border-gray-400 ">
+                                    <p>
+
+                                        ₱ {{ number_format($record->getActualTotalCO() ?? 0) }}
+
+                                    </p>
+                                    <p class="text-right">
+                                        TOTAL
+
+                                    </p>
+
                                 </div>
-
-
-
                             </div>
+                            <div>
+                            </div>
+
+
+
                         </div>
+                    </div>
+
                     </div>
                 </div>
 
             </div>
-            <div class="bg-2">
+
+            <div
+            class="col-span-12   grid grid-cols-12 text-md font-medium transition   bg-3  text-gray-200      uppercase">
+          
+            <div class="col-span-2  p-4 flex items-center   ">
+
+            </div>
+            <div class="col-span-10  grid grid-cols-12 ">
+
+                <div class=" col-span-12 grid grid-cols-12 ">
+                  
+                    <div class="p-2 flex items-center col-span-5">
+                        <div class="flex items-center w-full">
+                            <span class="mr-2">Used</span>
+                            <div class="relative w-full bg-gray-200 rounded-full h-2">
+                                <div class="absolute left-0 top-0 bg-green-500 rounded-full h-2"
+                                    style="width: {{ $record->getBudgetPercentageUse() }}%;"></div>
+                            </div>
+                            <span class="ml-2">{{ intVal($record->getBudgetPercentageUse()) }}%</span>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="p-2 text-left col-span-2"> </div>
+                    <div class="p-2 py-6 col-span-3 border-l border-r">
+                        <div class="flex items-center justify-between">
+
+                            <p class="text-left">
+                                ₱ {{ number_format($record->getYearRemainingBudget() ?? 0) }}
+
+                            </p>
+                            <p class="text-right">
+                                ₱ {{ number_format($record->getYearTotalSpent() ?? 0) }}
+
+                            </p>
+                        </div>
+                        <div class="flex items-center justify-between">
+
+                            <p class="text-left">
+                                Remaining
+
+                            </p>
+                            <p class="text-right">
+                                Total Spent
+
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="px-2 py-1 col-span-2 flex flex-col items-center justify-center">
+                        <p class="text-right">
+                            ₱ {{ number_format($record->getYearActualBudget() ?? 0) }}
+                        </p>
+                        <p class="text-center">
+                            Total
+                        </p>
+                    </div>
+                    
+                </div>
+                <div>
+                </div>
+
+
+
+            </div>
+        </div>
+            {{-- <div class="bg-2">
                 <p class="text-white uppercase font-medium p-4 border-b">
                     {{ $record->year->title }} Summary Details
                 </p>
@@ -972,7 +992,7 @@
                                     <div class="absolute left-0 top-0 bg-green-500 rounded-full h-2"
                                         style="width: {{ $record->getBudgetPercentageUse() }}%;"></div>
                                 </div>
-                                <span class="ml-2">{{ number_format($record->getBudgetPercentageUse()) }}%</span>
+                                <span class="ml-2">{{ intVal($record->getBudgetPercentageUse()) }}%</span>
                             </div>
                         </div>
 
@@ -1006,7 +1026,7 @@
 
                             </div>
                             <div class=" flex justify-center items-center">
-                                ₱ {{ number_format($record->getYearTotalBudget()) }}
+                                ₱ {{ number_format($record->getYearActualBudget()) }}
                             </div>
 
                         </div>
@@ -1014,7 +1034,7 @@
                     </div>
                     </button>
                 </div>
-            </div>
+            </div> --}}
 
 
             <x-filament-actions::modals />

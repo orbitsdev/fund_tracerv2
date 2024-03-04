@@ -186,6 +186,12 @@
     background-repeat: no-repeat;
 
 }
+.bg-3{
+    background-image:linear-gradient(to bottom left , #062b3afa, #0e5875);
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
 
 
 .login-bg

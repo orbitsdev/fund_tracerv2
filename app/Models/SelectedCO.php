@@ -44,7 +44,7 @@ class SelectedCO extends Model
 
     public function totalPercentageUse()
     {
-        $budget = $this->amount;
+        $budget = $this->new_amount;
         $totalExpense = $this->totalSpent();
 
         // Calculate the percentage used
@@ -54,7 +54,7 @@ class SelectedCO extends Model
 
     public function remainingBudget()
     {
-        $budget = $this->amount;
+        $budget = $this->new_amount;
         $totalExpense = $this->totalSpent();
 
         // Calculate the remaining budget
@@ -64,12 +64,17 @@ class SelectedCO extends Model
 
     public function remainingPercentage()
     {
-        $budget = $this->amount;
+        $budget = $this->new_amount;
         $totalExpense = $this->totalSpent();
         $remainingBudget = $budget - $totalExpense;
 
         // Calculate the remaining percentage
         $remainingPercentage = $budget != 0 ? ($remainingBudget / $budget) * 100 : 0;
         return $remainingPercentage;
+    }
+
+    public function getTotalCoPerYear($record){
+        $total_co = SelectedCO::where('project_year_id', $record)->sum('new_amount');
+       return $total_co;
     }
 }

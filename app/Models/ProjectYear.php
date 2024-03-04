@@ -38,7 +38,7 @@ class ProjectYear extends Model
     }
 
 
-    
+
     public function getSelectedPersonalService()
     {
         return  $this->selected_p_ses()->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
@@ -96,11 +96,11 @@ class ProjectYear extends Model
     public function getYearTotalBudget()
     {
         $total_ps = $this->selected_p_ses()->with('p_s_expense')->get()->sum(function ($selectedPS) {
-            return $selectedPS->p_s_expense->amount ?? 0;
+            return $selectedPS->amount ?? 0;
         });
 
         $total_mooe = $this->selected_m_o_o_es()->sum('amount');
-        $total_co = $this->selected_c_os()->sum('amount');
+        $total_co = $this->selected_c_os()->sum('new_amount');
 
         return $total_ps + $total_mooe + $total_co;
     }
@@ -112,7 +112,7 @@ class ProjectYear extends Model
             return $selectedPS->breakdowns->sum('amount') ?? 0;
         });
 
-      
+
 
         return $total_spent_ps;
     }
@@ -122,7 +122,7 @@ class ProjectYear extends Model
             return $selectedMOOE->breakdowns->sum('amount') ?? 0;
         });
 
-      
+
 
         return $total_spent_mooe;
     }
@@ -132,43 +132,105 @@ class ProjectYear extends Model
             return $selectedCO->breakdowns->sum('amount') ?? 0;
         });
 
-      
+
 
         return $total_spent_co;
     }
     public function getYearTotalSpent()
     {
-        $total_spent_ps = $this->selected_p_ses()->with('breakdowns')->get()->sum(function ($selectedPS) {
-            return $selectedPS->breakdowns->sum('amount') ?? 0;
-        });
-
-        $total_spent_mooe = $this->selected_m_o_o_es()->with('breakdowns')->get()->sum(function ($selectedMOOE) {
-            return $selectedMOOE->breakdowns->sum('amount') ?? 0;
-        });
-
-        $total_spent_co = $this->selected_c_os()->with('breakdowns')->get()->sum(function ($selectedCO) {
-            return $selectedCO->breakdowns->sum('amount') ?? 0;
-        });
+        $total_spent_ps = $this->selected_p_ses->sum(fn($item) => $item->totalSpent());
+        $total_spent_mooe = $this->selected_m_o_o_es->sum(fn($item) => $item->totalSpent());
+        $total_spent_co = $this->selected_c_os->sum(fn($item) => $item->totalSpent());
 
         return ($total_spent_ps + $total_spent_mooe + $total_spent_co);
     }
 
     public function getYearRemainingBudget()
     {
-        $total_budget = $this->getYearTotalBudget();
+        $total_budget = $this->getYearActualBudget();
         $total_spent = $this->getYearTotalSpent();
 
         $remaining = ($total_budget - $total_spent);
 
         return $remaining;
     }
+
     public function getBudgetPercentageUse()
     {
-        $total_budget = $this->getYearTotalBudget();
+        $total_budget = $this->getYearActualBudget();
         $total_spent = $this->getYearTotalSpent();
 
         $percentage_used = ($total_budget != 0) ? ($total_spent / $total_budget) * 100 : 0;
 
         return $percentage_used;
     }
+
+    public function getActualTotalPS()
+    {
+        return  $this->selected_p_ses()->sum('amount');
+    }
+    public function getActualTotalMOOE()
+    {
+        return  $this->selected_m_o_o_es()->sum('amount');
+    }
+    public function getActualTotalCO()
+    {
+        return  $this->selected_c_os()->sum('new_amount');
+    }
+
+    public function getYearActualBudget()
+    {
+        return ($this->getActualTotalPS() + $this->getActualTotalMOOE() + $this->getActualTotalCO());
+    }
+
+
+
+    public function getYearTotalPsBreakDown()
+    {
+        return $this->selected_p_ses->sum(function ($item) {
+            return $item->totalSpent();
+        });
+    }
+    public function getYearTotalMOOEBreakDown()
+    {
+        return $this->selected_m_o_o_es->sum(function ($item) {
+            return $item->totalSpent();
+        });
+    }
+    public function getYearTotalCOBreakDown()
+    {
+        return $this->selected_c_os->sum(function ($item) {
+            return $item->totalSpent();
+        });
+    }
+
+    public function getPSTotalRemainingBudget()
+    {
+        return ($this->getActualTotalPS() - $this->getYearTotalPsBreakDown());
+    }
+    public function getPSTotalUsePercentage()
+    {
+        return $this->getActualTotalPS() != 0 ? ($this->getYearTotalPsBreakDown() / $this->getActualTotalPS()) * 100 : 0;
+    }
+
+
+    public function getMOOETotalRemainingBudget(){
+      return ($this->getActualTotalMOOE() - $this->getYearTotalMOOEBreakDown());
+    }
+
+    public function getMOOETotalUsePercentage()
+    {
+        return $this->getActualTotalMOOE() != 0 ? ($this->getYearTotalMOOEBreakDown() / $this->getActualTotalMOOE()) * 100 : 0;
+    }
+
+    public function getCOTotalRemainingBudget(){
+      return ($this->getActualTotalCO() - $this->getYearTotalCOBreakDown());
+    }
+
+    public function getCOTotalUsePercentage()
+    {
+        return $this->getActualTotalCO() != 0 ? ($this->getYearTotalCOBreakDown() / $this->getActualTotalCO()) * 100 : 0;
+    }
+
+
 }

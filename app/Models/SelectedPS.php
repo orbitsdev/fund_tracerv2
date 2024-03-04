@@ -56,6 +56,8 @@ class SelectedPS extends Model
         return $this->breakdowns()->sum('amount');
     }
 
+    
+
     public function totalPercentageUse()
     {
         $budget = $this->amount;
@@ -93,6 +95,8 @@ class SelectedPS extends Model
                  ->get()
                  ->groupBy('p_s_expense.title');
 }
+
+
 
 
 

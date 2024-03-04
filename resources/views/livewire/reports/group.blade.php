@@ -35,6 +35,7 @@
             <p class="uppercase text-3xl font-medium text-gray-600">Sultan Kudarat State University</p>
             <p class="text-xs text-gray-600">EJC Montilla, 9800, Province of Sultan Kudarat</p>
             <p class="mt-6 text-xl font-extrabold text-gray-600"> {{$yearContent->year->title}} {{  $record->title }}</p>
+
         </div>
 
         <div class="mx-auto max-w-3xl mt-8">

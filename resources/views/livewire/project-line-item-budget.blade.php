@@ -40,7 +40,7 @@
           </div>
           <div class="flex items-center">
               <p class="text-lg font-medium mr-4">Total Project Budget:</p>
-              <p class="text-lg font-medium text-right">{{ number_format($project_total_budget) }}</p>
+              <p class="text-lg font-medium text-right">{{ number_format($record->getTotalAllYearsBudget()) }}</p>
           </div>
       </div>
   </div>

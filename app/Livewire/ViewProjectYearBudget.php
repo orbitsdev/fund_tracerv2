@@ -701,7 +701,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                 $remaining_budget = null;
 
                 if ($model) {
-                    $current_budget = $model->amount;
+                    $current_budget = $model->new_amount;
                     $current_breakdown = $model->breakdowns->sum('amount');
                     $remaining_budget = $current_budget - $current_breakdown;
                 }
@@ -944,7 +944,13 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     ) {
                         $parent_model = $model->breakdownable;
                         $current_breakdown = $parent_model->breakdowns->sum('amount');
-                        $current_budget = $parent_model->amount;
+                        if( $model->breakdownable instanceof \App\Models\SelectedCO){
+                            
+                            $current_budget = $parent_model->new_amount;
+                        }else{
+
+                            $current_budget = $parent_model->amount;
+                        }
                         $remaining_budget = $current_budget - $current_breakdown;
 
                         // Extract common data
@@ -1028,7 +1034,15 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
 
 
                                             $parent_model = $model->breakdownable;
-                                            $current_budget = $parent_model->amount;
+
+                                            if( $parent_model instanceof \App\Models\SelectedCO){
+                            
+                                                $current_budget = $parent_model->new_amount;
+                                            }else{
+                    
+                                                $current_budget = $parent_model->amount;
+                                            }
+                                         
 
                                             $current_breakdown = $parent_model->breakdowns->sum('amount');
 
