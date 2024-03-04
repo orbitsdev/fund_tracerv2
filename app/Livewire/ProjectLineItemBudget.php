@@ -51,13 +51,13 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 // ...
             ])
             ->actions([
-                TAction::make('monitor')->icon('heroicon-m-cursor-arrow-rays')->button()->label('Monitor Budget')
-                ->outlined()
-                // ->extraAttributes([
-                //     'style' => 'border-radius: 100px; font-size: 14px',
+                // TAction::make('monitor')->icon('heroicon-m-cursor-arrow-rays')->button()->label('Monitor Budget')
+                // ->outlined()
+                // // ->extraAttributes([
+                // //     'style' => 'border-radius: 100px; font-size: 14px',
 
-                // ])
-                ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
+                // // ])
+                // ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 ActionGroup::make([
 
                     TAction::make('edit')->icon('heroicon-m-pencil-square')->label('Edit LIB')->color('primary')
