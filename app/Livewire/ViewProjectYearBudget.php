@@ -763,7 +763,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                         $model = SelectedCO::find((int)$this->selectedps ?? null);
 
                                         if ($model) {
-                                            $current_budget = $model->amount;
+                                            $current_budget = $model->new_amount;
                                             $current_breakdown = $model->breakdowns->sum('amount');
                                             $new_amount = (float) str_replace(',', '', $get('amount'));
                                             $over_all_total = $new_amount + $current_breakdown;
