@@ -19,7 +19,9 @@ return new class extends Migration
             $table->foreignId('m_o_o_e_expense_id')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->unsignedBigInteger('quantity')->default(0)->nullable();
+            $table->decimal('new_amount', 10, 2)->nullable();
             $table->unsignedBigInteger('specification')->default(0)->nullable();
+            
             $table->timestamps();
         });
     }

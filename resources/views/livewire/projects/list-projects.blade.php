@@ -5,7 +5,7 @@
 
             <p class="text-2xl">
 
-                Project Lists
+                Project Listsdasdad
             </p>
         </x-slot> --}}
         {{ $this->table }}
