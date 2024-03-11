@@ -3,6 +3,7 @@
 namespace App\Livewire\PSGroup;
 
 use App\Livewire\ContentManagement;
+use App\Models\PSExpenseType;
 use Filament\Forms;
 use App\Models\PSGroup;
 use Livewire\Component;
@@ -17,6 +18,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
+use Filament\Forms\Components\Select;
 
 
 class EditPsGroup extends Component implements HasForms
@@ -48,7 +50,7 @@ class EditPsGroup extends Component implements HasForms
         return $form
             ->schema([
                 TableRepeater::make('ps_expenses')
-                
+                ->withoutHeader()
                 ->columns([
                     'sm' => 3,
                     'xl' => 6,
@@ -62,6 +64,13 @@ class EditPsGroup extends Component implements HasForms
                         TextInput::make('title')
                         ->label('Description')
                         ->columnSpan(4)
+                        ->required(),
+                        Select::make('p_s_expense_type_id')
+                        ->options(PSExpenseType::pluck('title', 'id'))
+                        ->selectablePlaceholder(false)
+                        // // ->relationship(name: 'p_s_expense_type', titleAttribute: 'title')
+                        ->columnSpan(4)
+                        ->default(1)
                         ->required(),
                         TextInput::make('amount')
                         ->label('Amount ')
@@ -77,19 +86,25 @@ class EditPsGroup extends Component implements HasForms
                     ])
                     ->columnSpan('full')
             ])
+
             ->statePath('data')
             ->model($this->record);
     }
 
     public function save()
+
     {
+
+
         $data = $this->form->getState();
-        $this->record->update($data);
+
+
 
         Notification::make()
             ->title('Saved successfully')
             ->success()
             ->send();
+
 
              return redirect()->route('personal-service.index');
     }

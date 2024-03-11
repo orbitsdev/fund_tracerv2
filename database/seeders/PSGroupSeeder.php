@@ -15,25 +15,33 @@ class PSGroupSeeder extends Seeder
     {
         $salary = PSGroup::create(['title' => 'Salary']);
         $honoraria = PSGroup::create(['title' => 'Honoraria']);
+        $sksu = PSGroup::create(['title' => 'Indirect Cost (SKSU)']);
+        $dost = PSGroup::create(['title' => 'Indirect Cost (DOST XII)']);
 
         // Define the options for expenses
         $salary_options = [
-            ['title' => 'Project Administrative Aide II', 'amount' => 19852.00],
-            ['title' => 'Project Administrative Aide III', 'amount' => 21064.00],
-            ['title' => 'Project Administrative Aide IV', 'amount' => 22344.00],
-            ['title' => 'Project Administrative Aide V', 'amount' => 23693.00],
-            ['title' => 'Project Administrative Aide VI', 'amount' => 25355.00],
+            ['title' => 'Project Development Officer III ', 'p_s_expense_type_id'=> 1,'amount' => 54244.00],
+            ['title' => 'Project Assistant Aide III', 'p_s_expense_type_id'=> 1,'amount' => 11043.00],
+
         ];
         $honoraria_options = [
-            ['title' => 'One(1) Project Learder @ P8000.00/mo x 12', 'amount' => 105600],
-            ['title' => 'One(1) Project Staff Support Level 3 @ 7500', 'amount' => 90000.00],
-            ['title' => 'One(1) Project Staff Support Level 3 @ 7500', 'amount' => 90000.00],
-
+            ['title' => 'Project Leader', 'p_s_expense_type_id'=> 1,'amount' => 8800],
+            ['title' => 'Project Staff Support Level 2', 'p_s_expense_type_id'=> 1,'amount' => 7500.00],
+        ];
+        $sksu_option = [
+            ['title' => 'Project Staff Support Level 2','p_s_expense_type_id'=> 3, 'amount' => 1500.00],
+            ['title' => 'Project Staff Support Level 1','p_s_expense_type_id'=> 3, 'amount' => 1000.00],
+        ];
+        $dost_option = [
+            ['title' => 'Project Staff Support Level 2', 'p_s_expense_type_id'=> 3, 'amount' => 1500.00],
+            ['title' => 'Project Staff Support Level 1', 'p_s_expense_type_id'=> 3, 'amount' => 1000.00],
         ];
 
 
         $salary->p_s_expenses()->createMany($salary_options);
         $honoraria->p_s_expenses()->createMany($honoraria_options);
+        $sksu->p_s_expenses()->createMany($sksu_option);
+        $dost->p_s_expenses()->createMany($dost_option);
 
 
     }

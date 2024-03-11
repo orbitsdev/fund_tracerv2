@@ -220,7 +220,7 @@
             </div>
 
             <main class="py-10 bg-gray-100 min-h-screen">
-                <div class="max-w-7xl  m-auto  ">
+                <div class="lg:max-w-5xl xl:max-w-6xl md:max-w-5xl sm:max-w-4xl m-auto  ">
                     {{ $slot }}
                     <!-- Your content -->
                 </div>

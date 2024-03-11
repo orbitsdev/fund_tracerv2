@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('p_s_expenses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('p_s_group_id')->nullable();
+            $table->foreignId('p_s_expense_type_id')->nullable();
             $table->string('title')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

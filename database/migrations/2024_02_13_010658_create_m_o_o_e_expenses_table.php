@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('m_o_o_e_group_id')->nullable();
             $table->string('title')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
+            $table->boolean('has_sub_options')->default(false);
             $table->timestamps();
         });
     }

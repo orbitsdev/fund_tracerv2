@@ -8,6 +8,7 @@ use Database\Seeders\UserSeeder;
 use Database\Seeders\EOGroupSeeder;
 use Database\Seeders\PSGroupSeeder;
 use Database\Seeders\MOOEGroupSeeder;
+use Database\Seeders\PSExpenseTypeSeeder;
 use Database\Seeders\MonitoringAgencySeeder;
 use Database\Seeders\ImplementingAgencySeeder;
 
@@ -21,6 +22,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             UserSeeder::class,
+            PSExpenseTypeSeeder::class,
             PSGroupSeeder::class,
             MOOEGroupSeeder::class,
             EOGroupSeeder::class,

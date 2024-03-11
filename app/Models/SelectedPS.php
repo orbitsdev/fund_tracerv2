@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Builder;
+
 class SelectedPS extends Model
 {
     use HasFactory;
@@ -56,7 +57,7 @@ class SelectedPS extends Model
         return $this->breakdowns()->sum('amount');
     }
 
-    
+
 
     public function totalPercentageUse()
     {
@@ -89,15 +90,28 @@ class SelectedPS extends Model
         return $remainingPercentage;
     }
     public function scopeGroup($query, $record)
-{
-    return $query->where('id', $record)
-                 ->with('p_s_expense') // Ensure the relationship is eager loaded
-                 ->get()
-                 ->groupBy('p_s_expense.title');
-}
+    {
+        return $query->where('id', $record)
+            ->with('p_s_expense') // Ensure the relationship is eager loaded
+            ->get()
+            ->groupBy('p_s_expense.title');
+    }
 
 
 
+    public function displaySelectedPS() {
+        switch ($this->p_s_expense->p_s_expense_type->title) {
+            case 'month':
+                return "(" . $this->number_of_positions . ") " . $this->p_s_expense->title . " " . number_format($this->p_s_expense->amount) . "/mo x " . $this->duration . " mos";
+                break;
 
+            case 'quarter':
+                return "(" . $this->number_of_positions . ") " . $this->p_s_expense->title . " " . number_format($this->p_s_expense->amount) . "/qtr";
+                break;
+
+            default:
+                return "(" . $this->number_of_positions . ") " . $this->p_s_expense->title . " " . number_format($this->p_s_expense->amount) . "(" . $this->p_s_expense->p_s_expense_type->title . ")";
+        }
+    }
 
 }

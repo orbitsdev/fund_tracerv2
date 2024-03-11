@@ -40,7 +40,8 @@
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
-                                                   ({{$expense->number_of_positions}})  {{ $expense->p_s_expense->title }} at {{ number_format($expense->p_s_expense->amount)}} x  {{$expense->duration}}/month(s)
+                                                    {{-- @dump() --}}
+                                                   {{$expense->displaySelectedPS()}} 
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}
@@ -316,7 +317,7 @@
             <div class="mt-4 pr-8 flex justify-between text-xl mb-8   p-2 text-system-800 rounded">
                 <div>
                     <p class=" font-bold">
-                        {{$record->year->title}} 
+                        {{$record->year->title}}
                     </p>
                 </div>
                 <div class="flex font-bold">

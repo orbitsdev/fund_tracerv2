@@ -58,19 +58,22 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
 
                 // ])
                 ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
-                ActionGroup::make([
-
-                    TAction::make('edit')->icon('heroicon-m-pencil-square')->label('Edit LIB')->color('primary')
+                TAction::make('edit')->icon('heroicon-m-pencil-square')->label('Edit LIB')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
                     ])
+                    ->button()
+                    ->outlined()
+
+
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
                 TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy LIB')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])
-
+                    ->button()
+                    ->outlined()
 
                     ->form([
                         Select::make('year_id')
@@ -191,7 +194,8 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         // $record->save();
                     }),
                 DeleteAction::make('delete')->icon('heroicon-m-x-mark')
-
+                ->button()
+                ->outlined()
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])
@@ -199,7 +203,10 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         'style' => 'border-radius: 100px;',
 
                     ]),
-                ]),
+                // ActionGroup::make([
+
+
+                // ]),
 
 
             ])
