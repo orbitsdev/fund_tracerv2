@@ -89,6 +89,9 @@ class MOOEGroupSeeder extends Seeder
             [
                 'title' => 'Presentation Expense',
             ],
+            [
+                'title' => 'Subscriptions Expense',
+            ],
         ];
         $indirect_cost_sksu_option= [
             [

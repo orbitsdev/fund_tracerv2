@@ -55,43 +55,41 @@ class EditMOOEGroup extends Component implements HasForms
                             ->required(),
 
                         Checkbox::make('has_sub_options')->inline()->label('Has Sub')
-                            ->formatStateUsing(function ($state, Get $get, Set $set) {
-                                $set('a', $state);
-                            })
+
                             ->live(debounce: 500),
 
-                            // TableRepeater::make('mooe_expense_subs')
+                            TableRepeater::make('mooe_expense_subs')
 
+                            ->withoutHeader()
+                            ->label('Sub Options')
+                                ->addActionLabel('Option')
+                                ->relationship('m_o_o_e_expense_subs')
+                                ->defaultItems(0)
+                                ->reorderable(false)
+                                // ->withoutHeader()
+                                ->emptyLabel('No Options')
+                                ->hideLabels()
+                                ->schema([
+                                    TextInput::make('title')
+                                    ->hiddenLabel()
 
-                            // ->label('Sub Options')
-                            //     ->addActionLabel('Option')
-                            //     ->relationship('m_o_o_e_expense_subs')
-                            //     ->defaultItems(0)
-                            //     ->reorderable(false)
-                            //     // ->withoutHeader()
-                            //     ->emptyLabel('No Options')
-                            //     ->hideLabels()
-                            //     ->schema([
-                            //         TextInput::make('title')
-                            //         ->hiddenLabel()
+                                        ->label('Sub description')
 
-                            //             ->label('Sub description')
+                                ])
+                                ->columnSpan('full')
+                                ->visible(function (Get $get, $record) {
+                                    if(!empty($get('has_sub_options'))){
 
-                            //     ])
-                            //     ->columnSpan('full')
-                            //     ->visible(function (Get $get, $record) {
-                            //         if(!empty($get('has_sub_options'))){
+                                        // if($this){
 
-                            //             if($this){
+                                        // }
 
-                            //             }
-
-                            //             return true;
-                            //         }else{
-                            //             return false;
-                            //         }
-                            //     })
-                            //     ,
+                                        return true;
+                                    }else{
+                                        return false;
+                                    }
+                                })
+                                ,
 
 
 

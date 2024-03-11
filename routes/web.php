@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Livewire\PSGroup\EditPsGroup;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\ListPersonalServices;
+use App\Livewire\MOOE\MOOEExpenseList;
 use App\Livewire\Programs\EditProgram;
 use App\Livewire\Programs\ViewProgram;
 use App\Livewire\Projects\EditProject;
@@ -30,12 +31,14 @@ use App\Livewire\Projects\CreateProject;
 use App\Livewire\MOOEGroup\EditMOOEGroup;
 use App\Http\Controllers\ReportController;
 use App\Livewire\FinancialManagerDashboard;
+use App\Livewire\FORM\MOOE\EditMOOEExpense;
 use function Spatie\LaravelPdf\Support\pdf;
 use App\Http\Controllers\SocialiteController;
-use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
-use App\Livewire\FinancialManagerProjects\ListFinancialManager;
 use App\Livewire\Project\ListAssignedProjects;
 use App\Livewire\Reports\YearParticularReport;
+use App\Livewire\MOOE\MOOEExpense\MOOEItemList;
+use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
+use App\Livewire\FinancialManagerProjects\ListFinancialManager;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,6 +146,9 @@ Route::prefix('reports')->name('report.')->group(function () {
         Route::prefix('mooe')->name('mooe.')->group(function(){
              Route::get('/', ListMOOE::class)->name('index');
              Route::get('/edit/{record}', EditMOOEGroup::class)->name('edit');
+             Route::get('mooe/expense/list/{record}', MOOEExpenseList::class)->name('expense.list');
+            //  Route::get('mooe/expense/list/mooe/item/{record}', MOOEItemList::class)->name('expense.list.item');
+             Route::get('edit/expense/list/mooe/item/{record}', EditMOOEExpense::class)->name('edit.expense.mooe');
         });
     });
 

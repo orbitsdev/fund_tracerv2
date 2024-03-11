@@ -44,7 +44,9 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
         return $table
             ->query(ProjectYear::query())
             ->columns([
-                TextColumn::make('year.title'),
+                TextColumn::make('year.title')->formatStateUsing(function($state){
+                    return $state. ' LIB';
+                }),
                 ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget')
             ])
             ->filters([

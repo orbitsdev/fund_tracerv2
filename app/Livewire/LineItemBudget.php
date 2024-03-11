@@ -15,6 +15,7 @@ use App\Models\ProjectYear;
 use Filament\Support\RawJs;
 use App\Models\SelectedMOOE;
 use Filament\Actions\Action;
+use App\Models\MOOEExpenseSub;
 use Filament\Forms\Components\Group;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
@@ -325,66 +326,69 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ])
                     ->schema([
                         Select::make('cost_type')
-                        ->options([
-                            'Direct Cost' => 'Direct Cost',
-                            'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                            'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
-                        ])
-                        ->columnSpanFull()
-                        ->native(false)
-                        ->required(),
-                    Select::make('m_o_o_e_group_id')
-                        ->label('MOOE Type')
-                        ->options(MOOEGroup::all()->pluck('title', 'id'))
-                        ->live()
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            $set('m_o_o_e_expense_id', null);
-                        })
-                        ->columnSpanFull()
-                        ->required()
-                        ->native(false)
-                        ->searchable(),
+                            ->options([
+                                'Direct Cost' => 'Direct Cost',
+                                'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                            ])
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->required(),
+                        Select::make('m_o_o_e_group_id')
+                            ->label('MOOE')
+                            ->options(MOOEGroup::all()->pluck('title', 'id'))
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $set('m_o_o_e_expense_id', null);
+                            })
+                            ->columnSpanFull()
+                            ->required()
+                            ->native(false)
+                            ->searchable(),
 
-                    Select::make('m_o_o_e_expense_id')
-                        ->label('MOOE Subcategories')
-                        ->required()
-                        ->options(function (Get $get, Set $set) {
-                            if (!empty($get('m_o_o_e_group_id'))) {
-                                return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
-                            } else {
-                                return [];
-                            }
-                        })
-                        ->columnSpanFull()
-                        ->native(false)
-                        ->searchable(),
+                        Select::make('m_o_o_e_expense_id')
+                            ->label('MOOE Subcategories')
+                            ->required()
+                            ->options(function (Get $get, Set $set) {
+                                if (!empty($get('m_o_o_e_group_id'))) {
+                                    return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
+                                } else {
+                                    return [];
+                                }
+                            })
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $set('m_o_o_e_expense_sub_id', null);
+                            })
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->searchable(),
 
-                    // TextInput::make('quantity')
-                    //     ->required()
-                    //     ->numeric()
-                    //     ->columnSpan(4)
-                    //     ->default(1)
+                        Select::make('m_o_o_e_expense_sub_id')
+                            ->label('MOOE item')
+                            // ->required()
+                            ->options(function (Get $get, Set $set) {
+                                if (!empty($get('m_o_o_e_expense_id'))) {
+                                    return MOOEExpenseSub::where('m_o_o_e_expense_id', $get('m_o_o_e_expense_id'))->get()->pluck('title', 'id');
+                                } else {
+                                    return [];
+                                }
+                            })
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->searchable(),
 
-                    //     ->label('MOOE Item'),
-                    // TextInput::make('specification')
-                    // ->columnSpan(4)
-                    //     ->required()
-                    //     ->numeric()
-                    //     ->default(1)
-                    //     ->columnSpanFull()
-                    //     ->label('MOOE Specification'),
 
-                    TextInput::make('amount')
-                        ->required()
-                        ->columnSpanFull()
-                        ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters(',')
-                        ->prefix('₱')
-                        ->numeric()
-                        ->default(0)
-                        ->label('Allocated Amount')
-                        ->required()
-                        ->maxLength(10),
+                        TextInput::make('amount')
+                            ->required()
+                            ->columnSpanFull()
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->prefix('₱')
+                            ->numeric()
+                            ->default(0)
+                            ->label('Amount')
+                            ->required()
+                            ->maxLength(10),
 
                     ]),
 
@@ -399,6 +403,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
 
                 $ps_expenses = MOOEExpense::find($data['m_o_o_e_group_id']);
                 $amount = $data['amount'];
+                // dd($data);
                 // $quantity = $data['quantity'];
 
                 // $calculated_amount = ($amount * $quantity);
@@ -407,7 +412,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $data['cost_type'],
                     'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
                     'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
-                    'specification' => $data['specification'],
+                    'm_o_o_e_expense_sub_id' => $data['m_o_o_e_expense_sub_id'] ?? null,
+                    // 'specification' => $data['specification'],
                     'amount' => $amount,
                     // 'quantity' => $quantity,
                     // 'new_amount' => $calculated_amount,
@@ -440,13 +446,15 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $mooe?->cost_type,
                     'm_o_o_e_group_id' => $mooe?->m_o_o_e_group_id,
                     'm_o_o_e_expense_id' => $mooe?->m_o_o_e_expense_id,
-                    'specification' => $mooe?->specification,
+                    'm_o_o_e_expense_sub_id' => $mooe?->m_o_o_e_expense_sub_id ?? null,
+                    // 'specification' => $mooe?->specification,
                     'amount' => intVal($mooe?->amount),
                     // 'quantity' => $mooe?->quantity,
 
                 ];
             })
             ->form([
+
                 Group::make()
                     ->columns([
                         'sm' => 3,
@@ -455,65 +463,69 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ])
                     ->schema([
                         Select::make('cost_type')
-                        ->options([
-                            'Direct Cost' => 'Direct Cost',
-                            'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                            'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
-                        ])
-                        ->columnSpanFull()
-                        ->native(false)
-                        ->required(),
-                    Select::make('m_o_o_e_group_id')
-                        ->label('MOOE Type')
-                        ->options(MOOEGroup::all()->pluck('title', 'id'))
-                        ->live()
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            $set('m_o_o_e_expense_id', null);
-                        })
-                        ->columnSpanFull()
-                        ->required()
-                        ->native(false)
-                        ->searchable(),
+                            ->options([
+                                'Direct Cost' => 'Direct Cost',
+                                'Indirect Cost SKSU' => 'Indirect Cost SKSU',
+                                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                            ])
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->required(),
+                        Select::make('m_o_o_e_group_id')
+                            ->label('MOOE')
+                            ->options(MOOEGroup::all()->pluck('title', 'id'))
+                            ->live()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $set('m_o_o_e_expense_id', null);
+                            })
+                            ->columnSpanFull()
+                            ->required()
+                            ->native(false)
+                            ->searchable(),
 
-                    Select::make('m_o_o_e_expense_id')
-                        ->label('MOOE Subcategories')
-                        ->required()
-                        ->options(function (Get $get, Set $set) {
-                            if (!empty($get('m_o_o_e_group_id'))) {
-                                return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
-                            } else {
-                                return [];
-                            }
-                        })
-                        ->columnSpanFull()
-                        ->native(false)
-                        ->searchable(),
+                        Select::make('m_o_o_e_expense_id')
+                            ->label('MOOE Subcategories')
+                            ->required()
+                            ->afterStateUpdated(function (Get $get, Set $set) {
+                                $set('m_o_o_e_expense_sub_id', null);
+                            })
+                            ->options(function (Get $get, Set $set) {
+                                if (!empty($get('m_o_o_e_group_id'))) {
+                                    return MOOEExpense::where('m_o_o_e_group_id', $get('m_o_o_e_group_id'))->get()->pluck('title', 'id');
+                                } else {
+                                    return [];
+                                }
+                            })
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->searchable(),
 
-                    // TextInput::make('quantity')
-                    //     ->required()
-                    //     ->numeric()
-                    //     ->columnSpan(4)
-                    //     ->default(1)
+                        Select::make('m_o_o_e_expense_sub_id')
+                            ->label('MOOE item')
+                            // ->required()
+                            ->options(function (Get $get, Set $set) {
+                                if (!empty($get('m_o_o_e_expense_id'))) {
+                                    return MOOEExpenseSub::where('m_o_o_e_expense_id', $get('m_o_o_e_expense_id'))->get()->pluck('title', 'id');
+                                } else {
+                                    return [];
+                                }
+                            })
+                            ->columnSpanFull()
+                            ->native(false)
+                            ->searchable(),
 
-                    //     ->label('MOOE Item'),
-                    TextInput::make('specification')
-                    ->columnSpan(4)
-                        ->required()
-                        ->numeric()
-                        ->default(1)
-                        ->label('MOOE Specification'),
 
-                    TextInput::make('amount')
-                        ->required()
-                        ->columnSpanFull()
-                        ->mask(RawJs::make('$money($input)'))
-                        ->stripCharacters(',')
-                        ->prefix('₱')
-                        ->numeric()
-                        ->default(0)
-                        ->label('Allocated Amount')
-                        ->required()
-                        ->maxLength(10),
+                        TextInput::make('amount')
+                            ->required()
+                            ->columnSpanFull()
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->prefix('₱')
+                            ->numeric()
+                            ->default(0)
+                            ->label('Amount')
+                            ->required()
+                            ->maxLength(10),
 
                     ]),
 
@@ -531,6 +543,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                 $mooe = SelectedMOOE::find($arguments['mooe']);
                 // $mooe_expense = MOOEExpense::where('id', $data['m_o_o_e_expense_id'])->first();
                 $amount = $data['amount'];
+
                 // $quantity = $data['quantity'];
 
                 // $calculated_amount = ($amount * $quantity);
@@ -540,7 +553,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     'cost_type' => $data['cost_type'],
                     'm_o_o_e_group_id' => $data['m_o_o_e_group_id'],
                     'm_o_o_e_expense_id' => $data['m_o_o_e_expense_id'],
-                    'specification' => $data['specification'],
+                    'm_o_o_e_expense_sub_id' => $data['m_o_o_e_expense_sub_id'],
+                    // 'specification' => $data['specification'],
                     'amount' => $amount,
                     // 'new_amount' => $calculated_amount,
                     // 'quantity' => $quantity,
