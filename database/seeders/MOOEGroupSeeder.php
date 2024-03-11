@@ -50,9 +50,10 @@ class MOOEGroupSeeder extends Seeder
             [
                 'title' => 'Other Office Supplies and Materials Expenses',
             ],
+
             [
                 'title' => 'Semi-Expendable Furniture, Fixture and Books Expenses',
-                'has_sub_options'=>true,
+                'has_sub_options'=> true,
             ]
 
         ];

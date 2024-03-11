@@ -21,7 +21,7 @@ class PSGroupSeeder extends Seeder
         // Define the options for expenses
         $salary_options = [
             ['title' => 'Project Development Officer III ', 'p_s_expense_type_id'=> 1,'amount' => 54244.00],
-            ['title' => 'Project Assistant Aide III', 'p_s_expense_type_id'=> 1,'amount' => 11043.00],
+            ['title' => 'Project Assistant Aide III', 'p_s_expense_type_id'=> 1,'amount' => 33130.00],
 
         ];
         $honoraria_options = [

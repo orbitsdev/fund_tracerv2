@@ -14,4 +14,6 @@ class MOOEExpenseSub extends Model
     public function m_o_o_e_expense(){
         return $this->belongsTo(MOOEExpense::class);
     }
+
+    
 }

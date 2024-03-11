@@ -315,8 +315,8 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->label('Add MOOE')
             ->form([
 
-                
-                
+
+
                 Group::make()
                     ->columns([
                         'sm' => 3,
@@ -344,7 +344,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->required()
                         ->native(false)
                         ->searchable(),
-    
+
                     Select::make('m_o_o_e_expense_id')
                         ->label('MOOE Subcategories')
                         ->required()
@@ -358,22 +358,22 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->columnSpanFull()
                         ->native(false)
                         ->searchable(),
-    
+
                     // TextInput::make('quantity')
                     //     ->required()
                     //     ->numeric()
                     //     ->columnSpan(4)
                     //     ->default(1)
-    
+
                     //     ->label('MOOE Item'),
-                    TextInput::make('specification')
-                    ->columnSpan(4)
-                        ->required()
-                        ->numeric()
-                        ->default(1)
-                        ->columnSpanFull()
-                        ->label('MOOE Specification'),
-    
+                    // TextInput::make('specification')
+                    // ->columnSpan(4)
+                    //     ->required()
+                    //     ->numeric()
+                    //     ->default(1)
+                    //     ->columnSpanFull()
+                    //     ->label('MOOE Specification'),
+
                     TextInput::make('amount')
                         ->required()
                         ->columnSpanFull()
@@ -385,9 +385,9 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->label('Allocated Amount')
                         ->required()
                         ->maxLength(10),
-    
+
                     ]),
-               
+
 
 
 
@@ -474,7 +474,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->required()
                         ->native(false)
                         ->searchable(),
-    
+
                     Select::make('m_o_o_e_expense_id')
                         ->label('MOOE Subcategories')
                         ->required()
@@ -488,13 +488,13 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->columnSpanFull()
                         ->native(false)
                         ->searchable(),
-    
+
                     // TextInput::make('quantity')
                     //     ->required()
                     //     ->numeric()
                     //     ->columnSpan(4)
                     //     ->default(1)
-    
+
                     //     ->label('MOOE Item'),
                     TextInput::make('specification')
                     ->columnSpan(4)
@@ -502,7 +502,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->numeric()
                         ->default(1)
                         ->label('MOOE Specification'),
-    
+
                     TextInput::make('amount')
                         ->required()
                         ->columnSpanFull()
@@ -514,7 +514,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                         ->label('Allocated Amount')
                         ->required()
                         ->maxLength(10),
-    
+
                     ]),
 
 

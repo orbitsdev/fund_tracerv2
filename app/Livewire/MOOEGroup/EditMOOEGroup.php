@@ -59,34 +59,39 @@ class EditMOOEGroup extends Component implements HasForms
                                 $set('a', $state);
                             })
                             ->live(debounce: 500),
-                            TableRepeater::make('mooe_expense_subs')
+
+                            // TableRepeater::make('mooe_expense_subs')
 
 
-                            ->label('Sub Options')
-                                ->addActionLabel('Option')
-                                ->relationship('m_o_o_e_expense_subs')
-                                ->defaultItems(0)
-                                ->reorderable(false)
-                                // ->withoutHeader()
-                                ->emptyLabel('No Options')
-                                ->hideLabels()
-                                ->schema([
-                                    TextInput::make('title')
-                                    ->hiddenLabel()
+                            // ->label('Sub Options')
+                            //     ->addActionLabel('Option')
+                            //     ->relationship('m_o_o_e_expense_subs')
+                            //     ->defaultItems(0)
+                            //     ->reorderable(false)
+                            //     // ->withoutHeader()
+                            //     ->emptyLabel('No Options')
+                            //     ->hideLabels()
+                            //     ->schema([
+                            //         TextInput::make('title')
+                            //         ->hiddenLabel()
 
-                                        ->label('Sub description')
+                            //             ->label('Sub description')
 
-                                ])
-                                ->columnSpan('full')
-                                ->visible(function (Get $get, $record) {
-                                    if(!empty($get('has_sub_options'))){
+                            //     ])
+                            //     ->columnSpan('full')
+                            //     ->visible(function (Get $get, $record) {
+                            //         if(!empty($get('has_sub_options'))){
 
-                                        return true;
-                                    }else{
-                                        return false;
-                                    }
-                                })
-                                ,
+                            //             if($this){
+
+                            //             }
+
+                            //             return true;
+                            //         }else{
+                            //             return false;
+                            //         }
+                            //     })
+                            //     ,
 
 
 
