@@ -107,6 +107,7 @@
                             </a>
                         </li>
 
+
                         <li>
                             <div class="text-xs  leading-6 text-[#72def1]">Management</div>
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
@@ -128,6 +129,79 @@
 
                             </ul>
                         </li>
+
+
+                        {{-- <li>
+                            <div class="text-xs leading-6 text-[#72def1]">Management</div>
+                            <ul role="list" class="-mx-2 mt-2 space-y-1">
+                                <li x-data="{ isOpen: false }" @click.away="isOpen = false" @keydown.escape="isOpen = false">
+                                    <button @click="isOpen = !isOpen"
+                                        class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition focus:outline-none">
+                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] text-blue-700">C</span>
+                                        <span class="truncate">Create</span>
+                                    </button>
+                                    <ul x-show="isOpen" class="absolute left-0 mt-2 py-2 w-full bg-white rounded-lg shadow-md z-10">
+                                        <!-- Program options -->
+
+                                        <li>
+                                            <a href="{{ route('program.create') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Program</a>
+                                        </li>
+
+
+                                        <li>
+                                            <a href="{{ route('project.index') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Project Index</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('project.create') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Project</a>
+                                        </li>
+
+                                        <!-- Add more options as needed -->
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li> --}}
+
+
+                        <li>
+                            <div class="text-xs leading-6 text-[#72def1]">Management</div>
+                            <ul role="list" class="-mx-2 mt-2 space-y-1">
+                                <li x-data="{ isOpen: false }" @click.away="isOpen = false" @keydown.escape="isOpen = false">
+                                    <button @click="isOpen = !isOpen"
+                                        class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition focus:outline-none">
+                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] text-blue-700">C</span>
+                                        <span class="truncate">Create</span>
+                                    </button>
+                                    <ul x-show="isOpen" style="max-height: 20rem; overflow-y: auto;" class="mt-1 py-2 w-full bg-white rounded-lg shadow-md z-10">
+                                        <!-- Program options -->
+                                        <li>
+                                            <a href="{{ route('program.index') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Program Index</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('program.create') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Program</a>
+                                        </li>
+
+                                        <!-- Project options -->
+                                        <li>
+                                            <a href="{{ route('project.index') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Project Index</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ route('project.create') }}"
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Project</a>
+                                        </li>
+
+                                        <!-- Add more options as needed -->
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+
 
                         <li>
                             <div class="text-xs  leading-6 text-[#72def1]">Content Management</div>
