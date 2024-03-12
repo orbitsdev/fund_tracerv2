@@ -65,7 +65,7 @@
                             <div class="text-xs  leading-6 text-[#72def1]">Auhtorize Features </div>
                             <a href="{{ route('financial-manager.projects') }}"
                                 class="
-                {{ (request()->routeIs('financial-manager.projects') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view') ) ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                {{ (request()->routeIs('financial-manager.projects') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view') ) ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                ">
 
 
@@ -91,7 +91,7 @@
                             <div class="text-xs  leading-6 text-[#72def1]">Access Management</div>
                             <a href="{{ route('manage.users') }}"
                                 class="
-                {{ request()->routeIs('manage.users') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                {{ request()->routeIs('manage.users') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                ">
 
 
@@ -113,10 +113,10 @@
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
 
                                 <li>
-                                    <!-- Current: " bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition", Default: "text-gray-700 hover:text-[#003449] hover:bg-gray-50" -->
+                                    <!-- Current: " bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition", Default: "text-gray-700 hover:text-gray-900 hover:bg-gray-50" -->
                                     <a href="{{ route('manage.program-project') }}"
                                         class="
-                    {{ (request()->routeIs('manage.program-project') || request()->routeIs('program.index') || request()->routeIs('program.create') || request()->routeIs('program.edit') || request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view')) ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                    {{ (request()->routeIs('manage.program-project') || request()->routeIs('program.index') || request()->routeIs('program.create') || request()->routeIs('program.edit') || request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items') || request()->routeIs('project.line-items-view')) ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                    ">
                                         <span
                                             class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] text-blue0-700 ">C</span>
@@ -145,17 +145,17 @@
 
                                         <li>
                                             <a href="{{ route('program.create') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Program</a>
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-gray-900 hover:bg-gray-50">Create Program</a>
                                         </li>
 
 
                                         <li>
                                             <a href="{{ route('project.index') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Project Index</a>
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-gray-900 hover:bg-gray-50">Project Index</a>
                                         </li>
                                         <li>
                                             <a href="{{ route('project.create') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Project</a>
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-gray-900 hover:bg-gray-50">Create Project</a>
                                         </li>
 
                                         <!-- Add more options as needed -->
@@ -168,7 +168,7 @@
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
                                 <li>
                                     <button @click="isOpen = !isOpen"
-                                        :class="{ 'bg-[#ffff]  text-system-700 w-full block drop-shadow-xl font-bold transition duration-300 ease-in-out': isOpen, 'w-full text-white ': !isOpen }"
+                                        :class="{ 'bg-[#ffff]  text-gray-900 w-full block drop-shadow-xl font-bold transition duration-300 ease-in-out': isOpen, 'w-full text-white ': !isOpen }"
                                         class="group flex gap-x-3 rounded-md p-2  text-sm leading-6 transition focus:outline-none">
                                         <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] ">C</span>
                                         <span class="truncate">Create</span>
@@ -179,13 +179,13 @@
                                         <!-- Program and Project options -->
                                         <li>
                                             <a href="{{ route('program.index') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                                                 Programs View</a>
                                         </li>
 
                                         <li>
                                             <a href="{{ route('project.index') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-gray-900 hover:bg-gray-50">
                                                 Projects View</a>
                                         </li>
 
@@ -194,6 +194,26 @@
                                 </li>
                             </ul>
                         </li>
+
+                        <li>
+                            <a href="{{ route('manage.financial-transactions') }}"
+                                class="
+        {{ request()->routeIs('manage.financial-transactions') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+         ">
+
+
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                </svg>
+
+
+                                FR Transactions
+                            </a>
+                        </li>
+
+
 
 
 
@@ -204,7 +224,7 @@
                                 <li>
                                     <a href="{{ route('manage.content-management') }}"
                                         class="
-                {{ request()->routeIs('manage.content-management') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                {{ request()->routeIs('manage.content-management') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                  ">
 
 
@@ -221,7 +241,7 @@
                                 <li>
                                     <a href="{{ route('manage.implementing-agencies') }}"
                                         class="
-                  {{ request()->routeIs('manage.implementing-agencies') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                  {{ request()->routeIs('manage.implementing-agencies') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                  ">
 
 
@@ -240,7 +260,7 @@
                                 <li>
                                     <a href="{{ route('manage.monitoring-agencies') }}"
                                         class="
-                  {{ request()->routeIs('manage.monitoring-agencies') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-[#003449] font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                  {{ request()->routeIs('manage.monitoring-agencies') ? '  bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                  ">
 
 
@@ -287,12 +307,18 @@
                 </div>
             </div>
 
-            <main class=" bg-gray-100 min-h-screen">
-                <div class="lg:max-w-5xl xl:max-w-6xl md:max-w-4  xl sm:max-w-4xl my-auto  mx-auto ">
+            <main class="py-10">
+                <div class="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+                    {{$slot}}
+                </div>
+              </main>
+
+            {{-- <main class=" bg-gray-100 min-h-screen">
+                <div class="lg:max-w-5xl xl:max-w-6xl md:max-w-4   xl sm:max-w-4xl   mx-auto ">
                     {{ $slot }}
                     <!-- Your content -->
                 </div>
-            </main>
+            </main> --}}
         </div>
     </div>
 

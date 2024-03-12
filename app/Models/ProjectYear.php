@@ -47,7 +47,7 @@ class ProjectYear extends Model
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -66,7 +66,7 @@ class ProjectYear extends Model
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -85,7 +85,7 @@ class ProjectYear extends Model
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed

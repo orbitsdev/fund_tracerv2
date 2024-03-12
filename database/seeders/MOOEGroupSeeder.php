@@ -21,7 +21,7 @@ class MOOEGroupSeeder extends Seeder
         $repair_and_maintenance = MOOEGroup::create(['title' => 'Repaire and Maintenance Expenses', 'has_option'=>true]);
         $other_mooe = MOOEGroup::create(['title' => 'Other MOOE', 'has_option'=>true]);
         $indirect_cost_sksu = MOOEGroup::create(['title' => 'Indirect Cost (SKSU)', 'has_option'=>false]);
-        $indirect_cost_dost = MOOEGroup::create(['title' => 'Indirect Cost (DOST XIII)', 'has_option'=>false]);
+        $indirect_cost_dost = MOOEGroup::create(['title' => 'Indirect Cost (DOST)', 'has_option'=>false]);
 
 
         // Define the options for expenses

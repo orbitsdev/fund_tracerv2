@@ -1,13 +1,7 @@
 <div class="">
     <x-create-management-layout>
 
-        <x-slot name="header">
-            <x-back-button :url="route('program.index')">BACK</x-back-button>
-            <p class="text-3xl">
-
-                    Create Program
-            </p>
-        </x-slot>
+        <x-back-button :url="route('program.index')">BACK</x-back-button>
 
 
         <form wire:submit="create">

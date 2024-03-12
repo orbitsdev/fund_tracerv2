@@ -117,7 +117,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->options([
                         'Direct Cost' => 'Direct Cost',
                         'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                        'Indirect Cost PCAARD' => 'Indirect Cost PCAARD',
+                        'Indirect Cost DOST' => 'Indirect Cost DOST',
                     ])
                     ->native(false)
                     ->required(),
@@ -214,7 +214,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->options([
                         'Direct Cost' => 'Direct Cost',
                         'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                        'Indirect Cost DOST' => 'Indirect Cost DOST',
                     ])
                     ->native(false)
                     ->required(),
@@ -329,7 +329,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                             ->options([
                                 'Direct Cost' => 'Direct Cost',
                                 'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                                'Indirect Cost DOST' => 'Indirect Cost DOST',
                             ])
                             ->columnSpanFull()
                             ->native(false)
@@ -466,7 +466,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                             ->options([
                                 'Direct Cost' => 'Direct Cost',
                                 'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                                'Indirect Cost DOST' => 'Indirect Cost DOST',
                             ])
                             ->columnSpanFull()
                             ->native(false)
@@ -590,7 +590,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                             ->options([
                                 'Direct Cost' => 'Direct Cost',
                                 'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                                'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                                'Indirect Cost DOST' => 'Indirect Cost DOST',
                             ])
                             ->columnSpanFull()
                             ->native(false)
@@ -679,7 +679,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     ->options([
                         'Direct Cost' => 'Direct Cost',
                         'Indirect Cost SKSU' => 'Indirect Cost SKSU',
-                        'Indirect Cost PCAARRD' => 'Indirect Cost PCAARRD',
+                        'Indirect Cost DOST' => 'Indirect Cost DOST',
                     ])
                     ->columnSpanFull()
                     ->native(false)
@@ -775,7 +775,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -789,7 +789,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
         $total_ps = SelectedPS::where('project_year_id', $this->record->id)->with('p_s_expense')->get()->sum('p_s_expense.amount');
         $total_dc = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Direct Cost')->with('p_s_expense')->get()->sum('p_s_expense.amount');
         $total_sksu = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Indirect Cost SKSU')->with('p_s_expense')->get()->sum('p_s_expense.amount');
-        $total_pcaarrd = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Indirect Cost PCAARRD')->with('p_s_expense')->get()->sum('p_s_expense.amount');
+        $total_dost = SelectedPS::where('project_year_id', $this->record->id)->where('cost_type', 'Indirect Cost DOST')->with('p_s_expense')->get()->sum('p_s_expense.amount');
 
 
 
@@ -800,7 +800,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -820,7 +820,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indirect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -844,7 +844,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
             'total_ps' => $total_ps,
             'total_dc' => $total_dc,
             'total_sksu' => $total_sksu,
-            'total_pcaarrd' => $total_pcaarrd,
+            'total_dost' => $total_dost,
             'mooes' => $mooes,
             'total_mooe' => $total_mooe,
             'total_budet' => $total_budet,

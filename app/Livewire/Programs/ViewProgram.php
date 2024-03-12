@@ -86,7 +86,7 @@ class ViewProgram extends Component implements HasForms, HasInfolists
                                 //     ->view('infolists.components.program-summary-budget')
                                 //     ->columnSpanFull(),
                             ]),
-                        Tabs\Tab::make('PCAARRD IC')
+                        Tabs\Tab::make('DOST IC')
                             ->schema([
 
                                 // ViewEntry::make('')

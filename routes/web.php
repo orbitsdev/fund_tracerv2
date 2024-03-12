@@ -11,6 +11,7 @@ use App\Livewire\ListParticulars;
 use App\Livewire\Users\ListUsers;
 
 use App\Livewire\CreateManagement;
+use App\Livewire\FR\ListFinancial;
 use App\Livewire\ContentManagement;
 use App\Livewire\Reports\Breakdown;
 use Illuminate\Support\Facades\Auth;
@@ -118,6 +119,7 @@ Route::prefix('reports')->name('report.')->group(function () {
             Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');
             Route::get('/program-project', CreateManagement::class)->name('program-project');
             Route::get('/content', ContentManagement::class)->name('content-management');
+            Route::get('/financial-transactions', ListFinancial::class)->name('financial-transactions');
         }); //
 
         Route::prefix('program')->name('program.')->group(function(){

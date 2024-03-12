@@ -16,7 +16,7 @@ class PSGroupSeeder extends Seeder
         $salary = PSGroup::create(['title' => 'Salary']);
         $honoraria = PSGroup::create(['title' => 'Honoraria']);
         $sksu = PSGroup::create(['title' => 'Indirect Cost (SKSU)']);
-        $dost = PSGroup::create(['title' => 'Indirect Cost (DOST XII)']);
+        $dost = PSGroup::create(['title' => 'Indirect Cost (DOST)']);
 
         // Define the options for expenses
         $salary_options = [

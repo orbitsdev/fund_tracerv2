@@ -1,4 +1,3 @@
-<div class="">
-
+<div>
     {{ $this->table }}
 </div>

@@ -945,7 +945,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                         $parent_model = $model->breakdownable;
                         $current_breakdown = $parent_model->breakdowns->sum('amount');
                         if( $model->breakdownable instanceof \App\Models\SelectedCO){
-                            
+
                             $current_budget = $parent_model->new_amount;
                         }else{
 
@@ -1036,13 +1036,13 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                                             $parent_model = $model->breakdownable;
 
                                             if( $parent_model instanceof \App\Models\SelectedCO){
-                            
+
                                                 $current_budget = $parent_model->new_amount;
                                             }else{
-                    
+
                                                 $current_budget = $parent_model->amount;
                                             }
-                                         
+
 
                                             $current_breakdown = $parent_model->breakdowns->sum('amount');
 
@@ -1248,7 +1248,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indrect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -1266,7 +1266,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indrect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
@@ -1284,7 +1284,7 @@ class ViewProjectYearBudget extends Component implements HasForms, HasActions
                     return 1;
                 case 'Indirect Cost SKSU':
                     return 2;
-                case 'Indirect Cost PCAARRD':
+                case 'Indrect Cost DOST':
                     return 3;
                 default:
                     return 4; // Handle any other cases if needed
