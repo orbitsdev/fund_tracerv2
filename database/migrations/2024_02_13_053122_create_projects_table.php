@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->string('status')->nullable()->default('Not Active');
+            $table->string('pass_key')->nullable();
             $table->timestamps();
         });
     }

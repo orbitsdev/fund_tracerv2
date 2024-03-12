@@ -1,4 +1,4 @@
-<div>
+<div class="">
     <x-create-management-layout>
 
         <x-back-button :url="route('project.index')">BACK</x-back-button>

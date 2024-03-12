@@ -107,7 +107,7 @@
                             </a>
                         </li>
 
-
+{{--
                         <li>
                             <div class="text-xs  leading-6 text-[#72def1]">Management</div>
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
@@ -128,7 +128,7 @@
 
 
                             </ul>
-                        </li>
+                        </li> --}}
 
 
                         {{-- <li>
@@ -163,36 +163,30 @@
                                 </li>
                             </ul>
                         </li> --}}
-
-
-                        <li>
+                        <li x-data="{ isOpen: false }" @click.away="isOpen = false" @keydown.escape="isOpen = false">
                             <div class="text-xs leading-6 text-[#72def1]">Management</div>
                             <ul role="list" class="-mx-2 mt-2 space-y-1">
-                                <li x-data="{ isOpen: false }" @click.away="isOpen = false" @keydown.escape="isOpen = false">
+                                <li>
                                     <button @click="isOpen = !isOpen"
-                                        class="group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition focus:outline-none">
-                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] text-blue-700">C</span>
+                                        :class="{ 'bg-[#ffff]  text-system-700 w-full block drop-shadow-xl font-bold transition duration-300 ease-in-out': isOpen, 'w-full text-white ': !isOpen }"
+                                        class="group flex gap-x-3 rounded-md p-2  text-sm leading-6 transition focus:outline-none">
+                                        <span class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border text-[0.625rem] font-bold border-[#003449] ">C</span>
                                         <span class="truncate">Create</span>
                                     </button>
-                                    <ul x-show="isOpen" style="max-height: 20rem; overflow-y: auto;" class="mt-1 py-2 w-full bg-white rounded-lg shadow-md z-10">
-                                        <!-- Program options -->
+
+                                    <ul x-show="isOpen" style="max-height: 20rem; overflow-y: auto;"
+                                        class="mt-2 py-2 w-full bg-white rounded-lg shadow-md z-10 transition-opacity duration-500 ease-in-out">
+                                        <!-- Program and Project options -->
                                         <li>
                                             <a href="{{ route('program.index') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Program Index</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('program.create') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Program</a>
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">
+                                                Programs View</a>
                                         </li>
 
-                                        <!-- Project options -->
                                         <li>
                                             <a href="{{ route('project.index') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Project Index</a>
-                                        </li>
-                                        <li>
-                                            <a href="{{ route('project.create') }}"
-                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">Create Project</a>
+                                                class="block px-4 py-2 text-sm leading-5 text-gray-700 hover:text-[#003449] hover:bg-gray-50">
+                                                Projects View</a>
                                         </li>
 
                                         <!-- Add more options as needed -->
@@ -293,8 +287,8 @@
                 </div>
             </div>
 
-            <main class="py-10 bg-gray-100 min-h-screen">
-                <div class="lg:max-w-5xl xl:max-w-6xl md:max-w-5xl sm:max-w-4xl m-auto  ">
+            <main class=" bg-gray-100 min-h-screen">
+                <div class="lg:max-w-5xl xl:max-w-6xl md:max-w-4  xl sm:max-w-4xl my-auto  mx-auto ">
                     {{ $slot }}
                     <!-- Your content -->
                 </div>

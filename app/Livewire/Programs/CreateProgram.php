@@ -20,6 +20,7 @@ use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
+use Rawilk\FilamentPasswordInput\Password;
 use Filament\Forms\Concerns\InteractsWithForms;
 
 class CreateProgram extends Component implements HasForms
@@ -41,10 +42,9 @@ class CreateProgram extends Component implements HasForms
                 Group::make()
                 ->schema([
 
-                    Section::make('Program Information')
-                    ->icon('heroicon-m-pencil-square')
+                    Section::make('Program Details')
 
-                    ->description('Provide program details below to better understand and support funding needs.')
+
 
                     ->columns([
                         'sm' => 3,
@@ -54,11 +54,22 @@ class CreateProgram extends Component implements HasForms
 
 
                     ->schema([
-                        TextInput::make('title')
+
+
+                        Section::make('')
+
+
+                        ->columns([
+                            'sm' => 3,
+                            'xl' => 6,
+                            '2xl' => 8,
+                        ])
+                        ->schema([
+                            TextInput::make('title')
                             ->label('Program Title')
                             ->maxLength(191)
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpan(4),
                         TextInput::make('program_leader')
 
                         ->live()
@@ -69,52 +80,22 @@ class CreateProgram extends Component implements HasForms
                             ->label('Program Leader')
                             ->maxLength(191)
                             ->required()
-                            ->columnSpanFull(),
+                            ->columnSpan(4),
+                        ]),
 
 
-                        // Select::make('status')
-                        //     ->options([
-                        //         'Pending' => 'Pending',
-                        //         'Planning' => 'Planning',
-                        //         'Active' => 'Active',
-                        //         'Cancelled' => 'Cancelled',
-                        //         'On Hold' => 'On Hold',
-                        //         'Completed' => 'Completed',
-                        //     ])
-                        //     ->required()
-                        //     ->native(false)
-                        //     ->columnSpan(3),
 
-                        DatePicker::make('start_date')->date()->native(false)->columnSpan(3)
-                        ->live()
-                        ->suffixIcon('heroicon-m-calendar-days')
-                        ->debounce(700)
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            self::calculateTotalMonthDurationn($get, $set);
-                            self::setCurrentDuration($get, $set);
-                        })
-                            ->required(),
 
-                        DatePicker::make('end_date')->date()->native(false)->columnSpan(3)
-                        ->live()
-                        ->suffixIcon('heroicon-m-calendar-days')
-                        ->debounce(700)
-                        ->afterStateUpdated(function (Get $get, Set $set) {
-                            self::calculateTotalMonthDurationn($get, $set);
-                            self::setCurrentDuration($get, $set);
-                        })
-                            ->required(),
 
-                            TextInput::make('duration_overview')
-                            ->disabled()
-                            ->label('Total Duration')
-                            // ->prefix('₱ ')
-                            // ->numeric()
+                        Section::make('')
 
-                            ->columnSpan(3)
-                            // ->maxLength(191)
-                            ->readOnly(),
 
+                        ->columns([
+                            'sm' => 3,
+                            'xl' => 6,
+                            '2xl' => 9,
+                        ])
+                        ->schema([
                             Select::make('implementing_agency')
                             ->label('Implementing Agency')
                             ->options(ImplementingAgency::all()->pluck('title', 'title'))
@@ -157,10 +138,61 @@ class CreateProgram extends Component implements HasForms
                                 ->default(0)
                                 ->columnSpan(3)
                                 ->required(),
+                        ]),
+
+
+
+
+
+                                Section::make('')
+
+
+                                ->columns([
+                                    'sm' => 3,
+                                    'xl' => 6,
+                                    '2xl' => 9,
+                                ])
+                                ->schema([
+
+
+                                    DatePicker::make('start_date')->date()->native(false)->columnSpan(3)
+                                    ->live()
+                                    ->suffixIcon('heroicon-m-calendar-days')
+                                    ->debounce(700)
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        self::calculateTotalMonthDurationn($get, $set);
+                                        self::setCurrentDuration($get, $set);
+                                    })
+                                        ->required(),
+
+                                    DatePicker::make('end_date')->date()->native(false)->columnSpan(3)
+                                    ->live()
+                                    ->suffixIcon('heroicon-m-calendar-days')
+                                    ->debounce(700)
+                                    ->afterStateUpdated(function (Get $get, Set $set) {
+                                        self::calculateTotalMonthDurationn($get, $set);
+                                        self::setCurrentDuration($get, $set);
+                                    })
+                                        ->required(),
+
+                                        TextInput::make('duration_overview')
+                                        ->disabled()
+                                        ->label('Total Duration')
+                                        // ->prefix('₱ ')
+                                        // ->numeric()
+
+                                        ->columnSpan(3)
+                                        // ->maxLength(191)
+                                        ->readOnly(),
+
+                                ])
 
 
 
                     ]),
+
+
+
 
 
 

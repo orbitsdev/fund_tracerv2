@@ -1,4 +1,4 @@
-<div>
+<div class="">
     <x-create-management-layout>
 
         <x-slot name="header">
