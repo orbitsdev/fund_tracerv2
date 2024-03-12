@@ -72,6 +72,7 @@ class ListProjects extends Component implements HasForms, HasTable
                 //
             ])
             ->headerActions([
+
                 CreateAction::make('create')
                     ->icon('heroicon-m-plus')
                     ->label('Create')

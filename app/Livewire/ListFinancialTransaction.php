@@ -26,11 +26,19 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Awcodes\FilamentTableRepeater\Components\TableRepeater;
 
+use Filament\Actions\CreateAction as FCAction;
+
 class ListFinancialTransaction extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
 
+
+    public function passwordAction(): FCAction {
+        return FCAction::make('password')->form([
+            TextInput::make('pass_key')
+        ]);
+    }
 
     public function myform(){
      return [
@@ -248,9 +256,35 @@ class ListFinancialTransaction extends Component implements HasForms, HasTable
             ])
             ->filters([])
             ->headerActions([
+
                 CreateAction::make()
+
+                // ->before(function (CreateAction $action) {
+
+                //     $project = Project::first();
+
+                //     dd($project->pass_key)
+                //     if (! $record->team->subscribed()) {
+                //         // Notification::make()
+                //         //     ->warning()
+                //         //     ->title('You don\'t have an active subscription!')
+                //         //     ->body('Choose a plan to continue.')
+                //         //     ->persistent()
+                //         //     ->actions([
+                //         //         Action::make('subscribe')
+                //         //             ->button()
+                //         //             ->url(route('subscribe'), shouldOpenInNewTab: true),
+                //         //     ])
+                //         //     ->send();
+
+                //         $action->halt();
+                //     }
+                // })
+
                     ->modalWidth(MaxWidth::SixExtraLarge)
                     ->form($this->myForm())
+
+
             ])
             ->actions([
 
