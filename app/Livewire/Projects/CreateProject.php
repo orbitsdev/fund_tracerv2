@@ -250,6 +250,8 @@ class CreateProject extends Component implements HasForms
                                             ->suffixIcon('heroicon-m-calendar-days')
 
                                             ->required(),
+
+                                            
                                         TextInput::make('duration_overview')
                                             ->disabled()
                                             ->label('Total Duration')

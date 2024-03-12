@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('f_r_transactions', function (Blueprint $table) {
+        Schema::create('financial_transactions', function (Blueprint $table) {
             $table->id();
-            $table->string('dv_number')->unique()->nullable();
+            $table->string('dv_number')->nullable();
             $table->string('cost_type')->nullable();
-            $table->string('seleted_dropdown')->nullable();
-            $table->decimal('amount', 10, 2)->nullable();
+            $table->string('selected_dropdown')->nullable(); // Corrected column name
+            $table->decimal('amount', 10, 2)->default(0); // Default value added
             $table->string('ada_number')->nullable();
-            $table->string('user_id')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('f_r_transactions');
+        Schema::dropIfExists('financial_transactions');
     }
 };

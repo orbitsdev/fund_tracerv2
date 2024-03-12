@@ -7,11 +7,10 @@ use App\Livewire\ViewProject;
 use App\Livewire\ForbiddenPage;
 use App\Livewire\Reports\Group;
 use App\Livewire\LineItemBudget;
-use App\Livewire\ListParticulars;
+
 use App\Livewire\Users\ListUsers;
 
 use App\Livewire\CreateManagement;
-use App\Livewire\FR\ListFinancial;
 use App\Livewire\ContentManagement;
 use App\Livewire\Reports\Breakdown;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +39,8 @@ use App\Livewire\Reports\YearParticularReport;
 use App\Livewire\MOOE\MOOEExpense\MOOEItemList;
 use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
+
+use App\Livewire\ListFinancialTransaction;
 
 /*
 |--------------------------------------------------------------------------
@@ -119,7 +120,7 @@ Route::prefix('reports')->name('report.')->group(function () {
             Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');
             Route::get('/program-project', CreateManagement::class)->name('program-project');
             Route::get('/content', ContentManagement::class)->name('content-management');
-            Route::get('/financial-transactions', ListFinancial::class)->name('financial-transactions');
+            Route::get('/financial-transactions', ListFinancialTransaction::class)->name('financial-transactions');
         }); //
 
         Route::prefix('program')->name('program.')->group(function(){

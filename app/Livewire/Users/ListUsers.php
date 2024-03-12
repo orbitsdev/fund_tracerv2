@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Tables;
 use Livewire\Component;
 use Filament\Tables\Table;
+
 use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Group;
@@ -21,6 +22,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\CreateAction;
@@ -28,7 +30,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Rawilk\FilamentPasswordInput\Password;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
-use Filament\Notifications\Notification;
+
 class ListUsers extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
@@ -101,6 +103,7 @@ class ListUsers extends Component implements HasForms, HasTable
                                     ->options([
                                         'Admin' => 'Admin',
                                         'Financial Manager' => 'Financial Manager',
+                                        'Payee' => 'Payee',
                                     ])
                                     ->columnSpan(4)
                                     ->searchable()
@@ -236,6 +239,7 @@ class ListUsers extends Component implements HasForms, HasTable
                                         ->options([
                                             'Admin' => 'Admin',
                                             'Financial Manager' => 'Financial Manager',
+                                            'Payee' => 'Payee',
                                         ])
                                         ->columnSpan(4)
                                         ->searchable()
