@@ -146,7 +146,7 @@
                         <div class="ml-4">
                             {{-- @dump($personal_service) --}}
                             @foreach ($mooe as $group_title => $groups)
-                                <div class="ml-4 
+                                <div class="ml-4
                                     <p class="font-medium text-gray-600">
                                         {{ $group_title }}
 
@@ -156,7 +156,8 @@
 
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
-                                                  ({{$expense->specification}})  {{ $expense->m_o_o_e_expense->title }}
+                                                  {{ $expense->m_o_o_e_expense->title }}
+                                                  {{-- ({{$expense->specification}}) --}}
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}

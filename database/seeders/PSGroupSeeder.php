@@ -26,7 +26,7 @@ class PSGroupSeeder extends Seeder
         ];
         $honoraria_options = [
             ['title' => 'Project Leader', 'p_s_expense_type_id'=> 1,'amount' => 8800],
-            ['title' => 'Project Staff Support Level 2', 'p_s_expense_type_id'=> 1,'amount' => 7500.00],
+            ['title' => 'Project Staff Support Level 3', 'p_s_expense_type_id'=> 1,'amount' => 7500.00],
         ];
         $sksu_option = [
             ['title' => 'Project Staff Support Level 2','p_s_expense_type_id'=> 3, 'amount' => 1500.00],
