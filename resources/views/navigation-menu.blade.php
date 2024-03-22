@@ -1,25 +1,18 @@
 <nav x-data="{ open: false }" class=" w-full ">
-    <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-                <!-- Logo -->
 
-
-                <!-- Navigation Links -->
 
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <!-- Teams Dropdown -->
+            {{-- <div class="hidden sm:flex sm:items-center sm:ms-6">
 
-
-                <!-- Settings Dropdown -->
                 <div class="ms-3 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-                                <button class="flex text-sm border-2 border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
+                                <button class="flex text-sm  border-transparent rounded-full focus:outline-none focus:border-gray-300 transition">
                                     <img class="h-8 w-8 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" />
                                 </button>
                             @else
@@ -34,8 +27,8 @@
                                     </button>
                                 </span>
                             </div>
-                            
-                            
+
+
                             @endif
                         </x-slot>
 
@@ -45,9 +38,7 @@
                                 {{ __('Manage Account') }}
                             </div>
 
-                            {{-- <x-dropdown-link href="{{ route('profile.show') }}">
-                                {{ __('Profile') }}
-                            </x-dropdown-link> --}}
+
 
                             @if (Laravel\Jetstream\Jetstream::hasApiFeatures())
                                 <x-dropdown-link href="{{ route('api-tokens.index') }}">
@@ -57,7 +48,6 @@
 
                             <div class="border-t border-gray-200"></div>
 
-                            <!-- Authentication -->
                             <form method="POST" action="{{ route('logout') }}" x-data>
                                 @csrf
 
@@ -69,7 +59,7 @@
                         </x-slot>
                     </x-dropdown>
                 </div>
-            </div>
+            </div> --}}
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
