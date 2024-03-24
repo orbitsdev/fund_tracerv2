@@ -10,6 +10,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Radio;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -93,6 +94,15 @@ class ListUsers extends Component implements HasForms, HasTable
 
                                 TextInput::make('first_name')->required()->columnSpan(4),
                                 TextInput::make('last_name')->required()->columnSpan(4),
+                                Radio::make('gender')
+    ->options([
+        'Male' => 'Male',
+        'Female' => 'Femal',
+    ])
+    ->required()
+    ->inline()
+    ->columnSpan(4)
+    ,
 
                                 TextInput::make('email')->required()->unique(ignoreRecord: true)
                                     ->columnSpan(4),

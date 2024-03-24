@@ -46,7 +46,7 @@
 
 
 
-    @include('components.v2-layout')
+    @include('components.v1-layout')
 
     @stack('modals')
     @livewireScripts

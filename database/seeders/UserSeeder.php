@@ -17,6 +17,8 @@ class UserSeeder extends Seeder
          $admin_user = User::create([
             'first_name'=> 'Admin ',
             'last_name'=> 'User',
+            'gender'=> 'Male',
+            'is_admin'=> true,
             'email'=> 'admin@gmail.com',
             'role'=> 'Admin',
             'account_type'=> 'Ordinary',

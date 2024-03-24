@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
+            $table->string('gender')->nullable();
+            $table->boolean('is_admin')->default(false)->nullable();
             $table->string('role')->nullable();
             $table->string('google_id')->nullable();
             $table->string('provider')->nullable();

@@ -8,6 +8,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Livewire\Component;
 use Filament\Forms\Form;
+use Filament\Support\RawJs;
 use Filament\Actions\Action;
 use Illuminate\Support\Carbon;
 use App\Models\MonitoringAgency;
@@ -18,6 +19,7 @@ use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -34,284 +36,343 @@ class EditProject extends Component implements HasForms
 
     public function mount(): void
     {
+        
+        $this->fillTotalDuration($this->record);
         $this->form->fill($this->record->attributesToArray());
     }
+
+
+    public static function fillTotalDuration($record)
+    {   
+        $startDate = $record->start_date;
+        $endDate = $record->start_date;
+
+        if (!empty($startDate) && !empty($endDate)) {
+            $startDate = Carbon::parse($startDate);
+            $endDate = Carbon::parse($endDate);
+
+            // Calculate the difference in months
+            $totalMonths = $endDate->diffInMonths($startDate);
+
+            // Calculate years and remaining months
+            $totalYears = floor($totalMonths / 12);
+            $remainingMonths = $totalMonths % 12;
+
+            $duration = '';
+
+            if ($totalYears > 0) {
+                $duration .= $totalYears . ' year';
+                if ($totalYears > 1) {
+                    $duration .= 's';
+                }
+                $duration .= ' (' . $totalMonths . ' months)';
+            } else {
+                $duration .= $totalMonths . ' months';
+            }
+
+            $record->duration_overview =$duration;
+           
+        }
+    }
+
+    
+
+   
 
     public function form(Form $form): Form
     {
         return $form
             ->schema([
+
                 Group::make()
                 ->schema([
 
-                    Section::make('Project Information')
-                        ->icon('heroicon-m-pencil-square')
-                        ->description('Provide project details below to better understand and support funding needs.')
+                    Section::make('Project Details')
+
+
                         ->columns([
                             'sm' => 3,
                             'xl' => 6,
-                            '2xl' => 9,
+                            '2xl' => 8,
                         ])
                         ->schema([
+                            // Section::make('')
 
 
-                            // TextInput::make('budget')
-                            // ->required()
-                            // ->numeric()
-                            // ->columnSpan(2)
-                            // ,
+                            // ->columns([
+                            //     'sm' => 3,
+                            //     'xl' => 6,
+                            //     '2xl' => 8,
+                            // ])
+                            // ->schema([
 
-
-                            Radio::make('project_type')
-                                ->label('Project Type')
-                                ->options([
-                                    'Dependent' => 'Program',
-                                    'Independent' => 'Project',
-                                ])
-                                ->default('Dependent')
-                                // ->descriptions([
-                                //     'Dipendent' => 'Project is belong to program',
-                                //     'Independent' => 'Project is not belong to any program',
-                                // ])
-                                ->helperText('Choose whether this is a program or project')
-                                ->live()
-                                ->debounce(700)
-                                ->inline()
-                                ->columnSpanFull()
-                                ->hidden(function (string $operation) {
-                                    return $operation === 'edit' ? true : false;
-                                }),
-
-                            Select::make('program_id')
-                                ->live()
-                                ->debounce(700)
-                                // ->required()
-                                ->label('Choose Program')
-                                ->relationship(
-                                    name: 'program',
-                                    titleAttribute: 'title'
-                                )
-                                ->hint('Program  & Budget')
-                                //->helperText(new HtmlString('Program  & Budget'))
-                                // ->hintColor('primary')
-                                ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->title} - ₱ " . number_format($record->total_budget))
-
-                                //     ->live()
-                                //     ->debounce(700)
-                                //     ->afterStateUpdated(function(Get $get , Set $set){
-                                //         // $program = Program::find($get('program_id'));
-                                //         // if(!empty($program)){
-                                //         //      set('allocated_fund', $program->total_budget);
-                                //         // }
-                                // subtract the allocate ddun to the total budget of
-                                // })
-                                ->afterStateUpdated(function (Get $get, Set $set) {
-                                    // self::updateProgramOverviewDetails($get, $set);
-                                    // self::calculateTotalMonthDurationn($get, $set);
-                                    // self::setCurrentDuration($get, $set);
-                                })
-
-                                ->hidden(function (Get $get, Set $set) {
-                                    //if project has program
-                                    if ($get('project_type')  !=  'Dependent') {
-
-                                        // self::resetSelectedProgram($get, $set);
-
-                                        return true;
-                                    } else {
-                                        return false;
-                                    }
-                                })
-                                ->searchable()
-                                ->preload()
-                                ->native(false)
-                                ->columnSpanFull(),
-
-                            TextInput::make('title')
-                                ->label('Project Title')
-                                ->required()
-                                ->maxLength(191)
-                                ->columnSpanFull(),
-
-                            TextInput::make('project_leader')
-                                ->label('Project Leader')
-                                ->required()
-                                ->maxLength(191)
-                                ->columnSpanFull(),
-
-
-                            Select::make('implementing_agency')
-                                ->label('Implementing Agency')
-                                ->options(ImplementingAgency::all()->pluck('title', 'title'))
-                                ->hint(function () {
-                                    if (ImplementingAgency::count() > 0) {
-                                        return '';
-                                    } else {
-                                        return 'No implementing agency agency found';
-                                    }
-                                })
-                                ->searchable()
-                                ->columnSpan(3)
-                                ->required()
-
-
-                                ->native(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                }),
-                            Select::make('monitoring_agency')
-                                ->label('Monitoring Agency')
-                                ->options(MonitoringAgency::all()->pluck('title', 'title'))
-                                ->required()
-                                ->hint(function () {
-                                    if (MonitoringAgency::count() > 0) {
-                                        return '';
-                                    } else {
-                                        return 'No monitoring agency found';
-                                    }
-                                })
-                                ->columnSpan(3)
-                                ->searchable()
-
-                                ->native(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                }),
-
-
-
-
-                            // TextInput::make('allocated_fund')
-                            //     ->mask(RawJs::make('$money($input)'))
-                            //     ->stripCharacters(',')
-                            //     ->prefix('₱')
-                            //     ->numeric()
-                            //     ->default(0)
-                            //     ->label('Allocated Amount')
+                            //     Radio::make('project_type')
+                            //     ->label('Project Type')
+                            //     ->options([
+                            //         'Dependent' => 'Program',
+                            //         'Independent' => 'Project',
+                            //     ])
+                            //     ->default('Dependent')
+                            //     // ->descriptions([
+                            //     //     'Dipendent' => 'Project is belong to program',
+                            //     //     'Independent' => 'Project is not belong to any program',
+                            //     // ])
+                            //     ->helperText('Choose whether this is a program or project')
                             //     ->live()
                             //     ->debounce(700)
-                            //     ->required()
+                            //     ->inline()
+                            //     ->columnSpanFull()
+                            //     ->hidden(function (string $operation) {
+                            //         return $operation === 'edit' ? true : false;
+                            //     }),
 
-                            //     ->afterStateUpdated(function (Get $get, Set $set, string $operation) {
 
-                            //         // self::updateLeftAllocated($get, $set, $operation);
+                            //     Select::make('program_id')
+                            //     ->live()
+                            //     ->debounce(700)
+                            //     // ->required()
+                            //     ->label('Choose Program')
+                            //     ->relationship(
+                            //         name: 'program',
+                            //         titleAttribute: 'title'
+                            //     )
+                            //     ->hint('Program  & Budget')
+                            //     ->columnSpanFull()
+                            //     //->helperText(new HtmlString('Program  & Budget'))
+                            //     // ->hintColor('primary')
+                            //     ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->title} - ₱ " . number_format($record->total_budget))
+
+                            //     //     ->live()
+                            //     //     ->debounce(700)
+                            //     //     ->afterStateUpdated(function(Get $get , Set $set){
+                            //     //         // $program = Program::find($get('program_id'));
+                            //     //         // if(!empty($program)){
+                            //     //         //      set('allocated_fund', $program->total_budget);
+                            //     //         // }
+                            //     // subtract the allocate ddun to the total budget of
+                            //     // })
+                            //     ->afterStateUpdated(function (Get $get, Set $set) {
+                            //         // self::updateProgramOverviewDetails($get, $set);
+                            //         // self::calculateTotalMonthDurationn($get, $set);
+                            //         // self::setCurrentDuration($get, $set);
                             //     })
-                            //     ->columnSpan(3)
-                            // ->rules([
-                            //     fn (Get $get, string $operation): Closure => function (string $attribute, $value, Closure $fail,) use ($get, $operation) {
 
+                            //     ->hidden(function (Get $get, Set $set) {
+                            //         //if project has program
+                            //         if ($get('project_type')  !=  'Dependent') {
 
+                            //             // self::resetSelectedProgram($get, $set);
 
-                            //         if (empty($get('program_id'))) {
-                            //             //     // $fail("Program should be selected first before setting allocated fund");
+                            //             return true;
                             //         } else {
-
-                            //             $selected_program = Program::find($get('program_id'));
-                            //             $total_allocated_projects = $selected_program->projects->sum('allocated_fund');
-                            //             $remaining_budget = $selected_program->total_budget - $total_allocated_projects;
-
-                            //             $allocatedFund = (float) str_replace(',', '',  $get('allocated_fund'));
-                            //             $current_allocated_budget = (float) str_replace(',', '',  $get('current_allocated_budget'));
-
-                            //             $max = $current_allocated_budget + $remaining_budget;
-
-
-                            //             if ($operation === 'edit') {
-
-                            //                 //ignore if the same value
-
-                            //                 if ($allocatedFund === $current_allocated_budget) {
-                            //                     // New value is equal to the current budget, no error
-                            //                 } elseif ($allocatedFund > $max) {
-                            //                     // New value is greater than the current budget
-                            //                     $fail("The allocated amount should not exceed the remaining budget of the selected program");
-                            //                 }
-                            //             } else {
-
-
-                            //                 if (!empty($selected_program)) {
-
-
-
-                            //                     if ($value > $remaining_budget) {
-                            //                         $fail("The allocated amount should not exceed the remaining budget of the selected program");
-                            //                     }
-                            //                 } else {
-                            //                     $fail("Program not found");
-                            //                 }
-                            //             }
+                            //             return false;
                             //         }
-                            //     },
-                            // ])
-                            //,
-
-
-
-
-
-                            DatePicker::make('start_date')->date()
-                                ->columnSpan(3)
-                                ->live()
-                                ->debounce(700)
-                                ->afterStateUpdated(function (Get $get, Set $set) {
-
-                                    self::calculateTotalMonthDurationn($get, $set);
-                                    self::setCurrentDuration($get, $set);
-                                })
-                                ->readOnly(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                })
-                                ->native(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                })
-                                ->suffixIcon('heroicon-m-calendar-days')
-
-                                ->required(),
-
-
-                            DatePicker::make('end_date')->date()
-                                ->columnSpan(3)
-                                ->live()
-                                ->debounce(700)
-                                ->afterStateUpdated(function (Get $get, Set $set) {
-                                    self::calculateTotalMonthDurationn($get, $set);
-                                    self::setCurrentDuration($get, $set);
-                                })
-                                ->readOnly(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                })
-                                ->native(function (Get $get, Set $set) {
-                                    // return self::disabledDate($get, $set);
-                                })
-                                ->suffixIcon('heroicon-m-calendar-days')
-
-                                ->required(),
-                            TextInput::make('duration_overview')
-                                ->disabled()
-                                ->label('Total Duration')
-                                // ->prefix('₱ ')
-                                // ->numeric()
-
-                                ->columnSpan(3)
-                                // ->maxLength(191)
-                                ->readOnly(),
-
-
-                            // Select::make('status')
-                            //     ->options([
-                            //         'Not Started' => 'Not Started',
-                            //         'Planning' => 'Planning',
-                            //         'In Progress' => 'In Progress',
-                            //         'On Hold' => 'On Hold',
-                            //         'Cancelled' => 'Cancelled',
-                            //         'Under Revision' => 'Under Revision',
-                            //     ])
-                            //     ->default('In Progress')
+                            //     })
                             //     ->searchable()
-                            //     ->native(false)
-                            //     ->columnSpanFull(),
+                            //     ->preload()
+                            //     ->native(false),
+
+                            // ]),
+
+
+
+                            Section::make('')
+
+
+                                ->columns([
+                                    'sm' => 3,
+                                    'xl' => 6,
+                                    '2xl' => 12,
+                                ])
+                                ->schema([
+
+
+
+
+
+
+                                    Textarea::make('program_title')
+                                        ->rows(5)
+                                        ->required()
+                                        ->columnSpanFull()
+                                        ->default('N/A'),
+
+                                    TextInput::make('title')
+                                        ->label('Project Title')
+                                        ->required()
+                                        ->maxLength(191)
+                                        ->columnSpanFull(),
+
+                                    TextInput::make('project_leader')
+                                        ->label('Project Leader')
+                                        ->required()
+                                        ->maxLength(191)
+                                        ->columnSpanFull(),
+                                    TextInput::make('source_of_fund')
+                                        ->label('Source Of Fund')
+                                        ->required()
+                                        ->maxLength(191)
+                                        ->columnSpanFull(),
+                                    TextInput::make('order_no')
+                                        ->label('Order No')
+                                        // ->required()
+                                        ->maxLength(191)
+                                        ->columnSpanFull(),
+
+
+                                    DatePicker::make('date_when_fund_recieved_by_agency')
+                                        ->label('Date Was Fund Recieved By Implementin Agency')
+                                        ->date()
+                                        ->columnSpanFull()
+
+                                        ->native(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        })
+                                        ->suffixIcon('heroicon-m-calendar-days'),
+
+
+
+
+                                    // ->columnSpan(6),
+
+
+                                    Select::make('implementing_agency')
+                                        ->label('Implementing Agency')
+                                        ->options(ImplementingAgency::all()->pluck('title', 'title'))
+                                        ->hint(function () {
+                                            if (ImplementingAgency::count() > 0) {
+                                                return '';
+                                            } else {
+                                                return 'No implementing agency agency found';
+                                            }
+                                        })
+                                        ->searchable()
+                                        ->columnSpan(6)
+                                        ->required()
+
+
+                                        ->native(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        }),
+                                    Select::make('monitoring_agency')
+                                        ->label('Monitoring Agency')
+                                        ->options(MonitoringAgency::all()->pluck('title', 'title'))
+                                        ->required()
+                                        ->hint(function () {
+                                            if (MonitoringAgency::count() > 0) {
+                                                return '';
+                                            } else {
+                                                return 'No monitoring agency found';
+                                            }
+                                        })
+                                        ->columnSpan(6)
+                                        ->searchable()
+
+                                        ->native(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        }),
+
+                                ]),
+
+
+                            TextInput::make('fund')
+                                ->label(function (string $operation) {
+                                    return $operation === 'edit' ? 'Update Fund' : 'Fund';
+                                })
+                                ->mask(RawJs::make('$money($input)'))
+                                ->stripCharacters(',')
+                                ->required()
+                                ->maxValue(1000000000)
+                                ->prefix('₱')
+                                ->numeric()
+                                ->columnSpanFull()
+                                ->default(0)
+                            // ->disabled()
+                            // ->readOnly()
+                            ,
+
+                            Section::make('')
+
+
+                                ->columns([
+                                    'sm' => 3,
+                                    'xl' => 6,
+                                    '2xl' => 12,
+                                ])
+                                ->schema([
+
+                                    DatePicker::make('start_date')->date()
+                                        ->columnSpan(4)
+                                        ->live()
+                                        ->debounce(700)
+                                        ->afterStateUpdated(function (Get $get, Set $set) {
+
+                                            self::calculateTotalMonthDurationn($get, $set);
+                                            self::setCurrentDuration($get, $set);
+                                        })
+                                        ->readOnly(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        })
+                                        ->native(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        })
+                                        ->suffixIcon('heroicon-m-calendar-days')
+
+                                        ->required(),
+
+
+                                    DatePicker::make('end_date')->date()
+                                        ->columnSpan(4)
+                                        ->live()
+                                        ->debounce(700)
+                                        ->afterStateUpdated(function (Get $get, Set $set) {
+                                            self::calculateTotalMonthDurationn($get, $set);
+                                            self::setCurrentDuration($get, $set);
+                                        })
+                                        ->readOnly(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        })
+                                        ->native(function (Get $get, Set $set) {
+                                            // return self::disabledDate($get, $set);
+                                        })
+                                        ->suffixIcon('heroicon-m-calendar-days')
+
+                                        ->required(),
+
+
+                                    TextInput::make('duration_overview')
+                                        ->disabled()
+                                        ->label('Total Duration')
+                                        // ->prefix('₱ ')
+                                        // ->numeric()
+
+                                        ->columnSpan(4)
+                                        // ->maxLength(191)
+                                        ->readOnly(),
+                                ]),
+
+
+
+
+
+
+
+
+
+
+                            Section::make('')
+
+
+                                ->columns([
+                                    'sm' => 3,
+                                    'xl' => 6,
+                                    '2xl' => 12,
+                                ])
+                                ->schema([])
+
+
 
                         ])
-
-                        ->collapsible(),
 
 
 
@@ -572,8 +633,6 @@ class EditProject extends Component implements HasForms
 
     public static function calculateTotalMonthDurationn(Get $get, Set $set)
     {
-
-
         $startDate = $get('start_date');
         $endDate = $get('end_date');
 
@@ -584,13 +643,26 @@ class EditProject extends Component implements HasForms
             // Calculate the difference in months
             $totalMonths = $endDate->diffInMonths($startDate);
 
-            // Set the duration in months
-            $set('duration_overview', $totalMonths . ' months');
+            // Calculate years and remaining months
+            $totalYears = floor($totalMonths / 12);
+            $remainingMonths = $totalMonths % 12;
+
+            $duration = '';
+
+            if ($totalYears > 0) {
+                $duration .= $totalYears . ' year';
+                if ($totalYears > 1) {
+                    $duration .= 's';
+                }
+                $duration .= ' (' . $totalMonths . ' months)';
+            } else {
+                $duration .= $totalMonths . ' months';
+            }
+
+            $set('duration_overview', $duration);
         }
-        // $set('project_fund', number_format($get('allocated_fund')));
-        // // $set('total_expenses', (int)$get('allocated_fund'));
-        // self::updateTotal($get, $set);
     }
+
 
     public function updateAction(): Action
     {
