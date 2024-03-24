@@ -57,14 +57,14 @@ class ListUsers extends Component implements HasForms, HasTable
                         'Financial Manager' => 'info',
                         default => 'gray',
                     }),
-                    TextColumn::make('assigned_project')->formatStateUsing(function($state){
+                TextColumn::make('assigned_project')->formatStateUsing(function ($state) {
 
-                        if(!empty($state)){
-                            return $state->project->title;
-                        }else{
-                            return 'No Project Assigned';
-                        }
-                    })
+                    if (!empty($state)) {
+                        return $state->project->title;
+                    } else {
+                        return 'No Project Assigned';
+                    }
+                })
                     ->label(' Project')
                     ->color('gray'),
             ])
@@ -95,14 +95,13 @@ class ListUsers extends Component implements HasForms, HasTable
                                 TextInput::make('first_name')->required()->columnSpan(4),
                                 TextInput::make('last_name')->required()->columnSpan(4),
                                 Radio::make('gender')
-    ->options([
-        'Male' => 'Male',
-        'Female' => 'Femal',
-    ])
-    ->required()
-    ->inline()
-    ->columnSpan(4)
-    ,
+                                    ->options([
+                                        'Male' => 'Male',
+                                        'Female' => 'Femal',
+                                    ])
+                                    ->required()
+                                    ->inline()
+                                    ->columnSpan(4),
 
                                 TextInput::make('email')->required()->unique(ignoreRecord: true)
                                     ->columnSpan(4),
@@ -157,15 +156,15 @@ class ListUsers extends Component implements HasForms, HasTable
                 Action::make('remove_assigned')
                     ->label('Remove Assigned')
                     ->requiresConfirmation()
-                    ->action(function(Model $record){
+                    ->action(function (Model $record) {
 
 
-                        if($record->assigned_project()->exists()){
+                        if ($record->assigned_project()->exists()) {
                             $record->assigned_project()->delete();
                             Notification::make()
-                            ->title('Saved successfully')
-                            ->success()
-                            ->send();
+                                ->title('Saved successfully')
+                                ->success()
+                                ->send();
                         }
                         // $record->assigned_project()->delete();
                     })
@@ -179,7 +178,7 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->modalHeading('Assigne to Project')
                     ->label("Assigned Project")
                     // ->diabledicon()
-                    ->icon(function(){
+                    ->icon(function () {
                         return "";
                     })
                     ->color('primary')
@@ -195,11 +194,10 @@ class ListUsers extends Component implements HasForms, HasTable
                                     ->relationship(
                                         name: 'project',
                                         titleAttribute: 'title',
-                                         modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('assigned_project'),
+                                        modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('assigned_project'),
                                     )
                                     ->preload()
-                                    ->searchable()
-                                    ,
+                                    ->searchable(),
 
 
 
@@ -210,7 +208,6 @@ class ListUsers extends Component implements HasForms, HasTable
                     ])
                     ->hidden(function ($record) {
                         return $record->assigned_project()->exists();
-
                     })
 
 
@@ -221,8 +218,8 @@ class ListUsers extends Component implements HasForms, HasTable
 
 
                     EditAction::make()
-                    ->color('primary')
-                    ->label('Edit User')
+                        ->color('primary')
+                        ->label('Edit User')
                         ->modalHeading('Edit User')
                         // ->icon('heroicon-m-users')
                         ->form([
@@ -298,8 +295,7 @@ class ListUsers extends Component implements HasForms, HasTable
 
 
 
-             ->modifyQueryUsing(fn (Builder $query) => $query->where('id', '!=', auth()->user()->id)->latest())
-            ;
+            ->modifyQueryUsing(fn (Builder $query) => $query->where('id', '!=', auth()->user()->id)->latest());
     }
 
     public function render(): View

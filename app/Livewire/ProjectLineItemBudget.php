@@ -19,7 +19,9 @@ use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Columns\ToggleColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Tables\Actions\BulkActionGroup;
@@ -28,7 +30,6 @@ use Filament\Tables\Actions\Action as TAction;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Actions\Concerns\InteractsWithActions;
-use Filament\Tables\Actions\ActionGroup;
 
 
 class ProjectLineItemBudget extends Component implements HasForms, HasActions, HasTable
@@ -44,23 +45,69 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
         return $table
             ->query(ProjectYear::query())
             ->columns([
-                TextColumn::make('year.title')->formatStateUsing(function($state){
-                    return $state. ' LIB';
+                TextColumn::make('year.title')->formatStateUsing(function ($state) {
+                    return $state . ' LIB';
                 }),
-                ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget')
+                ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget'),
+                TextColumn::make('status')->label('LIB STATUS')->badge(),
+                ToggleColumn::make('is_active')
+                    ->label('Currently in Use')
+                    ->onIcon('heroicon-m-check')
+                    ->offIcon('heroicon-m-x-mark')
+                    ->onColor('success')
+                    // ->disabled(function ($record){
+                    //     $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
+
+                    //     if(count($project_years) > 0 || $record->is_active == false) {   
+
+                    //         return true;
+
+                    //     }else{
+                    //         return false;
+                    //     }
+                    // })
+
+                    ->beforeStateUpdated(function ($record, $state) {
+
+
+
+                        // $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
+
+
+
+                    })
+                    ->afterStateUpdated(function ($record, $state) {
+
+
+                        $message = 'Active';
+                        if ($state) {
+                            $message = 'Active';
+                        } else {
+
+                            $message = 'Inactive';
+                        }
+
+                        Notification::make()
+                            ->title('Project Year Was Set as ' . $message)
+                            ->success()
+                            ->send();
+                        // Runs after the state is saved to the database.
+                    })
+
+
             ])
             ->filters([
                 // ...
             ])
             ->actions([
-                TAction::make('monitor')->icon('heroicon-m-cursor-arrow-rays')->button()->label('Monitor Budget')
-                ->outlined()
-                // ->extraAttributes([
-                //     'style' => 'border-radius: 100px; font-size: 14px',
+                // TAction::make('monitor')->icon('heroicon-m-cursor-arrow-rays')->button()->label('MONITOR LIB')
+                //     ->outlined()
+                //     // ->extraAttributes([
+                //     //     'style' => 'border-radius: 100px; font-size: 14px',
 
-                // ])
-                ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
-                TAction::make('edit')->icon('heroicon-m-pencil-square')->label('Edit LIB')->color('primary')
+                //     // ])
+                //     ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
+                TAction::make('edit')->icon('heroicon-m-pencil-square')->label('EDIT LIB')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px;',
 
@@ -70,7 +117,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
 
 
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
-                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('Copy LIB')->color('primary')
+                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('COPY LIB')->color('primary')
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])
@@ -87,10 +134,10 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                             ->relationship(
                                 name: 'year',
                                 titleAttribute: 'title',
-                                modifyQueryUsing: fn (Builder $query) =>$query->whereDoesntHave('project_years', function ($query) {
-                                                $query->where('project_id', $this->record->id);
-                                            })
-                                )
+                                modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('project_years', function ($query) {
+                                    $query->where('project_id', $this->record->id);
+                                })
+                            )
                             ->createOptionForm([
                                 TextInput::make('title')
                                     ->required(),
@@ -107,9 +154,10 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                             ->rules([
                                 function () {
                                     return function (string $attribute, $value, Closure $fail) {
-                                        $exist_project_year = ProjectYear::where('project_id', $this->record->id)
-                                            ->where('year_id', $value)
-                                            ->exists();
+
+
+                                        $exist_project_year = ProjectYear::where('project_id', $this->record->id)->where('year_id', $value)->exists();
+
 
                                         if ($exist_project_year) {
                                             $fail('Cannot create, it already exists.');
@@ -165,17 +213,17 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                                 DB::commit();
 
                                 Notification::make()
-                                ->title('Saved successfully')
-                                ->success()
-                                ->send();
+                                    ->title('Saved successfully')
+                                    ->success()
+                                    ->send();
                             } catch (\Exception $e) {
                                 // Rollback the transaction if an error occurs
                                 DB::rollBack();
                                 echo "Error: " . $e->getMessage();
                                 Notification::make()
-                                ->title('Failed to Copy' . $e->getMessage())
-                                ->danger()
-                                ->send();
+                                    ->title('Failed to Copy' . $e->getMessage())
+                                    ->danger()
+                                    ->send();
                             }
                         }
 
@@ -196,8 +244,8 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         // $record->save();
                     }),
                 DeleteAction::make('delete')->icon('heroicon-m-x-mark')
-                ->button()
-                ->outlined()
+                    ->button()
+                    ->outlined()
                     ->extraAttributes([
                         'style' => 'border-radius: 100px; ',
                     ])
@@ -250,14 +298,20 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     ])
                     ->required(),
             ])
-            ->action(function (array $data) {DB::beginTransaction();
+            ->action(function (array $data) {
+                DB::beginTransaction();
 
                 try {
                     // Perform database operations inside the transaction
+
+                    $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
                     $new_record = ProjectYear::create([
                         'project_id' => $this->record->id,
                         'year_id' => $data['year_id'],
+                        'is_active' => count($project_years) === 0,
                     ]);
+
+
 
                     if (!empty($new_record)) {
                         Notification::make()
@@ -269,22 +323,16 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         return redirect()->route('project.line-items', ['record' => $new_record]);
                     }
                 } catch (\Exception $e) {
-                    // Handle exceptions within the transaction
-                    // Rollback the transaction
                     DB::rollBack();
 
-                    // Log the error or display a user-friendly message
-                    // \Log::error('Error occurred during transaction: ' . $e->getMessage());
 
                     Notification::make()
                         ->title('Failed to save data: ' . $e->getMessage())
                         ->danger()
                         ->send();
 
-                    return redirect()->route('project.line-items', ['record' => $new_record]);
-
                     // Redirect back or to an error page
-                    // return redirect()->back()->with('error', 'Failed to save data.');
+                    return redirect()->route('project.line-items');
                 }
             });
         // ->action(fn () => $this->test());
@@ -296,17 +344,17 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
     public function render()
     {
 
-           $project_total_budget=  ProjectYear::where('project_id', $this->record->id)->get()->sum(function($item){
+        $project_total_budget =  ProjectYear::where('project_id', $this->record->id)->get()->sum(function ($item) {
             $total_ps = $item->selected_p_ses()->with('p_s_expense')->get()->sum('p_s_expense.amount');
             $total_mooe = $item->selected_m_o_o_es()->sum('amount');
             $total_co = $item->selected_c_os()->sum('amount');
-            $year_total = ($total_ps  +$total_mooe + $total_co);
+            $year_total = ($total_ps  + $total_mooe + $total_co);
             return $year_total;
 
 
             // $project_total_budget += $year_total;
 
-           });
+        });
 
 
         //     $project_total_budget = 0;

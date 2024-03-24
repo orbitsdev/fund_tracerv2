@@ -1,4 +1,4 @@
-    <div>
+    <div class="">
 
 
         <div class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-72 lg:flex-col custom-nav">
@@ -179,7 +179,7 @@
             </div>
         </div>
 
-        <div class="lg:pl-[287px] ">
+        <div class="lg:ml-[287px] mx-auto  ">
             <div class="sticky top-nav top-0 z-20 flex h-16 shrink-0 items-center  shadow-sm ">
                 <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden">
                     <span class="sr-only">Open sidebar</span>
@@ -201,7 +201,7 @@
             </div>
 
             <main class="py-10">
-                <div class="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
+                <div class="px-4 sm:px-6 lg:px-8  mx-auto">
                     {{ $slot }}
                 </div>
             </main>

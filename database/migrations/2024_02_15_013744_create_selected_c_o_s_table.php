@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('project_year_id')->nullable();
             $table->string('cost_type')->nullable();
+            // $table->boolean('specify')->default(false)->nullable();
+            $table->string('indirect_cost_type')->nullable();
+            $table->string('implementing_monitoring_agency')->nullable();
             $table->string('description')->nullable();
             $table->decimal('amount', 10, 2)->nullable();
             $table->decimal('new_amount', 10, 2)->nullable();
             $table->unsignedBigInteger('quantity')->default(0)->nullable();
+            $table->string('funding_agency')->nullable();
+            $table->string('agency_where_dost_fund_will_be_allocated')->nullable();
             $table->timestamps();
         });
     }

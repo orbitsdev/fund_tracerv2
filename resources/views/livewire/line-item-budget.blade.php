@@ -9,6 +9,21 @@
             Back
         </x-bacl-button>
         {{-- {{$record}} --}}
+        {{-- @dump($record) --}}
+        <div class="relative ">
+           @if($record->status != App\Models\ProjectYear::STATUS_FOR_EDITING)
+           <div class="absolute z-10 inset-0 bg-gray-500 bg-opacity-50 backdrop-blur flex items-center justify-center hover:cursor-not-allowed">
+            <div class="text-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-72 h-72">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+                <p class="text-4xl uppercase mt-10 "> {{$record->status}}</p>
+            </div>
+        </div>
+           @endif
+
+            
+
         <div class="mb-4">
             {{-- <p>{{$record->project->title}}</p> --}}
             <p class="uppercase text-primary-700 text-4xl  font-medium"> {{ $record->project->title }}</p>
@@ -21,53 +36,52 @@
             </div>
 
             <div class="mt-2">
-                @forelse ($personal_services as $cost_type => $personal_service)
-                    <div class="mt-4">
-                        <p class="font-bold text-gray-600">
+                {{-- @dump($personal_services) --}}
+                @forelse ($personal_services as $cost_type => 
+                
+                $personal_service)
 
-                            {{ $cost_type }}
-                        </p>
-                        <div class="ml-4">
-                            {{-- @dump($personal_service) --}}
-                            @foreach ($personal_service as $group_title => $groups)
-                                <div class="ml-4 ">
-                                    <p clwess="font-medium text-gray-600">
-                                        {{ $group_title }}
+                <div class="">
+                    <p class="font-bold text-gray-600">
+                        {{ $cost_type }} 
+                    </p>
+                    <div class="ml-4">
+                        @foreach ($personal_service as $indirect_cost_type => $groups)
+                     
+                            <div class="ml-4">
+                                <p class="font-medium text-gray-600">
+                                            {{$indirect_cost_type}}
+                                </p>
 
-                                    </p>
-                                    @foreach ($groups as $key => $expense)
-                                        <div class="flex justify-between   items-center border-b hover:bg-gray-50">
-
-                                            <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
-                                                <p class="italic text-sm text-gray-500">
-                                                    {{-- @dump() --}}
-                                                   {{$expense->displaySelectedPS()}}
-                                                </p>
-                                                <p>
-                                                    {{ number_format($expense->amount) }}
-                                                </p>
-
-                                            </div>
-
-                                            <div class="mb-2 flex">
-                                                <div class="mr-2">
-                                                    {{ ($this->editPersonalServiceAction)(['ps' => $expense->id]) }}
-                                                </div>
-                                                <div class="mr-2">
-                                                    {{ ($this->deleteAction)(['ps' => $expense->id]) }}
-
-                                                </div>
-                                                {{-- <x-edit-button> x</x-edit-button> --}}
-                                            </div>
+                                @foreach ($groups as $group_title => $expense)
+                                    
+                                 <div class="flex justify-between items-center border-b hover:bg-gray-50">
+                                    <div class="ml-4 mr-4 flex justify-between text-gray-600 w-full">
+                                        <p class="italic text-sm text-gray-500">
+                                            {{ $expense->displaySelectedPS() }}
+                                        </p>
+                                        <p>
+                                            {{ number_format($expense->amount) }}
+                                        </p>
+                                    </div>
+                                    <div class="mb-2 flex">
+                                        <div class="mr-2">
+                                            {{ ($this->editPersonalServiceAction)(['ps' => $expense->id]) }}
                                         </div>
-                                    @endforeach
+                                        <div class="mr-2">
+                                            {{ ($this->deleteAction)(['ps' => $expense->id]) }}
+                                        </div>
+                                    </div>
                                 </div>
-                            @endforeach
-                        </div>
-                    </div>
-                @empty
+                                @endforeach
 
-                @endforelse
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @empty
+            @endforelse
+            
             </div>
             {{-- <div class="mt-4 flex justify-between p-2 bg-gray-100">
                 <div>
@@ -137,6 +151,7 @@
             </div>
 
             <div class="mt-2">
+                {{-- @dump($mooes) --}}
                 @forelse ($mooes as $cost_type => $mooe)
                     <div class="mt-4">
                         <p class="font-bold text-gray-600">
@@ -144,7 +159,7 @@
                             {{ $cost_type }}
                         </p>
                         <div class="ml-4">
-                            {{-- @dump($personal_service) --}}
+                           
                             @foreach ($mooe as $group_title => $groups)
                                 <div class="ml-4
                                     <p class="font-medium text-gray-600">
@@ -157,7 +172,7 @@
                                             <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
                                                   {{ $expense->m_o_o_e_expense->title }}
-                                                  {{-- ({{$expense->specification}}) --}}
+                                                 
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}
@@ -173,7 +188,7 @@
                                                     {{ ($this->deleteMooeAction)(['mooe' => $expense->id]) }}
 
                                                 </div>
-                                                {{-- <x-edit-button> x</x-edit-button> --}}
+                                                
                                             </div>
                                         </div>
                                     @endforeach
@@ -334,6 +349,27 @@
 
         </div>
         @endif
-        <x-filament-actions::modals />
+    </div>
+    <div class="mb-20 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
+        <div>
+         
+        </div>
+        {{-- @dump($record) --}}
+        <div class="mt-6 sm:flex sm:max-w-md lg:mt-0">
+       
+        @if($record->status == App\Models\ProjectYear::STATUS_FOR_EDITING)
+            {{ $this->forReviewAction }}
+            @elseif($record->status == App\Models\ProjectYear::STATUS_FOR_REVIEW)
+            
+            {{ $this->cancelReview }}
+            @endif
+        </div>
+      </div>
+
+
+      <div class="">
+          <x-filament-actions::modals  />
+
+      </div>
     </x-create-management-layout>
 </div>

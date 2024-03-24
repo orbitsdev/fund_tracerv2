@@ -39,15 +39,13 @@ class ListProjects extends Component implements HasForms, HasTable
                             return '';
                         }
                     })
-
-
-
+                    ->label('BUDGER MANAGER')
                     ->badge()
                     ->color('primary'),
 
-                ViewColumn::make('')->view('tables.columns.project-total-budget')->label('Total Budget'),
+                ViewColumn::make('')->view('tables.columns.project-total-budget')->label('DOST FUND'),
                 TextColumn::make('title')
-                    ->searchable()->label('Project Title')->wrap(),
+                    ->searchable()->label('PROJECT TITLE')->wrap(),
                 // TextColumn::make('allocated_fund')
                 //     ->money('PHP')
                 //     ->numeric(
@@ -60,10 +58,10 @@ class ListProjects extends Component implements HasForms, HasTable
                 TextColumn::make('start_date')
                     ->date()
 
-                    ->label('Start Date')
+                    ->label('START DATE')
                     ->sortable(),
                 TextColumn::make('end_date')
-                    ->label('End Date')
+                    ->label('END DATE')
                     ->date()
                     ->sortable(),
 
@@ -85,7 +83,7 @@ class ListProjects extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('view')
                     ->icon('heroicon-m-pencil-square')
-                    ->label('Manage LIB')
+                    ->label('MANAGE LIB')
                     ->url(fn (Model $record): string => route('project.line-item-budget', ['record' => $record])),
                 // Action::make('monitor')
 

@@ -14,6 +14,13 @@ class ProjectYear extends Model
 {
     use HasFactory;
 
+    public const STATUS_FOR_EDITING = 'For Editing';
+    public const STATUS_APPROVED = 'Approved';
+    public const STATUS_FOR_REVIEW = 'For Review'; 
+    public const STATUS_REVIEWING = 'Reviewing'; 
+    public const STATUS_REJECTED = 'Denied';
+
+
     public function project()
     {
         return $this->belongsTo(Project::class);

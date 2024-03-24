@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             ImplementingAgencySeeder::class,
             MonitoringAgencySeeder::class,
             YearSeeder::class,
+            CoOptionSeeder::class,
 
         ]);
         // \App\Models\User::factory(10)->create();

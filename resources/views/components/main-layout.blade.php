@@ -41,7 +41,7 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased ">
+<body class="font-sans antialiased bg-gray-200">
     @livewire('notifications')
 
 
