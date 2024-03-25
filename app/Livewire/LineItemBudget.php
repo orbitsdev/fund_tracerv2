@@ -9,6 +9,7 @@ use Livewire\Component;
 use App\Models\CoOption;
 use App\Models\MOOEGroup;
 use App\Models\PSExpense;
+use App\Enums\AppConstant;
 use App\Models\SelectedCO;
 use App\Models\SelectedPS;
 use App\Models\MOOEExpense;
@@ -58,13 +59,13 @@ class LineItemBudget extends Component implements HasForms, HasActions
             ->modalHeading('Forward for Review')
             ->modalDescription('Please review the changes before proceeding. Once forwarded, you will be unable to make further modifications until approved by Financial. Are you sure you want to proceed?')
             ->modalSubmitActionLabel('Yes, Forward')
-            
+
             ->action(function (array $arguments) {
                 $this->record->status = ProjectYear::STATUS_FOR_REVIEW;
                 $this->record->update();
                 // $ps =  SelectedCo::find($arguments['co']);
                 // $ps?->delete();
-               
+
                 Notification::make()
                     ->title('Forwarded Successfully')
                     ->success()
@@ -204,7 +205,7 @@ public function returnToEditingAction(): Action
             ->fillForm(function (array $arguments) {
 
                 $ps = SelectedPS::find($arguments['ps']);
-                
+
                 return [
                     // 'cost_type' => $ps?->cost_type,
                     // 'cost_type' => $ps?->cost_type,
@@ -283,14 +284,14 @@ public function returnToEditingAction(): Action
                 ->inline()
                 ->label('Indirect Cost (Type)')
                 ->columnSpanFull()
-                
+
                 ->hidden(function(Get $get){
                     if(empty($get('cost_type')) || $get('cost_type') != LineItemBudgetConstant::INDIRECT_COST){
                         return true;
                     }else{
                         return false;
                     }
-                   
+
                 })
                 ,
 
@@ -308,11 +309,11 @@ public function returnToEditingAction(): Action
                 //         }else{
                 //             return false;
                 //         }
-                      
+
                 //     })
                 //     ,
 
-               
+
 
 
             Select::make('p_s_group_id')
@@ -344,7 +345,7 @@ public function returnToEditingAction(): Action
                     }else{
                         $set('amount_of_counterpart_fund',null);
                     }
-                   
+
                 })
                 ->options(function (Get $get, Set $set) {
                     if (!empty($get('p_s_group_id'))) {
@@ -395,7 +396,7 @@ public function returnToEditingAction(): Action
                 //         }else{
                 //             return false;
                 //         }
-                      
+
                 //     })
                 //     ,
 
@@ -414,7 +415,7 @@ public function returnToEditingAction(): Action
                 //     }else{
                 //         return false;
                 //     }
-                  
+
                 // })
                 // ,
 
@@ -488,7 +489,7 @@ public function returnToEditingAction(): Action
                         '2xl' => 8,
                     ])
                     ->schema([
-                       
+
                         Select::make('cost_type')
                         ->label('Cost Type')
                         ->options(LineItemBudgetConstant::COST_TYPES)
@@ -497,21 +498,21 @@ public function returnToEditingAction(): Action
                             ->debounce(500)
                             ->columnSpanFull()
                             ->required(),
-            
+
                             Radio::make('indirect_cost_type')
                             ->options(LineItemBudgetConstant::INDIRECT_COST_TYPE)
                            ->default(LineItemBudgetConstant::SKSU)
                             ->inline()
                             ->label('Indirect Cost (Type)')
                             ->columnSpanFull()
-                            
+
                             ->hidden(function(Get $get){
                                 if(empty($get('cost_type')) || $get('cost_type') != LineItemBudgetConstant::INDIRECT_COST){
                                     return true;
                                 }else{
                                     return false;
                                 }
-                               
+
                             })
                             ,
 
@@ -529,10 +530,10 @@ public function returnToEditingAction(): Action
                             //         }else{
                             //             return false;
                             //         }
-                                  
+
                             //     })
                             //     ,
-            
+
                         Select::make('m_o_o_e_group_id')
                             ->label('MOOE')
                             ->options(MOOEGroup::all()->pluck('title', 'id'))
@@ -583,7 +584,7 @@ public function returnToEditingAction(): Action
                             // // ->required()
                             // ,
 
-                            
+
                         TextInput::make('amount')
                         ->required()
                         ->columnSpanFull()
@@ -618,10 +619,10 @@ public function returnToEditingAction(): Action
                 //         }else{
                 //             return false;
                 //         }
-                      
+
                 //     })
                 //     ,
-                           
+
 
 
                     ]),
@@ -676,7 +677,7 @@ public function returnToEditingAction(): Action
     }
 
 
-   
+
     public function editMooeAction(): Action
     {
         return Action::make('editMooe')
@@ -689,7 +690,7 @@ public function returnToEditingAction(): Action
 
                 return [
 
-                    
+
                     'cost_type' => $mooe?->cost_type,
                     'indirect_cost_type' => $mooe?->indirect_cost_type,
                     'implementing_monitoring_agency' => $mooe?->implementing_monitoring_agency,
@@ -756,7 +757,7 @@ public function returnToEditingAction(): Action
 
     public function coForm(): array{
         return [
-           
+
 
 
                     Group::make()
@@ -768,7 +769,7 @@ public function returnToEditingAction(): Action
                     ->schema([
 
 
-                        
+
                         Select::make('cost_type')
                         ->label('Cost Type')
                         ->options(LineItemBudgetConstant::COST_TYPES)
@@ -777,21 +778,21 @@ public function returnToEditingAction(): Action
                             ->debounce(500)
                             ->columnSpanFull()
                             ->required(),
-            
+
                             Radio::make('indirect_cost_type')
                             ->options(LineItemBudgetConstant::INDIRECT_COST_TYPE)
                            ->default(LineItemBudgetConstant::SKSU)
                             ->inline()
                             ->label('Indirect Cost (Type)')
                             ->columnSpanFull()
-                            
+
                             ->hidden(function(Get $get){
                                 if(empty($get('cost_type')) || $get('cost_type') != LineItemBudgetConstant::INDIRECT_COST){
                                     return true;
                                 }else{
                                     return false;
                                 }
-                               
+
                             })
                             ,
 
@@ -809,7 +810,7 @@ public function returnToEditingAction(): Action
                             //         }else{
                             //             return false;
                             //         }
-                                  
+
                             //     })
                             //     ,
                                 TextInput::make('quantity')
@@ -825,34 +826,34 @@ public function returnToEditingAction(): Action
                                 ->label('Specify Description')
                                 ->inline()
                                 ->columnSpan(2)
-                                
+
                                 ,
 
                                 Select::make('description')
     ->options(CoOption::all()->pluck('title','title'))
-    ->columnSpan(6)      
-    ->required()           
+    ->columnSpan(6)
+    ->required()
     ->hidden(function(Get $get){
         if( !empty($get('specify')) || $get('specify') == true){
             return true;
         }else{
             return false;
         }
-      
+
     })
     ->searchable()
     ,
 
                         TextInput::make('description')
                             ->required()
-                            ->columnSpan(6)    
+                            ->columnSpan(6)
                             ->hidden(function(Get $get){
                                 if( !empty($get('specify')) || $get('specify') == true){
                                     return false;
                                 }else{
                                     return true;
                                 }
-                              
+
                             })
                             ,
 
@@ -868,7 +869,7 @@ public function returnToEditingAction(): Action
                             ->label('Amount')
                             ->required()
                             ->columnSpanFull()
-                            
+
                             ,
 
 
@@ -895,10 +896,10 @@ public function returnToEditingAction(): Action
                 //         }else{
                 //             return false;
                 //         }
-                      
+
                 //     })
                 //     ,
-                       
+
                     ])
 
         ];
@@ -906,9 +907,7 @@ public function returnToEditingAction(): Action
     public function addCOAction(): Action
     {
         return Action::make('addCO')
-            ->extraAttributes([
-                'style' => 'border-radius: 100px;',
-            ])
+            ->extraAttributes(AppConstant::ACTION_STYLE)
             ->icon('heroicon-m-plus')
             ->label('Add CO')
             ->form($this->coForm())
@@ -993,7 +992,7 @@ public function returnToEditingAction(): Action
                     'new_amount' => $calculated_amount,
                     'funding_agency' => $data['funding_agency']?? null,
                     'agency_where_dost_fund_will_be_allocated' => $data['agency_where_dost_fund_will_be_allocated']?? null,
-                    
+
                 ];
 
 
@@ -1080,7 +1079,7 @@ public function returnToEditingAction(): Action
 
         // return $group; // Assuming 'id' is the primary key field
     })
-    ->sortKeys(); 
+    ->sortKeys();
 
 
 
@@ -1127,9 +1126,9 @@ public function returnToEditingAction(): Action
     // ->map(function ($group) {
     //     return $group; // Assuming 'id' is the primary key field
     // })
-    // ->sortKeys(); 
+    // ->sortKeys();
 
-        
+
         $mooes = SelectedMOOE::where('project_year_id', $this->record->id)->get()->groupBy(function ($item) {
             if ($item->cost_type === 'Indirect Cost') {
                 if(empty($item->indirect_cost_type)){
@@ -1148,9 +1147,9 @@ public function returnToEditingAction(): Action
         })
         ->sortKeys();
 
-      
-    
-    
+
+
+
 
         // $mooes = SelectedMOOE::where('project_year_id', $this->record->id)->get()->groupBy('cost_type')->sortBy(function ($group, $key) {
         //     switch ($key) {

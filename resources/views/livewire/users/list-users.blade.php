@@ -1,4 +1,4 @@
-<div class="mx-auto max-w-7xl">
+<div class="">
 
 
     {{ $this->table }}

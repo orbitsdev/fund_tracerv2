@@ -244,7 +244,7 @@ class ListUsers extends Component implements HasForms, HasTable
 
                 EditAction::make()
                 ->button()
-                ->outlined()
+                // ->outlined()
                 ->color('trust')
                 ->label('Edit')
                 ->modalHeading('Edit User')

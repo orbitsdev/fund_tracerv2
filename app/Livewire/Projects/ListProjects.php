@@ -6,6 +6,7 @@ use App\Models\User;
 use Filament\Tables;
 use App\Models\Project;
 use Livewire\Component;
+use App\Enums\AppConstant;
 use Filament\Tables\Table;
 use App\Enums\RoleConstant;
 use Filament\Tables\Actions\Action;
@@ -40,18 +41,17 @@ class ListProjects extends Component implements HasForms, HasTable
                         return $state->getFullName();
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
-                        return $query->whereHas('user', function($query) use($search){
+                        return $query->whereHas('user', function ($query) use ($search) {
                             $query->where('first_name', 'like', "%{$search}%")
-                            ->orWhere('last_name', 'like', "%{$search}%");
+                                ->orWhere('last_name', 'like', "%{$search}%");
                         });
-
                     })
-                    ->label('FINANCE MANAGER')
-                    ->badge()
-                    ->color('primary'),
+                    ->label('FINANCE MANAGER'),
+
+
 
                 ViewColumn::make('')->view('tables.columns.project-total-budget')->label('DOST FUND'),
-                TextColumn::make('title') ->searchable()->label('PROJECT TITLE')->wrap(),
+                TextColumn::make('title')->searchable()->label('PROJECT TITLE')->wrap(),
                 // TextColumn::make('allocated_fund')
                 //     ->money('PHP')
                 //     ->numeric(
@@ -89,31 +89,51 @@ class ListProjects extends Component implements HasForms, HasTable
             ->actions([
                 Action::make('view')
                     ->icon('heroicon-m-pencil-square')
+                    ->button()
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->outlined()
                     ->label('MANAGE LIB')
+
                     ->url(fn (Model $record): string => route('project.line-item-budget', ['record' => $record])),
 
-                    EditAction::make('finance Manager')
-                    ->label('Finance Manager')
-    ->form([
-        Group::make()
-        ->relationship('assigned_project')
-        ->schema([
-            Select::make('user_id')
-            ->label('Account')
-            ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
-            ->get()
-            ->map(function ($item) {
-                return [
-                    'id' => $item->id,
-                    'name' => $item->getFullName()
-                ];
-            })
-            ->pluck('name', 'id'))
-            ->required(),
-        ]),
+                EditAction::make('FINANCE MANAGER')
+                    ->label('FINANCE MANAGER')
+                    ->icon('heroicon-m-plus')
+                    ->outlined()
+                    ->button()
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->form([
+                        Select::make('user_id')
+                        ->label('Account')
+                        ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
+                            ->get()
+                            ->map(function ($item) {
+                                return [
+                                    'id' => $item->id,
+                                    'name' => $item->getFullName()
+                                ];
+                            })
+                            ->pluck('name', 'id'))
+                        ->required(),
 
 
-        ]),
+                    ]),
+                    Action::make('edit')
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->icon('heroicon-m-pencil')
+                    ->label('EDIT')
+                    ->outlined()
+                    ->button()
+                    ->color('primary')
+
+                    ->url(fn (Model $record): string => route('project.edit', ['record' => $record])),
+
+                // Tables\Actions\EditAction::make()->label('Edit'),
+                Tables\Actions\DeleteAction::make()->label('DELETE')
+                ->outlined()
+                ->button()
+                ->extraAttributes(AppConstant::ACTION_STYLE)
+                ,
 
                 // Action::make('monitor')
 
@@ -124,23 +144,8 @@ class ListProjects extends Component implements HasForms, HasTable
                 // ->outlined()
                 // ,
 
-                ActionGroup::make([
-                    // Action::make('view')
-                    //     ->icon('heroicon-m-eye')
-                    //     ->color('primary')
-                    //     ->label('View')
-                    //     ->url(fn (Model $record): string => route('project.view', ['record' => $record])),
 
-                    Action::make('edit')
-                        ->icon('heroicon-m-pencil')
-                        ->label('Edit')
-                        ->color('primary')
 
-                        ->url(fn (Model $record): string => route('project.edit', ['record' => $record])),
-
-                    // Tables\Actions\EditAction::make()->label('Edit'),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
 
             ])
             ->bulkActions([

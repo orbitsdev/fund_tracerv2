@@ -100,7 +100,7 @@ Route::prefix('reports')->name('report.')->group(function () {
     Route::get('/dashboard', function () {
 
         if(Auth::user()->is_admin()){
-            return redirect()->route('program.index');
+            return redirect()->route('manage.users');
         }else{
             return redirect()->route('financial-manager.projects');
         }

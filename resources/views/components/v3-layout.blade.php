@@ -8,7 +8,7 @@
 -->
 <div class="min-h-full">
     <nav class="bg-trust-800">
-        <div class="mx-auto  px-4 sm:px-6 lg:px-8">
+        <div class="mx-auto max-w-7xl ">
             <div class="flex h-16 items-center justify-between">
               <div class="flex items-center">
                 <div class="flex">
@@ -20,8 +20,8 @@
                     <!-- Current: "bg-trust-700 text-white", Default: "text-white hover:bg-trust-500 hover:bg-opacity-75" -->
                     <a href="{{route('manage.users')}}" class="
                     {{ request()->routeIs('manage.users') ? 'link-active' : 'link-inactive' }}" aria-current="page">Accounts</a>
-                    <a href="{{route('program.index')}}" class="link-inactive">Projects</a>
-                    <a href={{route('manage.content-management')}}" class="link-inactive">Content Management</a>
+                    <a href="{{ route('project.index') }}" class=" {{ request()->routeIs('project.index') ? 'link-active' : 'link-inactive' }}">Projects</a>
+                    <a href="{{route('manage.content-management')}}" class="link-inactive">Content Management</a>
                     <a href="#" class="link-inactive">Reports</a>
                     {{-- <a href="#" class="text-white hover:bg-trust-500 hover:bg-opacity-75 rounded-md px-3 py-2 text-sm font-medium">Reports</a> --}}
                   </div>
@@ -92,7 +92,7 @@
         <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Dashboard</h1>
       </div> --}}
     </header>
-    <main class="mt-8">
+    <main class="mt-8 mx-auto max-w-7xl">
         {{$slot}}
 
     </main>
