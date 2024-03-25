@@ -2,13 +2,18 @@
 
 namespace App\Livewire\Projects;
 
+use App\Models\User;
 use Filament\Tables;
 use App\Models\Project;
 use Livewire\Component;
 use Filament\Tables\Table;
+use App\Enums\RoleConstant;
 use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Contracts\HasTable;
@@ -30,22 +35,23 @@ class ListProjects extends Component implements HasForms, HasTable
             ->query(Project::query())
             ->columns([
 
-                TextColumn::make('assigned_project')
+                TextColumn::make('user')
                     ->formatStateUsing(function ($state) {
-                        if (!empty($state->assigned_projectable)) {
-
-                            return $state->assigned_projectable->first_name . ' ' . $state->assigned_projectable->first_name;
-                        } else {
-                            return '';
-                        }
+                        return $state->getFullName();
                     })
-                    ->label('BUDGER MANAGER')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->whereHas('user', function($query) use($search){
+                            $query->where('first_name', 'like', "%{$search}%")
+                            ->orWhere('last_name', 'like', "%{$search}%");
+                        });
+
+                    })
+                    ->label('FINANCE MANAGER')
                     ->badge()
                     ->color('primary'),
 
                 ViewColumn::make('')->view('tables.columns.project-total-budget')->label('DOST FUND'),
-                TextColumn::make('title')
-                    ->searchable()->label('PROJECT TITLE')->wrap(),
+                TextColumn::make('title') ->searchable()->label('PROJECT TITLE')->wrap(),
                 // TextColumn::make('allocated_fund')
                 //     ->money('PHP')
                 //     ->numeric(
@@ -85,6 +91,30 @@ class ListProjects extends Component implements HasForms, HasTable
                     ->icon('heroicon-m-pencil-square')
                     ->label('MANAGE LIB')
                     ->url(fn (Model $record): string => route('project.line-item-budget', ['record' => $record])),
+
+                    EditAction::make('finance Manager')
+                    ->label('Finance Manager')
+    ->form([
+        Group::make()
+        ->relationship('assigned_project')
+        ->schema([
+            Select::make('user_id')
+            ->label('Account')
+            ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'name' => $item->getFullName()
+                ];
+            })
+            ->pluck('name', 'id'))
+            ->required(),
+        ]),
+
+
+        ]),
+
                 // Action::make('monitor')
 
                 // ->label('Monitor Lib')

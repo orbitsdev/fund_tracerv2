@@ -41,12 +41,12 @@
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased bg-gray-200">
+<body class="font-sans antialiased bg-gray-100">
     @livewire('notifications')
 
 
 
-    @include('components.v1-layout')
+    @include('components.v3-layout')
 
     @stack('modals')
     @livewireScripts

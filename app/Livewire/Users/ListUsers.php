@@ -7,6 +7,7 @@ use Filament\Tables;
 use Livewire\Component;
 use Filament\Tables\Table;
 
+use App\Enums\RoleConstant;
 use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Group;
@@ -25,10 +26,13 @@ use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Enums\FiltersLayout;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Actions\CreateAction;
+use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Rawilk\FilamentPasswordInput\Password;
+use Filament\Tables\Grouping\Group as TGroup;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 
@@ -37,6 +41,81 @@ class ListUsers extends Component implements HasForms, HasTable
     use InteractsWithForms;
     use InteractsWithTable;
 
+
+    public function userForm(): array
+    {
+        return [
+            Section::make('Personal Details')
+                ->columns([
+                    'sm' => 3,
+                    'xl' => 6,
+                    '2xl' => 9,
+                ])
+                ->schema([
+
+                    TextInput::make('first_name')->required()->columnSpan(3),
+                    TextInput::make('last_name')->required()->columnSpan(3),
+                    Radio::make('gender')
+                        ->options([
+                            'Male' => 'Male',
+                            'Female' => 'Female',
+                        ])
+                        ->required()
+                        ->inline()
+                        ->columnSpan(3),
+
+
+
+                ]),
+
+
+                Section::make('Account Details')
+                ->columns([
+                    'sm' => 3,
+                    'xl' => 6,
+                    '2xl' => 9,
+                ])
+                ->schema([
+
+                    Select::make('role')
+                        ->required()
+                        ->label('Account Type')
+                        ->default(RoleConstant::FINANCE_MANAGER)
+                        ->options(RoleConstant::ROLES)
+                        ->columnSpan(3)
+                        ->searchable()
+                        ->live()
+                        ->hidden(fn (string $operation): bool => $operation === 'edit'),
+
+                    TextInput::make('email')->required()->unique(ignoreRecord: true)
+                        ->columnSpan(3),
+
+
+                    Password::make('password')
+                        ->label(fn (string $operation) => $operation == 'create' ? 'Password' : 'New Password')
+                        ->password()
+                        ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
+                        ->dehydrated(fn (?string $state): bool => filled($state))
+                        ->required(fn (string $operation): bool => $operation === 'create')
+                        ->columnSpan(3),
+
+                    FileUpload::make('profile_photo_path')
+                        ->disk('public')
+                        ->label('Profile')
+                        ->directory('user-profile')
+                        ->image()
+                        ->imageEditor()
+                        ->imageEditorAspectRatios([
+                            '16:9',
+                            '4:3',
+                            '1:1',
+                        ])
+                        // ->imageEditorMode(2)
+                        ->columnSpanFull()
+                ]),
+
+        ];
+    }
     public function table(Table $table): Table
     {
         return $table
@@ -47,13 +126,21 @@ class ListUsers extends Component implements HasForms, HasTable
                 // ->hidden(function(Model $record) {
                 //     return $record->is_admin();
                 // }),
-                TextColumn::make('first_name')->searchable(),
+                TextColumn::make('first_name')->formatStateUsing(function(Model $record) {
+                    return $record->getFullName();
+                })
+                ->searchable(query: function (Builder $query, string $search): Builder {
+                    return $query
+                        ->where('first_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%");
+                }),
                 TextColumn::make('last_name')->searchable(),
+                TextColumn::make('gender')->searchable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('account_type')->searchable(),
                 TextColumn::make('role')->searchable()->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'Admin' => 'primary',
+                        'Admin' => 'trust',
                         'Financial Manager' => 'info',
                         default => 'gray',
                     }),
@@ -69,228 +156,121 @@ class ListUsers extends Component implements HasForms, HasTable
                     ->color('gray'),
             ])
             ->filters([
-                //
-            ])
+                SelectFilter::make('role')
+                ->label('Account Type')
+                    ->options(RoleConstant::ROLES)
+            ],
+            layout: FiltersLayout::AboveContent
+            )
 
             ->headerActions([
 
 
 
                 CreateAction::make()
-                    ->modalHeading('Create User')
-                    ->label('New User')
+                ->color('trust')
+                    ->modalHeading('Create Account')
+                    ->label('New Account')
                     ->icon('heroicon-m-users')
-                    ->form([
-
-
-                        Section::make()
-                            ->columns([
-                                'sm' => 3,
-                                'xl' => 6,
-                                '2xl' => 8,
-                            ])
-                            ->schema([
-
-
-                                TextInput::make('first_name')->required()->columnSpan(4),
-                                TextInput::make('last_name')->required()->columnSpan(4),
-                                Radio::make('gender')
-                                    ->options([
-                                        'Male' => 'Male',
-                                        'Female' => 'Femal',
-                                    ])
-                                    ->required()
-                                    ->inline()
-                                    ->columnSpan(4),
-
-                                TextInput::make('email')->required()->unique(ignoreRecord: true)
-                                    ->columnSpan(4),
-                                Select::make('role')
-                                    ->required()
-                                    ->label('Role')
-                                    ->default('Financial Manager')
-                                    ->options([
-                                        'Admin' => 'Admin',
-                                        'Financial Manager' => 'Financial Manager',
-                                        'Payee' => 'Payee',
-                                    ])
-                                    ->columnSpan(4)
-                                    ->searchable()
-                                    ->live()
-                                    ->hidden(fn (string $operation): bool => $operation === 'edit'),
-
-                                Password::make('password')
-                                    ->label(fn (string $operation) => $operation == 'create' ? 'Password' : 'New Password')
-                                    ->password()
-                                    ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                                    ->dehydrated(fn (?string $state): bool => filled($state))
-                                    ->required(fn (string $operation): bool => $operation === 'create')
-                                    ->columnSpan(4),
-
-                                FileUpload::make('profile_photo_path')
-                                    ->disk('public')
-                                    ->label('Profile')
-                                    ->directory('user-profile')
-                                    ->image()
-                                    ->imageEditor()
-                                    ->imageEditorAspectRatios([
-                                        '16:9',
-                                        '4:3',
-                                        '1:1',
-                                    ])
-                                    // ->imageEditorMode(2)
-                                    ->columnSpan(4)
-
-                            ]),
-
-
-
-
-                        // TextInput::make('abbreviation')->maxLength(191)->required()->columnSpanFull(),
-                    ])
+                    ->form($this->userForm())
                     ->modalWidth(MaxWidth::SevenExtraLarge)
                     ->disableCreateAnother(),
             ])
             ->actions([
 
-                Action::make('remove_assigned')
-                    ->label('Remove Assigned')
-                    ->requiresConfirmation()
-                    ->action(function (Model $record) {
+                // Action::make('remove_assigned')
+                //     ->label('Remove Assigned')
+                //     ->button()
+                //     ->outlined()
+                //     ->requiresConfirmation()
+                //     ->action(function (Model $record) {
 
 
-                        if ($record->assigned_project()->exists()) {
-                            $record->assigned_project()->delete();
-                            Notification::make()
-                                ->title('Saved successfully')
-                                ->success()
-                                ->send();
-                        }
-                        // $record->assigned_project()->delete();
-                    })
-                    ->hidden(function ($record) {
-                        return $record->assigned_project()->doesntExist();
-                    })
+                //         if ($record->assigned_project()->exists()) {
+                //             $record->assigned_project()->delete();
+                //             Notification::make()
+                //                 ->title('Saved successfully')
+                //                 ->success()
+                //                 ->send();
+                //         }
+                //         // $record->assigned_project()->delete();
+                //     })
+                //     ->hidden(function ($record) {
+                //         return $record->assigned_project()->doesntExist();
+                //     })
 
-                // ->modalWidth(MaxWidth::SevenExtraLarge)
-                ,
-                EditAction::make('assigne_to_project')
-                    ->modalHeading('Assigne to Project')
-                    ->label("Assigned Project")
-                    // ->diabledicon()
-                    ->icon(function () {
-                        return "";
-                    })
-                    ->color('primary')
-                    // ->icon('heroicon-m-user-plus')
-                    ->form([
-
-
-
-                        Group::make()
-                            ->relationship('assigned_project')
-                            ->schema([
-                                Select::make('project_id')
-                                    ->relationship(
-                                        name: 'project',
-                                        titleAttribute: 'title',
-                                        modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('assigned_project'),
-                                    )
-                                    ->preload()
-                                    ->searchable(),
+                // // ->modalWidth(MaxWidth::SevenExtraLarge)
+                // ,
+                // EditAction::make('assigne_to_project')
+                //     ->modalHeading('Assigne to Project')
+                //     ->label("Assigned Project")
+                //     // ->diabledicon()
+                //     ->icon(function () {
+                //         return "";
+                //     })
+                //     ->color('trust')
+                //     // ->icon('heroicon-m-user-plus')
+                //     ->form([
 
 
 
-                            ]),
-
-
-                        // TextInput::make('abbreviation')->maxLength(191)->required()->columnSpanFull(),
-                    ])
-                    ->hidden(function ($record) {
-                        return $record->assigned_project()->exists();
-                    })
-
-
-                // ->modalWidth(MaxWidth::SevenExtraLarge)
-                ,
-
-                ActionGroup::make([
-
-
-                    EditAction::make()
-                        ->color('primary')
-                        ->label('Edit User')
-                        ->modalHeading('Edit User')
-                        // ->icon('heroicon-m-users')
-                        ->form([
-
-
-                            Section::make()
-                                ->columns([
-                                    'sm' => 3,
-                                    'xl' => 6,
-                                    '2xl' => 8,
-                                ])
-                                ->schema([
-
-
-                                    TextInput::make('first_name')->required()->columnSpan(4),
-                                    TextInput::make('last_name')->required()->columnSpan(4),
-
-                                    TextInput::make('email')->required()->unique(ignoreRecord: true)
-                                        ->columnSpan(4),
-                                    Select::make('role')
-                                        ->required()
-                                        ->label('Role')
-                                        ->default('Financial Manager')
-                                        ->options([
-                                            'Admin' => 'Admin',
-                                            'Financial Manager' => 'Financial Manager',
-                                            'Payee' => 'Payee',
-                                        ])
-                                        ->columnSpan(4)
-                                        ->searchable()
-                                        ->live()
-                                        // ->hidden(fn (string $operation): bool => $operation === 'edit')
-                                        ->disabled(),
-
-                                    Password::make('password')
-                                        ->label(fn (string $operation) => $operation == 'create' ? 'Password' : 'New Password')
-                                        ->password()
-                                        ->dehydrateStateUsing(fn (string $state): string => Hash::make($state))
-                                        ->dehydrated(fn (?string $state): bool => filled($state))
-                                        ->required(fn (string $operation): bool => $operation === 'create')
-                                        ->columnSpan(4),
-                                    FileUpload::make('profile_photo_path')
-                                        ->disk('public')
-                                        ->label('Profile')
-                                        ->directory('user-profile')
-                                        ->image()
-                                        ->imageEditor()
-                                        ->imageEditorAspectRatios([
-                                            '16:9',
-                                            '4:3',
-                                            '1:1',
-                                        ])
-                                        // ->imageEditorMode(2)
-                                        ->columnSpan(4)
-
-                                ]),
+                //         Group::make()
+                //             ->relationship('assigned_project')
+                //             ->schema([
+                //                 Select::make('project_id')
+                //                     ->relationship(
+                //                         name: 'project',
+                //                         titleAttribute: 'title',
+                //                         modifyQueryUsing: fn (Builder $query) => $query->whereDoesntHave('assigned_project'),
+                //                     )
+                //                     ->preload()
+                //                     ->searchable(),
 
 
 
+                //             ]),
 
-                            // TextInput::make('abbreviation')->maxLength(191)->required()->columnSpanFull(),
-                        ])
-                        ->modalWidth(MaxWidth::SevenExtraLarge),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
+
+                //         // TextInput::make('abbreviation')->maxLength(191)->required()->columnSpanFull(),
+                //     ])
+                //     ->hidden(function ($record) {
+                //         return $record->assigned_project()->exists();
+                //     })
+
+
+                // // ->modalWidth(MaxWidth::SevenExtraLarge)
+                // ,
+
+
+                EditAction::make()
+                ->button()
+                ->outlined()
+                ->color('trust')
+                ->label('Edit')
+                ->modalHeading('Edit User')
+                // ->icon('heroicon-m-users')
+                ->form($this->userForm())
+                ->modalWidth(MaxWidth::SevenExtraLarge),
+            Tables\Actions\DeleteAction::make()
+            ->button()
+                ->outlined()
+            ,
+                // ActionGroup::make([
+
+
+                // ]),
 
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     //
                 ]),
+            ])
+
+            ->groups([
+                TGroup::make('role')
+                ->label('Account Type')
+                ->titlePrefixedWithLabel(false),
             ])
 
 

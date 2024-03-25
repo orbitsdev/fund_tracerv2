@@ -55,44 +55,38 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     ->onIcon('heroicon-m-check')
                     ->offIcon('heroicon-m-x-mark')
                     ->onColor('success')
-                    // ->disabled(function ($record){
-                    //     $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
-
-                    //     if(count($project_years) > 0 || $record->is_active == false) {   
-
-                    //         return true;
-
-                    //     }else{
-                    //         return false;
-                    //     }
-                    // })
-
-                    ->beforeStateUpdated(function ($record, $state) {
 
 
+                    ->updateStateUsing(function ($record, $state) {
+                        $activeYear = ProjectYear::where('is_active', true)->exists();
 
-                        // $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
-
-
-
-                    })
-                    ->afterStateUpdated(function ($record, $state) {
-
-
-                        $message = 'Active';
-                        if ($state) {
-                            $message = 'Active';
+                        if ($record->is_active) {
+                            // Deactivate the current active year
+                            $record->update(['is_active' => false]);
+                            Notification::make()
+                                ->title('Project Year was set to Inactive')
+                                ->success()
+                                ->send();
                         } else {
-
-                            $message = 'Inactive';
+                            if ($activeYear) {
+                                Notification::make()
+                                    ->title('Operation Failed')
+                                    ->body('You can only activate one (1) project year at a time.')
+                                    ->danger()
+                                    ->send();
+                                // Prevent activation if another year is already active
+                            } else {
+                                // Activate the year if no other year is active
+                                $record->update(['is_active' => true]);
+                                Notification::make()
+                                    ->title('Project Year was set to Active')
+                                    ->success()
+                                    ->send();
+                            }
                         }
-
-                        Notification::make()
-                            ->title('Project Year Was Set as ' . $message)
-                            ->success()
-                            ->send();
-                        // Runs after the state is saved to the database.
                     })
+
+
 
 
             ])

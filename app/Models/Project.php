@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\Year;
 use App\Models\Program;
 use App\Models\ProjectYear;
@@ -34,6 +35,10 @@ class Project extends Model
     public function getTotalAllYearsBudget()
     {
         return $this->project_years->sum->getYearActualBudget();
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 
 

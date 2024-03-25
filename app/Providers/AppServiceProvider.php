@@ -39,10 +39,22 @@ class AppServiceProvider extends ServiceProvider
                 700=> '#135e77',
                 800=> '#144f65',
                 900=> '#073445',
-            ]
+            ],
+            'trust'=> [
+                50=> '#edf9ff',
+                100=> '#d8f1ff',
+                200=> '#b9e6ff',
+                300=> '#89d8ff',
+                400=> '#51c1ff',
+                500=> '#29a3ff',
+                600=> '#0980fe',
+                700=> '#0b6bea',
+                800=> '#1057bd',
+                900=> '#112f5a',
+            ],
         ]);
 
         Modal::closedByClickingAway(false);
-        
+
     }
 }

@@ -54,7 +54,7 @@
 
 
 
-                                    Users & Permissions
+                                    Account
                                 </a>
                             </li>
 
@@ -114,8 +114,8 @@
 
                                     <li>
                                         <a href="{{ route('manage.content-management') }}"
-                                            class="
-                {{ request()->routeIs('manage.content-management') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
+                                        class="
+            {{ request()->routeIs('manage.content-management') || request()->routeIs('personal-service.index') || request()->routeIs('mooe.index') ? ' bg-[#ffff]  drop-shadow-xl shadow-lg shadow-[#028baf]/50 text-gray-900 font-bold   transition ' : 'text-white' }}  group flex gap-x-3 rounded-md p-2 text-sm leading-6 transition
                  ">
 
 
