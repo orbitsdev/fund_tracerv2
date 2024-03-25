@@ -20,8 +20,8 @@
                     <!-- Current: "bg-trust-700 text-white", Default: "text-white hover:bg-trust-500 hover:bg-opacity-75" -->
                     <a href="{{route('manage.users')}}" class="
                     {{ request()->routeIs('manage.users') ? 'link-active' : 'link-inactive' }}" aria-current="page">Accounts</a>
-                    <a href="#" class="link-inactive">Project</a>
-                    <a href="#" class="link-inactive">Content Management</a>
+                    <a href="{{route('program.index')}}" class="link-inactive">Projects</a>
+                    <a href={{route('manage.content-management')}}" class="link-inactive">Content Management</a>
                     <a href="#" class="link-inactive">Reports</a>
                     {{-- <a href="#" class="text-white hover:bg-trust-500 hover:bg-opacity-75 rounded-md px-3 py-2 text-sm font-medium">Reports</a> --}}
                   </div>
