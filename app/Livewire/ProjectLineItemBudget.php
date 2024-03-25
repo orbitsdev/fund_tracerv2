@@ -28,6 +28,7 @@ use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\Action as TAction;
 use Filament\Forms\Concerns\InteractsWithForms;
+
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Actions\Concerns\InteractsWithActions;
 
@@ -44,6 +45,72 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
     {
         return $table
             ->query(ProjectYear::query())
+            ->headerActions([   
+
+                TAction::make('add')
+            ->icon('heroicon-m-plus')
+            ->label('Add Year')
+            ->form([
+                Select::make('year_id')
+
+                    ->label('Year')
+                    ->options(Year::query()->whereDoesntHave('project_years', function ($query) {
+                        $query->where('project_id', $this->record->id);
+                    })->pluck('title', 'id'))
+                    ->rules([
+                        function () {
+                            return function (string $attribute, $value, Closure $fail) {
+                                $exist_project_year = ProjectYear::where('project_id', $this->record->id)
+                                    ->where('year_id', $value)
+                                    ->exists();
+
+                                if ($exist_project_year) {
+                                    $fail('Cannot create, it already exists.');
+                                }
+                            };
+                        },
+                    ])
+                    ->required(),
+            ])
+            ->action(function (array $data) {
+                DB::beginTransaction();
+
+                try {
+                    // Perform database operations inside the transaction
+
+                    $project_years = ProjectYear::where('project_id', $this->record->id)->where('is_active', true)->get();
+                    $new_record = ProjectYear::create([
+                        'project_id' => $this->record->id,
+                        'year_id' => $data['year_id'],
+                        'is_active' => count($project_years) === 0,
+                    ]);
+
+
+
+                    if (!empty($new_record)) {
+                        Notification::make()
+                            ->title('Saved successfully')
+                            ->success()
+                            ->send();
+                        // Commit the transaction
+                        DB::commit();
+                        return redirect()->route('project.line-items', ['record' => $new_record]);
+                    }
+                } catch (\Exception $e) {
+                    DB::rollBack();
+
+
+                    Notification::make()
+                        ->title('Failed to save data: ' . $e->getMessage())
+                        ->danger()
+                        ->send();
+
+                    // Redirect back or to an error page
+                    return redirect()->route('project.line-items');
+                }
+            })
+
+            ])
             ->columns([
                 TextColumn::make('year.title')->formatStateUsing(function ($state) {
                     return $state . ' LIB';

@@ -1,29 +1,20 @@
 <div class=>
 
-    <x-create-management-layout>
 
-
-
+    
+    <x-v3-top-header>
+       {{$record->title}}    <span> (LIB LIST)</span>
+        <!-- Slot 1 content not provided, default content will be displayed -->
+        <x-slot name="slot2">
+          
          <x-back-button :url="Auth::user()->is_admin() ? route('project.index') : (Auth::user()->is_financial() ? route('financial-manager.projects') : '#')" >
-                Back
-            </x-back-button>
-        <div class="flex items-center justify-end mt-4 ">
-            <div>
+            Back
+        </x-back-button>
+        </x-slot>
+    </x-v3-top-header>
+    
 
-                {{ $this->addAction }}
-            </div>
-            <div>
-
-
-                {{-- <x-filament::link color="gray">
-                    Mark notifications as read
-
-                    <x-slot name="badge">
-                        3
-                    </x-slot>
-                </x-filament::link> --}}
-            </div>
-        </div>
+       
 
         <div class="mt-4">
             {{ $this->table }}
@@ -36,7 +27,7 @@
 
 
 
-    </x-create-management-layout>
+
     <div class="mt-4 px-8 py-4 d-gradient text-white rounded-lg">
         <div class="flex justify-between items-center">
             <div>

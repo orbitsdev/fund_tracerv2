@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Project;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
 use Illuminate\Support\Facades\Storage;
@@ -97,5 +98,9 @@ class User extends Authenticatable
 
     public function getFullName(){
         return $this->first_name .' '. $this->last_name;
+    }
+
+    public function project(){
+        return $this->hasOne(Project::class);
     }
 }

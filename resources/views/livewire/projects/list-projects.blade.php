@@ -1,6 +1,12 @@
 <div>
-    <x-create-management-layout>
-
+    
+  <x-v3-top-header>
+    Projects 
+    <!-- Slot 1 content not provided, default content will be displayed -->
+    <x-slot name="slot2">
+      
+    </x-slot>
+</x-v3-top-header>
         {{-- <div class="mb-4 bg-white">
             <div class="">
               <div class="grid grid-cols-3 divide-x divide-gray-900/5 border-x border-gray-900/5">
@@ -27,5 +33,5 @@
           </div> --}}
 
         {{ $this->table }}
-    </x-create-management-layout>
+  
 </div>

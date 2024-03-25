@@ -19,6 +19,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Model;
+use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\CreateAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -36,9 +37,20 @@ class ListProjects extends Component implements HasForms, HasTable
             ->query(Project::query())
             ->columns([
 
+
+
+
+
+                ViewColumn::make('')->view('tables.columns.project-total-budget')->label('DOST FUND'),
+                TextColumn::make('title')->searchable()->label('PROJECT TITLE')->wrap(),
                 TextColumn::make('user')
                     ->formatStateUsing(function ($state) {
-                        return $state->getFullName();
+                        if (!empty($state)) {
+
+                            return $state->getFullName();
+                        } else {
+                            return 'NONE';
+                        }
                     })
                     ->searchable(query: function (Builder $query, string $search): Builder {
                         return $query->whereHas('user', function ($query) use ($search) {
@@ -47,11 +59,6 @@ class ListProjects extends Component implements HasForms, HasTable
                         });
                     })
                     ->label('FINANCE MANAGER'),
-
-
-
-                ViewColumn::make('')->view('tables.columns.project-total-budget')->label('DOST FUND'),
-                TextColumn::make('title')->searchable()->label('PROJECT TITLE')->wrap(),
                 // TextColumn::make('allocated_fund')
                 //     ->money('PHP')
                 //     ->numeric(
@@ -61,15 +68,15 @@ class ListProjects extends Component implements HasForms, HasTable
                 //     ->prefix('₱ ')
                 //     ->sortable(),
 
-                TextColumn::make('start_date')
-                    ->date()
+                // TextColumn::make('start_date')
+                //     ->date()
 
-                    ->label('START DATE')
-                    ->sortable(),
-                TextColumn::make('end_date')
-                    ->label('END DATE')
-                    ->date()
-                    ->sortable(),
+                //     ->label('START DATE')
+                //     ->sortable(),
+                // TextColumn::make('end_date')
+                //     ->label('END DATE')
+                //     ->date()
+                //     ->sortable(),
 
             ])
             ->filters([
@@ -97,28 +104,65 @@ class ListProjects extends Component implements HasForms, HasTable
                     ->url(fn (Model $record): string => route('project.line-item-budget', ['record' => $record])),
 
                 EditAction::make('FINANCE MANAGER')
-                    ->label('FINANCE MANAGER')
+                    ->label('ADD FINANCE MANAGER')
                     ->icon('heroicon-m-plus')
                     ->outlined()
                     ->button()
                     ->extraAttributes(AppConstant::ACTION_STYLE)
                     ->form([
+
                         Select::make('user_id')
-                        ->label('Account')
-                        ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
-                            ->get()
-                            ->map(function ($item) {
-                                return [
-                                    'id' => $item->id,
-                                    'name' => $item->getFullName()
-                                ];
-                            })
-                            ->pluck('name', 'id'))
-                        ->required(),
+                        ->label('Finance Manager Account')
+    ->relationship(name: 'user', titleAttribute: 'first_name',   modifyQueryUsing: fn (Builder $query) => $query->where('role', RoleConstant::FINANCE_MANAGER),)
+    ->searchable(['first_name','last_name', 'email'])
+    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->getFullName()} - {$record->email}")
+    ->preload()
+
+                        // Select::make('user_id')
+                        //     ->label('Account')
+                        //     ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
+                        //         ->get()
+                        //         ->map(function ($item) {
+                        //             return [
+                        //                 'id' => $item->id,
+                        //                 'name' => $item->getFullName()
+                        //             ];
+                        //         })
+                        //         ->pluck('name', 'id'))
+                              
+
+                        //     ->required(),
 
 
-                    ]),
-                    Action::make('edit')
+                    ])
+                    ->hidden(fn (Model $record) => empty($record->user) ? false : true),
+                Action::make('REMOVE FINANCE MANAGER')
+                    ->label('REMOVE FINANCE MANAGER')
+                    ->icon('heroicon-m-plus')
+                    ->color('danger')
+                    ->outlined()
+                  
+                    ->button()
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->requiresConfirmation()
+                    ->modalHeading('Remove Finance Manager ')
+                    ->modalDescription('Are you sure you\'d like to remove project finance manager? This cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, Remove it')
+                    ->action(function (Model $record) {
+
+
+                        if ($record->user) {
+                            $record->user_id = null;
+                            $record->update();
+                            Notification::make()
+                                ->title('Finance Manager Removed')
+                                ->success()
+                                ->send();
+                        }
+                    })
+                    ->hidden(fn (Model $record) => !empty($record->user) ? false : true),
+
+                Action::make('edit')
                     ->extraAttributes(AppConstant::ACTION_STYLE)
                     ->icon('heroicon-m-pencil')
                     ->label('EDIT')
@@ -130,10 +174,9 @@ class ListProjects extends Component implements HasForms, HasTable
 
                 // Tables\Actions\EditAction::make()->label('Edit'),
                 Tables\Actions\DeleteAction::make()->label('DELETE')
-                ->outlined()
-                ->button()
-                ->extraAttributes(AppConstant::ACTION_STYLE)
-                ,
+                    ->outlined()
+                    ->button()
+                    ->extraAttributes(AppConstant::ACTION_STYLE),
 
                 // Action::make('monitor')
 
