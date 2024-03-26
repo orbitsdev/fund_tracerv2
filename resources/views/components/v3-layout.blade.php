@@ -20,7 +20,7 @@
                     <!-- Current: "bg-trust-700 text-white", Default: "text-white hover:bg-trust-500 hover:bg-opacity-75" -->
                     <a href="{{route('manage.users')}}" class="
                     {{ request()->routeIs('manage.users') ? 'link-active' : 'link-inactive' }}" aria-current="page">Accounts</a>
-                    <a href="{{ route('project.index') }}" class=" {{ (request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items-view')) ? 'link-active' : 'link-inactive' }}">Projects</a>
+                    <a href="{{ route('project.index') }}" class=" {{ (request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items-view') || request()->routeIs('project.line-items') || request()->routeIs('line-items-view-v3')  ) ? 'link-active' : 'link-inactive' }}">Projects</a>
                     <a href="{{route('manage.content-management')}}" class="link-inactive">Content Management</a>
                     <a href="#" class="link-inactive">Reports</a>
                     {{-- <a href="#" class="text-white hover:bg-trust-500 hover:bg-opacity-75 rounded-md px-3 py-2 text-sm font-medium">Reports</a> --}}

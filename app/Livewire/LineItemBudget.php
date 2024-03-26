@@ -49,7 +49,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
     public function forReviewAction(): Action
     {
         return Action::make('forReview')
-        ->label('Forward For Review')
+        ->label('For Review')
             ->size(ActionSize::Large)
             // ->iconButton()
             ->modalAlignment(Alignment::Center)
@@ -77,7 +77,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
     return Action::make('cancelReview')
         ->label('Cancel Review')
         ->size(ActionSize::Large)
-        ->icon('heroicon-m-x-circle')
+        ->icon('heroicon-m-x-mark')
         ->color('gray')
 
         ->requiresConfirmation()
@@ -98,7 +98,7 @@ class LineItemBudget extends Component implements HasForms, HasActions
 public function denyApprovalAction(): Action
 {
     return Action::make('denyApproval')
-        ->label('Deny Approval')
+        ->label('Deny Review')
         ->size(ActionSize::Large)
         ->icon('heroicon-m-x-circle')
         ->color('gray')

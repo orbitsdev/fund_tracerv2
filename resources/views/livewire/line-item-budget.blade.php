@@ -324,27 +324,57 @@
     <div class="col-span-3 p-4 ml-4 rounded bg-white">
         <h2 class="text-2xl font-bold tracking-tight text-gray-700 sm:text-2xl">LIB STATUS</h2>
         <div class="mt-4">
-
-            <div class="cols-1">
+            <p class="p-2 rounded-lg v3-lib-status text-white text-center uppercase font-bold">{{$record->status}}</p>
+            <div class="grid grid-cols-1 mt-4">
+                {{-- Check if status is for editing --}}
                 {{-- @if ($record->status == App\Models\ProjectYear::STATUS_FOR_EDITING) --}}
-                {{ $this->forReviewAction }}
-                {{-- @elseif($record->status == App\Models\ProjectYear::STATUS_FOR_REVIEW)
+                {{$this->forReviewAction}}
+                {{-- @elseif($record->status == App\Models\ProjectYear::STATUS_FOR_REVIEW) --}}
 
-
-                @endif --}}
+                {{-- Check if status is for review --}}
+                {{-- @endif --}}
             </div>
-            <div class="cols-1">
-                {{ $this->cancelReview }}
+            {{-- Action to cancel review --}}
+            <div class="grid grid-cols-1">
+                {{$this->cancelReview}}
             </div>
-            <div class="cols-1">
-                {{ $this->denyApprovalAction }}
+            {{-- Action to deny approval --}}
+            <div class="grid grid-cols-1">
+                {{$this->denyApprovalAction}}
             </div>
-            <div class="cols-1">
-                {{ $this->returnToEditingAction }}
+            {{-- Action to return to editing --}}
+            <div class="grid grid-cols-1">
+                {{$this->returnToEditingAction}}
             </div>
-
         </div>
+
+        <div class="relative mt-6 ">
+            <div class="absolute inset-0 flex items-center" aria-hidden="true">
+              <div class="w-full border-t "></div>
+            </div>
+            <div class="relative flex justify-center text-sm font-medium leading-6">
+              <span class="bg-white px-6 text-gray-900 poppins-regular tg6">Messages</span>
+            </div>
+          </div>
+
+          <div class="flex items-center mt-4">
+            <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80" alt="Emily Selman." class="h-12 w-12 rounded-full">
+            <div class="ml-4">
+              <h4 class="text-sm font-bold text-gray-900">Emily Selman</h4>
+              <div class="mt-1 flex items-center">
+                <p class="text-sm text-gray-500">example@gmail.com</p>
+              </div>
+              <p class="sr-only">5 out of 5 stars</p>
+            </div>
+          </div>
+        <div class="mt-4 space-y-6  text-gray-700 text-xs">
+            <p>I was really pleased with the overall shopping experience. My order even included a little personal, handwritten note, which delighted me!</p>
+            <p>The product quality is amazing, it looks and feel even better than I had anticipated. Brilliant stuff! I would gladly recommend this store to my friends. And, now that I think of it... I actually have, many times!</p>
+          </div>
+
+
     </div>
+
 </div>
 
     <x-filament-actions::modals />

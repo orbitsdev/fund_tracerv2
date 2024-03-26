@@ -46,7 +46,7 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
     {
         return $table
             ->query(ProjectYear::query())
-            ->headerActions([   
+            ->headerActions([
 
                 TAction::make('add')
             ->icon('heroicon-m-plus')
@@ -178,15 +178,21 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
 
                 //     // ])
                 //     ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
+                TAction::make('view')->icon('heroicon-m-eye')->label('VIEW')->color('gray')
+                ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->button()
+                    ->outlined()
+                    ->url(fn (Model $record): string => route('project.line-items-view-v3', ['record' => $record->id])),
+
                 TAction::make('edit')->icon('heroicon-m-pencil-square')->label('EDIT LIB')->color('primary')
                 ->extraAttributes(AppConstant::ACTION_STYLE)
-                  
+
                     ->button()
                     ->outlined()
 
 
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
-                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('COPY LIB')->color('primary')
+                TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('COPY LIB')
                 ->extraAttributes(AppConstant::ACTION_STYLE)
                     ->color('gray')
 

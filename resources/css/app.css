@@ -274,7 +274,13 @@
 }
 
 .v3-d-gradient{
-    background-image:linear-gradient(to bottom left, #1057bd, #0b6bea);
-    background-size: cover;
-    background-repeat: no-repeat;
+      background-image:linear-gradient(to bottom left, #1057bd, #0b6bea);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.v3-lib-status{
+      background-image:linear-gradient(to bottom left, #246fd7, #1a68d0);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
