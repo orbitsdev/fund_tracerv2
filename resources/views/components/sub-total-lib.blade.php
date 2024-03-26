@@ -1,4 +1,4 @@
-<div class="bg-gray-100 py-1  px-3 grid grid-cols-12 {{ $attributes->get('class') }}">
+<div class="bg-gray-100 py-2  px-3 grid grid-cols-12 {{ $attributes->get('class') }}">
     <div class="col-span-6 font-medium text-gray-600">
         <p>{{$label}}</p>
     </div>

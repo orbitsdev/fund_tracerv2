@@ -1,9 +1,9 @@
-<div>
+<div class="">
 
 
-    
+
     <x-v3-top-header>
-        {{$record->project->title}} ({{$record->year->title}} LIB) 
+        {{$record->project->title}} ({{$record->year->title}} LIB)
         <!-- Slot 1 content not provided, default content will be displayed -->
         <x-slot name="slot2">
               <x-back-button style="justify-start" :url="route('project.line-item-budget',['record' => $record->project->id])">
@@ -11,7 +11,7 @@
         </x-bacl-button>
         </x-slot>
     </x-v3-top-header>
-    
+
 
         <div class="relative mt-4 bg-white p-4 rounded">
            @if($record->status != App\Models\ProjectYear::STATUS_FOR_EDITING)
@@ -25,44 +25,46 @@
         </div>
            @endif
 
-            
 
 
-        <div>
-            <p class="text-primary-600 text-2xl font-medium"> I. Personal Service</p>
-            <div class="mt-1">
-                {{ $this->addPersonalServiceAction }}
+
+        <div class="">
+            <div class="flex items-center border-b rounded pb-3">
+                <p class="text-primary-600 text-xl font-medium mr-4"> I. Personal Service</p>
+                <div class="mt-1">
+                    {{ $this->addPersonalServiceAction }}
+                </div>
             </div>
 
-            <div class="mt-3">
+            <div class="mt-2">
                 {{-- @dump($personal_services) --}}
-                @forelse ($personal_services as $cost_type => 
-                
+                @forelse ($personal_services as $cost_type =>
+
                 $personal_service)
 
-                <div class="ml-4">
-                    <p class="font-bold text-gray-700">
-                        {{ $cost_type }} 
+                <div class="ml-4 mb-2">
+                    <p class="font-bold text-gray-700 text-sm">
+                        {{ $cost_type }}
                     </p>
                     <div class="ml-4">
                         @foreach ($personal_service as $indirect_cost_type => $groups)
-                     
+
                             <div class="ml-4">
-                                <p class="font-medium text-gray-700">
+                                <p class="text-sm font-medium text-gray-700">
                                             {{$indirect_cost_type}}
                                 </p>
 
                                 @foreach ($groups as $group_title => $expense)
                                  <div class="flex justify-between items-center border-b  hover:bg-gray-50">
                                     <div class="ml-4 mr-6 flex justify-between text-gray-600 w-full">
-                                        <p class="italic text-sm text-gray-500">
+                                        <p class="italic text-xs text-gray-500">
                                             {{ $expense->displaySelectedPS() }}
                                         </p>
-                                        <p>
+                                        <p class="text-xs">
                                             {{ number_format($expense->amount) }}
                                         </p>
                                     </div>
-                                    <div class="mb-2 flex">
+                                    <div class="mb-2 flex ">
                                         <div class="mr-2">
                                             {{ ($this->editPersonalServiceAction)(['ps' => $expense->id]) }}
                                         </div>
@@ -79,7 +81,7 @@
                 </div>
             @empty
             @endforelse
-            
+
             </div>
             {{-- <div class="mt-4 flex justify-between p-2 bg-gray-100">
                 <div>
@@ -125,42 +127,43 @@
             </div>
            --}}
            @if($record->getActualTotalPS() > 0)
-           <x-sub-total-lib label="Sub-total for PS" 
+           <x-sub-total-lib label="Sub-total for PS"
            class="mt-1 rounded"
            :value="number_format($record->getActualTotalPS())"/>
-         
+
             @endif
 
         </div>
         <div class="mt-6">
             <p class="text-primary-600 text-2xl font-medium"> II. Maintenance and Other Operating Expenses</p>
-            <div class="mt-2">
+            <div class="mt-1">
                 {{ $this->addMOOEAction }}
             </div>
 
-            <div class="mt-2">
+            <div class="mt-3">
                 {{-- @dump($mooes) --}}
                 @forelse ($mooes as $cost_type => $mooe)
-                    <div class="mt-4">
+                    <div class="ml-4">
                         <p class="font-bold text-gray-600">
 
                             {{ $cost_type }}
                         </p>
                         <div class="ml-4">
-                           
+
                             @foreach ($mooe as $group_title => $groups)
                                 <div class="ml-4">
-                                    <p class="font-medium text-gray-600">
+                                    <p class="font-medium text-gray-700">
                                         {{ $group_title }}
 
                                     </p>
+
                                     @foreach ($groups as $key => $expense)
                                         <div class="flex justify-between   items-center border-b hover:bg-gray-50">
 
-                                            <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
+                                            <div class="ml-4 mr-6 flex justify-between  text-gray-600 w-full    ">
                                                 <p class="italic text-sm text-gray-500">
                                                   {{ $expense->m_o_o_e_expense->title }}
-                                                 
+
                                                 </p>
                                                 <p>
                                                     {{ number_format($expense->amount) }}
@@ -176,7 +179,7 @@
                                                     {{ ($this->deleteMooeAction)(['mooe' => $expense->id]) }}
 
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
                                     @endforeach
@@ -234,21 +237,13 @@
             </div>
            --}}
            @if($record->getActualTotalMOOE() > 0)
-            <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
-                <div>
 
-                </div>
-                <div class="flex font-medium">
+           <x-sub-total-lib label="Sub-total for MOOE"
+           class="mt-1 rounded"
+           :value="number_format($record->getActualTotalMOOE())"/>
+           @endif
 
-                    <p class=" ">
-                        Sub-total for MOOE
-                    </p>
-                    <p class="w-[200px] text-end mr-6">
-                        {{ number_format($record->getActualTotalMOOE()) }}
-                    </p>
-                </div>
-            </div>
-            @endif
+
 
         </div>
         <div class="mt-6">
@@ -268,7 +263,7 @@
 
                             <div class="flex justify-between   items-center border-b hover:bg-gray-50">
 
-                                <div class="ml-4 mr-4  flex   justify-between  text-gray-600 w-full    ">
+                                <div class="ml-4 mr-6  flex   justify-between  text-gray-600 w-full    ">
                                     <p class="italic text-sm text-gray-500">
                                        ({{$expense->quantity}}) {{ $expense->description }} <span class="text-xs">({{number_format($expense->amount)}} / Per item)</span>
                                     </p>
@@ -296,59 +291,49 @@
                 @endforelse
             </div>
             @if($record->getActualTotalCO() > 0)
+            <x-sub-total-lib label="Sub-total for CO"
+            class="mt-1 rounded"
+            :value="number_format($record->getActualTotalCO())"/>
 
+             @endif
 
-            <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
-                <div>
-
-                </div>
-                <div class="flex font-medium">
-
-                    <p class=" ">
-                        Sub-total for CO
-                    </p>
-                    <p class="w-[200px] text-end mr-6">
-                        {{ number_format($record->getActualTotalCO()) }}
-                    </p>
-                </div>
-            </div>
-            @endif
 
         </div>
-        @if($record->getYearActualBudget()> 0)
-        <div>
 
-            <div class="mt-4 pr-8 flex justify-between text-xl mb-8   p-2 text-system-800 rounded">
-                <div>
-                    <p class=" font-bold">
-                        {{$record->year->title}}
-                    </p>
-                </div>
-                <div class="flex font-bold">
-
-                    <p class=" ">
-                        Total Budget:
-                    </p>
-                    <p class="w-[200px] text-end mr-6">
-                        {{ number_format($record->getYearActualBudget()) }}
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        @endif
     </div>
+    @if($record->getYearActualBudget()> 0)
+    <div class="d-gradient py-3">
+
+        <div class="">
+            <div>
+                <p class=" font-bold">
+                    {{$record->year->title}}
+                </p>
+            </div>
+            <div class="flex font-bold">
+
+                <p class=" ">
+                    Total Budget:
+                </p>
+                <p class="w-[200px] text-end mr-6">
+                    {{ number_format($record->getYearActualBudget()) }}
+                </p>
+            </div>
+        </div>
+
+    </div>
+    @endif
     <div class="mb-20 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24 lg:flex lg:items-center lg:justify-between">
         <div>
-         
+
         </div>
         {{-- @dump($record) --}}
         <div class="mt-6 sm:flex sm:max-w-md lg:mt-0">
-       
+
         @if($record->status == App\Models\ProjectYear::STATUS_FOR_EDITING)
             {{ $this->forReviewAction }}
             @elseif($record->status == App\Models\ProjectYear::STATUS_FOR_REVIEW)
-            
+
             {{ $this->cancelReview }}
             @endif
         </div>
@@ -356,8 +341,10 @@
 
 
       <div class="">
-          <x-filament-actions::modals  />
+
 
       </div>
+
+      <x-filament-actions::modals  />
 
 </div>

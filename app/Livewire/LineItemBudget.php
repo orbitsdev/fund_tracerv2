@@ -161,7 +161,7 @@ public function returnToEditingAction(): Action
     public function deleteMooeAction(): Action
     {
         return Action::make('deleteMooe')
-            ->size(ActionSize::Large)
+        ->size(ActionSize::Large)
             ->iconButton()
             ->icon('heroicon-m-x-mark')
             ->color('danger')
@@ -429,6 +429,7 @@ public function returnToEditingAction(): Action
     {
         return Action::make('addPersonalService')
             ->label('Add Personal Service')
+            ->size(ActionSize::ExtraSmall)
             ->icon('heroicon-m-plus')
             ->extraAttributes([
                 'style' => 'border-radius: 100px;',
@@ -681,7 +682,7 @@ public function returnToEditingAction(): Action
     public function editMooeAction(): Action
     {
         return Action::make('editMooe')
-
+        ->size(ActionSize::Large)
             ->icon('heroicon-m-plus')
             ->iconButton()
             ->fillForm(function (array $arguments) {

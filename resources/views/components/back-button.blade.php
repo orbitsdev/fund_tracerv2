@@ -9,5 +9,5 @@
             </span>
     </a> --}}
 
-    <a href="{{$url}}" class="text-xl  font-semibold leading-6 text-gray-500"> <span aria-hidden="true">&larr;</span> BACK</a>
+    <a href="{{$url}}" class="text-xl  font-semibold leading-6 text-gray-600"> <span aria-hidden="true">&larr;</span> BACK</a>
 </div>

@@ -1,20 +1,20 @@
 <div class=>
 
 
-    
+
     <x-v3-top-header>
        {{$record->title}}    <span> (LIB LIST)</span>
         <!-- Slot 1 content not provided, default content will be displayed -->
         <x-slot name="slot2">
-          
+
          <x-back-button :url="Auth::user()->is_admin() ? route('project.index') : (Auth::user()->is_financial() ? route('financial-manager.projects') : '#')" >
             Back
         </x-back-button>
         </x-slot>
     </x-v3-top-header>
-    
 
-       
+
+
 
         <div class="mt-4">
             {{ $this->table }}
