@@ -636,6 +636,7 @@ public function returnToEditingAction(): Action
             ->extraAttributes([
                 'style' => 'border-radius: 100px;',
             ])
+            ->size(ActionSize::ExtraSmall)
             ->icon('heroicon-m-plus')
             ->label('Add MOOE')
             ->form($this->mooeForm())
@@ -908,6 +909,7 @@ public function returnToEditingAction(): Action
     public function addCOAction(): Action
     {
         return Action::make('addCO')
+        ->size(ActionSize::ExtraSmall)
             ->extraAttributes(AppConstant::ACTION_STYLE)
             ->icon('heroicon-m-plus')
             ->label('Add CO')

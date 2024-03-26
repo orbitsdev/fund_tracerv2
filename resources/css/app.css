@@ -263,3 +263,18 @@
 .app-button {
   @apply inline-flex items-center px-4 py-2 bg-trust-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-trust-700 focus:bg-trust-700 active:bg-trust-900 focus:outline-none focus:ring-2 focus:ring-trust-800 focus:ring-offset-2 transition ease-in-out duration-150
 }
+
+.cost-type{
+    @apply font-bold text-gray-700 text-sm;
+}
+
+
+.expense-label{
+    @apply flex justify-between items-center border-b border-gray-100 hover:bg-gray-50;
+}
+
+.v3-d-gradient{
+    background-image:linear-gradient(to bottom left, #1057bd, #0b6bea);
+    background-size: cover;
+    background-repeat: no-repeat;
+}

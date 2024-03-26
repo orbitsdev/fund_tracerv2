@@ -43,7 +43,7 @@
                 $personal_service)
 
                 <div class="ml-4 mb-2">
-                    <p class="font-bold text-gray-700 text-sm">
+                    <p class="cost-type">
                         {{ $cost_type }}
                     </p>
                     <div class="ml-4">
@@ -55,7 +55,7 @@
                                 </p>
 
                                 @foreach ($groups as $group_title => $expense)
-                                 <div class="flex justify-between items-center border-b  hover:bg-gray-50">
+                                 <div class="expense-label">
                                     <div class="ml-4 mr-6 flex justify-between text-gray-600 w-full">
                                         <p class="italic text-xs text-gray-500">
                                             {{ $expense->displaySelectedPS() }}
@@ -135,16 +135,19 @@
 
         </div>
         <div class="mt-6">
-            <p class="text-primary-600 text-2xl font-medium"> II. Maintenance and Other Operating Expenses</p>
-            <div class="mt-1">
-                {{ $this->addMOOEAction }}
+            <div class="flex items-center border-b rounded pb-3">
+                <p class="text-primary-600 text-xl font-medium mr-4">II. Maintenance and Other Operating Expenses</p>
+                <div class="mt-1">
+                    {{ $this->addMOOEAction }}
+                </div>
             </div>
+
 
             <div class="mt-3">
                 {{-- @dump($mooes) --}}
                 @forelse ($mooes as $cost_type => $mooe)
-                    <div class="ml-4">
-                        <p class="font-bold text-gray-600">
+                    <div class="ml-4  mb-2">
+                        <p class="cost-type">
 
                             {{ $cost_type }}
                         </p>
@@ -152,20 +155,20 @@
 
                             @foreach ($mooe as $group_title => $groups)
                                 <div class="ml-4">
-                                    <p class="font-medium text-gray-700">
+                                    <p class="font-medium text-gray-700 text-sm">
                                         {{ $group_title }}
 
                                     </p>
 
                                     @foreach ($groups as $key => $expense)
-                                        <div class="flex justify-between   items-center border-b hover:bg-gray-50">
+                                        <div class="expense-label">
 
                                             <div class="ml-4 mr-6 flex justify-between  text-gray-600 w-full    ">
-                                                <p class="italic text-sm text-gray-500">
+                                                <p class="italic  text-gray-500 text-xs">
                                                   {{ $expense->m_o_o_e_expense->title }}
 
                                                 </p>
-                                                <p>
+                                                <p class="text-xs">
                                                     {{ number_format($expense->amount) }}
                                                 </p>
 
@@ -247,27 +250,30 @@
 
         </div>
         <div class="mt-6">
-            <p class="text-primary-600 text-2xl font-medium"> III Capital Outlay</p>
-            <div class="mt-2">
-                {{ $this->addCOAction }}
+            <div class="flex items-center border-b rounded pb-3">
+                <p class="text-primary-600 text-xl font-medium mr-4">III Capital Outlay</p>
+                <div class="mt-1">
+                    {{ $this->addCOAction }}
+                </div>
             </div>
+
             <div class="mt-2">
                 @forelse ($cos as $cost_type => $groups)
-                    <div class="mt-4">
-                        <p class="font-bold text-gray-600">
+                    <div class="mt-4 mb-4 ml-4">
+                        <p class="cost-type">
 
                             {{ $cost_type }}
                         </p>
 
                         @foreach ($groups as $key => $expense)
 
-                            <div class="flex justify-between   items-center border-b hover:bg-gray-50">
+                            <div class="expense-label">
 
                                 <div class="ml-4 mr-6  flex   justify-between  text-gray-600 w-full    ">
-                                    <p class="italic text-sm text-gray-500">
+                                    <p class="italic text-xs text-gray-500">
                                        ({{$expense->quantity}}) {{ $expense->description }} <span class="text-xs">({{number_format($expense->amount)}} / Per item)</span>
                                     </p>
-                                    <p>
+                                    <p class="text-xs">
                                         {{ number_format($expense->new_amount) }}
                                     </p>
 
@@ -302,9 +308,20 @@
 
     </div>
     @if($record->getYearActualBudget()> 0)
-    <div class="d-gradient py-3">
+    <div class="v3-d-gradient py-3 px-4 text-white grid-cols-12 text-xl font-bold flex justify-between items-center">
 
-        <div class="">
+        <div>
+            <h1> {{$record->year->title}} </h1>
+        </div>
+        <div class="flex items-center justify-center">
+            <div>
+                <h1>  {{ number_format($record->getYearActualBudget()) }}</h1>
+            </div>
+            <div class="w-[80px]"> </div>
+        </div>
+
+
+        {{-- <div class="flex items-center justify-between">
             <div>
                 <p class=" font-bold">
                     {{$record->year->title}}
@@ -319,7 +336,7 @@
                     {{ number_format($record->getYearActualBudget()) }}
                 </p>
             </div>
-        </div>
+        </div> --}}
 
     </div>
     @endif

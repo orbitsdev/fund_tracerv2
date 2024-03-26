@@ -7,7 +7,7 @@
   ```
 -->
 <div class="min-h-full">
-    <nav class="bg-trust-800">
+    <nav class="bg-trust-800 sticky top-0  z-20">
         <div class="mx-auto max-w-7xl ">
             <div class="flex h-16 items-center justify-between">
               <div class="flex items-center">
