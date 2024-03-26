@@ -28,13 +28,13 @@
 
 
 
-    <div class="mt-4 px-8 py-4 d-gradient text-white rounded-lg">
-        <div class="flex justify-between items-center">
+  <div class="mt-4 px-8 py-4 d-gradient text-white rounded-lg border-b border-trust-500 shadow-md shadow-trust-600">
+        <div class="flex justify-start items-center">
             <div>
                 <!-- Content here if needed -->
             </div>
             <div class="flex items-center">
-                <p class="text-lg font-medium mr-4">Total Project Budget:</p>
+                <p class="text-lg font-medium mr-4 ">Total |</p>
                 <p class="text-lg font-medium text-right">{{ number_format($record->getTotalAllYearsBudget()) }}</p>
             </div>
         </div>

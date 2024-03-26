@@ -5,8 +5,9 @@ namespace App\Livewire\Users;
 use App\Models\User;
 use Filament\Tables;
 use Livewire\Component;
-use Filament\Tables\Table;
+use App\Enums\AppConstant;
 
+use Filament\Tables\Table;
 use App\Enums\RoleConstant;
 use Filament\Tables\Actions\Action;
 use Illuminate\Contracts\View\View;
@@ -138,22 +139,13 @@ class ListUsers extends Component implements HasForms, HasTable
                 TextColumn::make('gender')->searchable(),
                 TextColumn::make('email')->searchable(),
                 TextColumn::make('account_type')->searchable(),
-                TextColumn::make('role')->searchable()->badge()
+                TextColumn::make('role')->searchable()
                     ->color(fn (string $state): string => match ($state) {
                         'Admin' => 'trust',
                         'Financial Manager' => 'info',
                         default => 'gray',
                     }),
-                TextColumn::make('assigned_project')->formatStateUsing(function ($state) {
-
-                    if (!empty($state)) {
-                        return $state->project->title;
-                    } else {
-                        return 'No Project Assigned';
-                    }
-                })
-                    ->label(' Project')
-                    ->color('gray'),
+                
             ])
             ->filters([
                 SelectFilter::make('role')
@@ -244,15 +236,18 @@ class ListUsers extends Component implements HasForms, HasTable
 
                 EditAction::make()
                 ->button()
+                ->extraAttributes(AppConstant::ACTION_STYLE)
                 // ->outlined()
-                ->color('trust')
+                ->color('gray')
                 ->label('Edit')
                 ->modalHeading('Edit User')
                 // ->icon('heroicon-m-users')
                 ->form($this->userForm())
                 ->modalWidth(MaxWidth::SevenExtraLarge),
             Tables\Actions\DeleteAction::make()
+            ->extraAttributes(AppConstant::ACTION_STYLE)
             ->button()
+            ->color('gray')
                 ->outlined()
             ,
                 // ActionGroup::make([

@@ -139,7 +139,7 @@
 
 }
 .d-gradient{
-  background-image:linear-gradient(to bottom left, #01354bfa, #0490b3c7);
+  background-image:linear-gradient(to bottom left, #1057bd, #0b6bea);
   background-size: cover;
   background-repeat: no-repeat;
 }
@@ -196,7 +196,7 @@
 
 .login-bg
 {
-    background-image:linear-gradient(to bottom, rgba(1, 53, 75, 0.98),rgba(12, 61, 83, 0.9), #0490b3c7),
+    background-image:linear-gradient(to bottom, rgb(17, 47, 90,0.98),rgb(17, 47, 90,0.9), #112f5a),
     url('../../public/images/line.png') ;
     background-size: cover;
     background-repeat: no-repeat;

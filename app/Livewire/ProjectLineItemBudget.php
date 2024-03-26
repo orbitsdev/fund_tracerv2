@@ -6,10 +6,11 @@ use Closure;
 use App\Models\Year;
 use App\Models\Project;
 use Livewire\Component;
+use App\Enums\AppConstant;
 use Filament\Tables\Table;
 use App\Models\ProjectYear;
-use Filament\Actions\Action;
 
+use Filament\Actions\Action;
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Contracts\HasForms;
@@ -27,8 +28,8 @@ use Filament\Actions\Contracts\HasActions;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
 use Filament\Tables\Actions\Action as TAction;
-use Filament\Forms\Concerns\InteractsWithForms;
 
+use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Actions\Concerns\InteractsWithActions;
 
@@ -116,7 +117,16 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                     return $state . ' LIB';
                 }),
                 ViewColumn::make('')->label('Total Year Budget')->view('tables.columns.total-line-item-budget'),
-                TextColumn::make('status')->label('LIB STATUS')->badge(),
+                TextColumn::make('status')->label('LIB STATUS')->badge()
+                ->color(fn (string $state): string => match ($state) {
+                    ProjectYear::STATUS_FOR_EDITING => 'gray',
+                    ProjectYear::STATUS_FOR_REVIEW => 'gray',
+                    ProjectYear::STATUS_REVIEWING => 'gray',
+                    ProjectYear::STATUS_REJECTED => 'danger',
+                    ProjectYear::STATUS_APPROVED => 'success',
+                    default => 'gray',
+                })
+                ,
                 ToggleColumn::make('is_active')
                     ->label('Currently in Use')
                     ->onIcon('heroicon-m-check')
@@ -169,19 +179,17 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                 //     // ])
                 //     ->url(fn (Model $record): string => route('project.line-items-view', ['record' => $record->id])),
                 TAction::make('edit')->icon('heroicon-m-pencil-square')->label('EDIT LIB')->color('primary')
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px;',
-
-                    ])
+                ->extraAttributes(AppConstant::ACTION_STYLE)
+                  
                     ->button()
                     ->outlined()
 
 
                     ->url(fn (Model $record): string => route('project.line-items', ['record' => $record->id])),
                 TAction::make('copy')->icon('heroicon-m-clipboard-document')->label('COPY LIB')->color('primary')
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px; ',
-                    ])
+                ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->color('gray')
+
                     ->button()
                     ->outlined()
 
@@ -305,15 +313,11 @@ class ProjectLineItemBudget extends Component implements HasForms, HasActions, H
                         // $record->save();
                     }),
                 DeleteAction::make('delete')->icon('heroicon-m-x-mark')
+                ->color('gray')
                     ->button()
                     ->outlined()
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px; ',
-                    ])
-                    ->extraAttributes([
-                        'style' => 'border-radius: 100px;',
-
-                    ]),
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ,
                 // ActionGroup::make([
 
 

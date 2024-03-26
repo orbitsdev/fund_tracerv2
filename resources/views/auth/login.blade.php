@@ -61,10 +61,10 @@
                       <div class="w-full border-t "></div>
                     </div>
                     <div class="relative flex justify-center text-sm font-medium leading-6">
-                      <span class="bg-white px-6 text-gray-900 poppins-regular tg6">Or continue with</span>
+                      {{-- <span class="bg-white px-6 text-gray-900 poppins-regular tg6">Or continue with</span> --}}
                     </div>
                   </div>
-
+{{-- 
                 <div class="poppins-regular mt-6 grid grid-cols-1 gap-4  rounded-lg ">
                     <a href="#" class="flex w-full items-center justify-center gap-3 rounded-md   px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-100 focus-visible:ring-transparent ">
                       <svg class="h-5 w-5" viewBox="0 0 24 24" aria-hidden="true">
@@ -77,7 +77,7 @@
                     </a>
 
 
-                  </div>
+                  </div> --}}
             </div>
         </form>
     </x-authentication-card>

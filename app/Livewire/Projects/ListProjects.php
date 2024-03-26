@@ -95,7 +95,7 @@ class ListProjects extends Component implements HasForms, HasTable
             ])
             ->actions([
                 Action::make('view')
-                    ->icon('heroicon-m-pencil-square')
+                    ->icon('heroicon-m-cursor-arrow-rays')
                     ->button()
                     ->extraAttributes(AppConstant::ACTION_STYLE)
                     ->outlined()
@@ -138,8 +138,8 @@ class ListProjects extends Component implements HasForms, HasTable
                     ->hidden(fn (Model $record) => empty($record->user) ? false : true),
                 Action::make('REMOVE FINANCE MANAGER')
                     ->label('REMOVE FINANCE MANAGER')
-                    ->icon('heroicon-m-plus')
-                    ->color('danger')
+                    ->icon('heroicon-m-x-mark')
+                    ->color('gray')
                     ->outlined()
                   
                     ->button()
@@ -168,13 +168,15 @@ class ListProjects extends Component implements HasForms, HasTable
                     ->label('EDIT')
                     ->outlined()
                     ->button()
-                    ->color('primary')
+                    ->color('gray')
+                   
 
                     ->url(fn (Model $record): string => route('project.edit', ['record' => $record])),
 
                 // Tables\Actions\EditAction::make()->label('Edit'),
                 Tables\Actions\DeleteAction::make()->label('DELETE')
                     ->outlined()
+                    ->color('gray')
                     ->button()
                     ->extraAttributes(AppConstant::ACTION_STYLE),
 

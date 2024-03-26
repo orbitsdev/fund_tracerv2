@@ -1,18 +1,21 @@
 <div>
 
-    <x-create-management-layout>
-        {{-- <div class="p-2 bg-indigo-100 rounded-md drop-shadow-sm mb-2">
 
-        </div> --}}
-
-        <x-back-button style="justify-start" :url="route('project.line-item-budget',['record' => $record->project->id])">
+    
+    <x-v3-top-header>
+        {{$record->project->title}} ({{$record->year->title}} LIB) 
+        <!-- Slot 1 content not provided, default content will be displayed -->
+        <x-slot name="slot2">
+              <x-back-button style="justify-start" :url="route('project.line-item-budget',['record' => $record->project->id])">
             Back
         </x-bacl-button>
-        {{-- {{$record}} --}}
-        {{-- @dump($record) --}}
-        <div class="relative ">
+        </x-slot>
+    </x-v3-top-header>
+    
+
+        <div class="relative mt-4 bg-white p-4 rounded">
            @if($record->status != App\Models\ProjectYear::STATUS_FOR_EDITING)
-           <div class="absolute z-10 inset-0 bg-gray-500 bg-opacity-50 backdrop-blur flex items-center justify-center hover:cursor-not-allowed">
+           <div class="absolute z-10 inset-0 bg-gray-500 bg-opacity-50 backdrop-blur flex items-center justify-center hover:cursor-not-allowed rounded">
             <div class="text-center">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-72 h-72">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
@@ -24,39 +27,34 @@
 
             
 
-        <div class="mb-4">
-            {{-- <p>{{$record->project->title}}</p> --}}
-            <p class="uppercase text-primary-700 text-4xl  font-medium"> {{ $record->project->title }}</p>
-            <p class="text-primary-700 text-4xl  font-medium mt-2"> {{ $record->year->title }}</p>
-        </div>
+
         <div>
             <p class="text-primary-600 text-2xl font-medium"> I. Personal Service</p>
-            <div class="mt-2">
+            <div class="mt-1">
                 {{ $this->addPersonalServiceAction }}
             </div>
 
-            <div class="mt-2">
+            <div class="mt-3">
                 {{-- @dump($personal_services) --}}
                 @forelse ($personal_services as $cost_type => 
                 
                 $personal_service)
 
-                <div class="">
-                    <p class="font-bold text-gray-600">
+                <div class="ml-4">
+                    <p class="font-bold text-gray-700">
                         {{ $cost_type }} 
                     </p>
                     <div class="ml-4">
                         @foreach ($personal_service as $indirect_cost_type => $groups)
                      
                             <div class="ml-4">
-                                <p class="font-medium text-gray-600">
+                                <p class="font-medium text-gray-700">
                                             {{$indirect_cost_type}}
                                 </p>
 
                                 @foreach ($groups as $group_title => $expense)
-                                    
-                                 <div class="flex justify-between items-center border-b hover:bg-gray-50">
-                                    <div class="ml-4 mr-4 flex justify-between text-gray-600 w-full">
+                                 <div class="flex justify-between items-center border-b  hover:bg-gray-50">
+                                    <div class="ml-4 mr-6 flex justify-between text-gray-600 w-full">
                                         <p class="italic text-sm text-gray-500">
                                             {{ $expense->displaySelectedPS() }}
                                         </p>
@@ -127,20 +125,10 @@
             </div>
            --}}
            @if($record->getActualTotalPS() > 0)
-            <div class="pr-8 flex justify-between p-1 bg-gray-100 ">
-                <div>
-
-                </div>
-                <div class="flex font-medium">
-
-                    <p class=" ">
-                        Sub-total for PS
-                    </p>
-                    <p class="w-[200px] text-end mr-6">
-                        {{ number_format($record->getActualTotalPS()) }}
-                    </p>
-                </div>
-            </div>
+           <x-sub-total-lib label="Sub-total for PS" 
+           class="mt-1 rounded"
+           :value="number_format($record->getActualTotalPS())"/>
+         
             @endif
 
         </div>
@@ -161,7 +149,7 @@
                         <div class="ml-4">
                            
                             @foreach ($mooe as $group_title => $groups)
-                                <div class="ml-4
+                                <div class="ml-4">
                                     <p class="font-medium text-gray-600">
                                         {{ $group_title }}
 
@@ -180,7 +168,7 @@
 
                                             </div>
 
-                                            <div class="mb-2 flex">
+                                            <div class="mb-2 flex items-center justify-center">
                                                 <div class="mr-2">
                                                     {{ ($this->editMooeAction)(['mooe' => $expense->id]) }}
                                                 </div>
@@ -371,5 +359,5 @@
           <x-filament-actions::modals  />
 
       </div>
-    </x-create-management-layout>
+
 </div>
