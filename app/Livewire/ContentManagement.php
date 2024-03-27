@@ -15,7 +15,7 @@ class ContentManagement extends Component
     }
 
     public function mount(){
-        return redirect()->route('personal-service.index');
+        // return redirect()->route('personal-service.index');
     }
 
     public function render()

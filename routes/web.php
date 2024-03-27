@@ -34,6 +34,7 @@ use App\Livewire\FinancialManagerDashboard;
 use App\Livewire\FORM\MOOE\EditMOOEExpense;
 use function Spatie\LaravelPdf\Support\pdf;
 use App\Http\Controllers\SocialiteController;
+use App\Livewire\CoOption\ListCoOption;
 use App\Livewire\Project\ListAssignedProjects;
 use App\Livewire\Reports\YearParticularReport;
 use App\Livewire\MOOE\MOOEExpense\MOOEItemList;
@@ -41,7 +42,9 @@ use App\Livewire\MonitoringAgency\ListMonitoringAgencies;
 use App\Livewire\FinancialManagerProjects\ListFinancialManager;
 
 use App\Livewire\ListFinancialTransaction;
+use App\Livewire\Payee\ListPayee;
 use App\Livewire\V3ViewLIB;
+use App\Livewire\Year\ListYears;
 
 /*
 |--------------------------------------------------------------------------
@@ -118,9 +121,11 @@ Route::prefix('reports')->name('report.')->group(function () {
         Route::prefix('manage')->name('manage.')->group(function(){
             Route::get('/user', ListUsers::class)->name('users');
             Route::get('/implementing-agencies', ListImplentinAgencies::class)->name('implementing-agencies');
+            Route::get('/years', ListYears::class)->name('years');
             Route::get('/monitoring-agencies', ListMonitoringAgencies::class)->name('monitoring-agencies');
             Route::get('/program-project', CreateManagement::class)->name('program-project');
             Route::get('/content', ContentManagement::class)->name('content-management');
+            Route::get('/payee-member', ListPayee::class)->name('payee-member');
             Route::get('/financial-transactions', ListFinancialTransaction::class)->name('financial-transactions');
         }); //
 
@@ -148,12 +153,16 @@ Route::prefix('reports')->name('report.')->group(function () {
              Route::get('/edit/{record}', EditPsGroup::class)->name('edit');
         });
 
-        Route::prefix('mooe')->name('mooe.')->group(function(){
+        Route::prefix('materials-and-other-operating-expenses')->name('mooe.')->group(function(){
              Route::get('/', ListMOOE::class)->name('index');
              Route::get('/edit/{record}', EditMOOEGroup::class)->name('edit');
              Route::get('mooe/expense/list/{record}', MOOEExpenseList::class)->name('expense.list');
             //  Route::get('mooe/expense/list/mooe/item/{record}', MOOEItemList::class)->name('expense.list.item');
              Route::get('edit/expense/list/mooe/item/{record}', EditMOOEExpense::class)->name('edit.expense.mooe');
+        });
+        Route::prefix('capital-outlay')->name('co.')->group(function(){
+             Route::get('/', ListCoOption::class)->name('index');
+
         });
     });
 

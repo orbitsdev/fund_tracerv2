@@ -6,7 +6,10 @@
   <body class="h-full">
   ```
 -->
-<div class="min-h-full">
+<div class="min-h-full ">
+
+
+
     <nav class="bg-trust-800 sticky top-0  z-20">
         <div class="mx-auto max-w-7xl ">
             <div class="flex h-16 items-center justify-between">
@@ -21,7 +24,8 @@
                     <a href="{{route('manage.users')}}" class="
                     {{ request()->routeIs('manage.users') ? 'link-active' : 'link-inactive' }}" aria-current="page">Accounts</a>
                     <a href="{{ route('project.index') }}" class=" {{ (request()->routeIs('project.index') || request()->routeIs('project.create') || request()->routeIs('project.edit') || request()->routeIs('project.line-item-budget') || request()->routeIs('project.line-items-view') || request()->routeIs('project.line-items') || request()->routeIs('line-items-view-v3')  ) ? 'link-active' : 'link-inactive' }}">Projects</a>
-                    <a href="{{route('manage.content-management')}}" class="link-inactive">Content Management</a>
+                    <a href="{{route('manage.content-management')}}" class="
+                    {{ (request()->routeIs('personal-service.index') || request()->routeIs('personal-service.edit') || request()->routeIs('mooe.index')|| request()->routeIs('mooe.edit')|| request()->routeIs('mooe.expense.list')|| request()->routeIs('mooe.edit.expense.mooe') ||  request()->routeIs('manage.content-management') ||  request()->routeIs('manage.implementing-agencies') ||  request()->routeIs('manage.monitoring-agencies') ||  request()->routeIs('manage.years') ) ? 'link-active' : 'link-inactive' }}">Content Management</a>
                     <a href="#" class="link-inactive">Reports</a>
                     {{-- <a href="#" class="text-white hover:bg-trust-500 hover:bg-opacity-75 rounded-md px-3 py-2 text-sm font-medium">Reports</a> --}}
                   </div>
@@ -92,7 +96,7 @@
         <h1 class="text-3xl font-bold leading-tight tracking-tight text-gray-900">Dashboard</h1>
       </div> --}}
     </header>
-    <main class="mt-8 mx-auto max-w-7xl mb-10">
+    <main class="mt-8 mx-auto max-w-7xl mb-10 ">
         {{$slot}}
 
     </main>

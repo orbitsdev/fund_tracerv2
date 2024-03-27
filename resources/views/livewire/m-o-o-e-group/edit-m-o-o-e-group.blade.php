@@ -1,12 +1,14 @@
 <div>
-    <x-management-layout>
-        <div class="flex justify-end">
-            <x-back-button :url="route('mooe.index')">BACK</x-back-button>
 
-        </div>
-        <p class="my-2 text-2xl italic text-primary-600 mb-4">
-            Maintenance and Other Operating Expenses > {{$record->title}}
-        </p>
+    <x-v3-top-header>
+        Maintenance and Other Operating Expenses > {{$record->title}}
+       <!-- Slot 1 content not provided, default content will be displayed -->
+       <x-slot name="slot2">
+        <x-back-button :url="route('mooe.index')">BACK</x-back-button>
+       </x-slot>
+   </x-v3-top-header>
+    <x-management-layout>
+      
         <form wire:submit="save">
             {{ $this->form }}
 

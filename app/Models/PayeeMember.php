@@ -9,3 +9,4 @@ class PayeeMember extends Model
 {
     use HasFactory;
 }
+

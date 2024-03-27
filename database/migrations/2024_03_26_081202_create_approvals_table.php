@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('approvals', function (Blueprint $table) {
             $table->id();
-            $table->sting('status')->default(ProjectYear::STATUS_FOR_EDITING)->nullable();
+            $table->string('status')->default(ProjectYear::STATUS_FOR_EDITING)->nullable();
             $table->text('message')->nullable();
             $table->timestamps();
         });
