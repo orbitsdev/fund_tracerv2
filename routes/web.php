@@ -1,5 +1,6 @@
 <?php
 
+use App\Livewire\AccountDetails;
 use App\Livewire\ListMOOE;
 use App\Livewire\TestPage;
 use App\Livewire\Particular;
@@ -92,7 +93,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
-
+    Route::get('/profile/{record}', AccountDetails::class)->name('profile.view');
 
 Route::prefix('reports')->name('report.')->group(function () {
     Route::get('/breakdown/{record}/{type}', [ReportController::class,'downloadBreakdown'])->name('breakdown.download');

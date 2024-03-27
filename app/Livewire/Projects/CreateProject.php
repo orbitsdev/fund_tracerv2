@@ -23,6 +23,7 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
@@ -533,7 +534,12 @@ class CreateProject extends Component implements HasForms
             ->send();
 
 
-        return redirect()->route('project.index');
+           
+
+
+
+
+        return redirect()->route('project.edit', ['record'=> $record->id])->with('success', 'Project successfully created! You can now manage your finance manager and staff here.');
     }
 
     public function render(): View

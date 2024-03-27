@@ -103,64 +103,49 @@ class ListProjects extends Component implements HasForms, HasTable
 
                     ->url(fn (Model $record): string => route('project.line-item-budget', ['record' => $record])),
 
-                EditAction::make('FINANCE MANAGER')
-                    ->label('ADD FINANCE MANAGER')
-                    ->icon('heroicon-m-plus')
-                    ->outlined()
-                    ->button()
-                    ->extraAttributes(AppConstant::ACTION_STYLE)
-                    ->form([
+                // EditAction::make('FINANCE MANAGER')
+                //     ->label('ADD FINANCE MANAGER')
+                //     ->icon('heroicon-m-plus')
+                //     ->outlined()
+                //     ->button()
+                //     ->extraAttributes(AppConstant::ACTION_STYLE)
+                //     ->form([
 
-                        Select::make('user_id')
-                        ->label('Finance Manager Account')
-    ->relationship(name: 'user', titleAttribute: 'first_name',   modifyQueryUsing: fn (Builder $query) => $query->where('role', RoleConstant::FINANCE_MANAGER),)
-    ->searchable(['first_name','last_name', 'email'])
-    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->getFullName()} - {$record->email}")
-    ->preload()
-
-                        // Select::make('user_id')
-                        //     ->label('Account')
-                        //     ->options(User::query()->where('role', RoleConstant::FINANCE_MANAGER)
-                        //         ->get()
-                        //         ->map(function ($item) {
-                        //             return [
-                        //                 'id' => $item->id,
-                        //                 'name' => $item->getFullName()
-                        //             ];
-                        //         })
-                        //         ->pluck('name', 'id'))
-                              
-
-                        //     ->required(),
+                //         Select::make('user_id')
+                //             ->label('Finance Manager Account')
+                //             ->relationship(name: 'user', titleAttribute: 'first_name',   modifyQueryUsing: fn (Builder $query) => $query->where('role', RoleConstant::FINANCE_MANAGER),)
+                //             ->searchable(['first_name', 'last_name', 'email'])
+                //             ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->getFullName()} - {$record->email}")
+                //             ->preload()
 
 
-                    ])
-                    ->hidden(fn (Model $record) => empty($record->user) ? false : true),
-                Action::make('REMOVE FINANCE MANAGER')
-                    ->label('REMOVE FINANCE MANAGER')
-                    ->icon('heroicon-m-x-mark')
-                    ->color('gray')
-                    ->outlined()
-                  
-                    ->button()
-                    ->extraAttributes(AppConstant::ACTION_STYLE)
-                    ->requiresConfirmation()
-                    ->modalHeading('Remove Finance Manager ')
-                    ->modalDescription('Are you sure you\'d like to remove project finance manager? This cannot be undone.')
-                    ->modalSubmitActionLabel('Yes, Remove it')
-                    ->action(function (Model $record) {
+                //     ])
+                //     ->hidden(fn (Model $record) => empty($record->user) ? false : true),
+                // Action::make('REMOVE FINANCE MANAGER')
+                //     ->label('REMOVE FINANCE MANAGER')
+                //     ->icon('heroicon-m-x-mark')
+                //     ->color('gray')
+                //     ->outlined()
+
+                //     ->button()
+                //     ->extraAttributes(AppConstant::ACTION_STYLE)
+                //     ->requiresConfirmation()
+                //     ->modalHeading('Remove Finance Manager ')
+                //     ->modalDescription('Are you sure you\'d like to remove project finance manager? This cannot be undone.')
+                //     ->modalSubmitActionLabel('Yes, Remove it')
+                //     ->action(function (Model $record) {
 
 
-                        if ($record->user) {
-                            $record->user_id = null;
-                            $record->update();
-                            Notification::make()
-                                ->title('Finance Manager Removed')
-                                ->success()
-                                ->send();
-                        }
-                    })
-                    ->hidden(fn (Model $record) => !empty($record->user) ? false : true),
+                //         if ($record->user) {
+                //             $record->user_id = null;
+                //             $record->update();
+                //             Notification::make()
+                //                 ->title('Finance Manager Removed')
+                //                 ->success()
+                //                 ->send();
+                //         }
+                //     })
+                //     ->hidden(fn (Model $record) => !empty($record->user) ? false : true),
 
                 Action::make('edit')
                     ->extraAttributes(AppConstant::ACTION_STYLE)
@@ -169,7 +154,7 @@ class ListProjects extends Component implements HasForms, HasTable
                     ->outlined()
                     ->button()
                     ->color('gray')
-                   
+
 
                     ->url(fn (Model $record): string => route('project.edit', ['record' => $record])),
 

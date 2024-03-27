@@ -3,31 +3,43 @@
 namespace App\Livewire\Projects;
 
 use Filament\Forms;
+use App\Models\User;
 use App\Models\Project;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Livewire\Component;
 use Filament\Forms\Form;
+use App\Enums\AppConstant;
+use App\Enums\RoleConstant;
 use Filament\Support\RawJs;
 use Filament\Actions\Action;
 use Illuminate\Support\Carbon;
 use App\Models\MonitoringAgency;
+use Filament\Actions\EditAction;
 use App\Models\ImplementingAgency;
+use Filament\Actions\StaticAction;
 use Illuminate\Contracts\View\View;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Radio;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Forms\Components\Select;
+use Filament\Support\Enums\Alignment;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Support\Enums\ActionSize;
 use Filament\Forms\Components\Textarea;
 use Illuminate\Database\Eloquent\Model;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Forms\Components\DatePicker;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Actions\Concerns\InteractsWithActions;
 
-class EditProject extends Component implements HasForms
-{
+class EditProject extends Component implements HasForms , HasActions
+{   
+    use InteractsWithActions;
     use InteractsWithForms;
 
     public ?array $data = [];
@@ -74,8 +86,97 @@ class EditProject extends Component implements HasForms
            
         }
     }
+      
+    public function  addFinanceManagerAction(): EditAction
+        {
+           return EditAction::make('addFinanceManager')
+            ->label('Finance Manager')
+            ->icon('heroicon-m-plus')
+            // ->iconButton()
+            ->extraAttributes(AppConstant::ACTION_STYLE)
+            ->record(function (array $arguments) {
+                return Project::find($arguments['record']);
+            })
+            ->model(Project::class)
+            ->form([
 
+                Select::make('user_id')
+                    ->label('Finance Manager Account')
+                    ->relationship(name: 'user', titleAttribute: 'first_name',   modifyQueryUsing: fn (Builder $query) => $query->where('role', RoleConstant::FINANCE_MANAGER),)
+                    ->searchable(['first_name', 'last_name', 'email'])
+                    ->getOptionLabelFromRecordUsing(fn (Model $record) => "{$record->getFullName()} - {$record->email}")
+                    ->preload()
+
+
+            ])
+            ->successRedirectUrl(fn (Model $record): string => 
+            route('project.edit', [ 'record' => $record->id,])
+        );
+            
+            
+        }
     
+    
+    public function   removeFinanceManagerAction(): Action
+        {
+            
+       return Action::make('removeFinanceManager')
+                    ->label('Remove Finance Manager')
+                    ->icon('heroicon-m-x-mark')
+                    ->color('gray')
+                    ->iconButton()
+                    
+                    ->size(ActionSize::Small)
+                    ->outlined()
+                    ->extraAttributes(AppConstant::ACTION_STYLE)
+                    ->requiresConfirmation()
+                    ->modalHeading('Remove Finance Manager ')
+                    ->modalDescription('Are you sure you\'d like to remove project finance manager? This cannot be undone.')
+                    ->modalSubmitActionLabel('Yes, Remove it')
+                    ->action(function (array $arguments) {
+                        $record = Project::find($arguments['record']);
+
+                        if ($record->user) {
+                            $record->user_id = null;
+                            $record->update();
+                            Notification::make()
+                                ->title('Finance Manager Removed')
+                                ->success()
+                                ->send();
+                        }
+
+                        route('project.edit', [ 'record' => $record->id,]);
+                    });
+                    // ->hidden(fn (Model $record) => !empty($record->user) ? false : true);
+    }
+
+
+    public function  viewAccountDetailsAction(): Action
+        {
+            
+       return  Action::make('viewAccountDetails')
+           ->color('gray')
+           ->extraAttributes([
+            'style'=> 'color: gray'
+           ])
+         
+           ->label('View Profile')
+           ->modalContent(function (array $arguments) {
+              $record = Project::find($arguments['record']['id']);
+        
+               return view('livewire.account-details', ['record'=> $record?->user]);
+           })
+           ->size(ActionSize::ExtraSmall)
+           ->modalWidth(MaxWidth::SevenExtraLarge)
+           ->button()
+           ->outlined()
+           ->modalSubmitAction(false)
+           ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
+           ->disabledForm()
+           ->slideOver();
+                    // ->hidden(fn (Model $record) => !empty($record->user) ? false : true);
+    }
+
 
    
 
