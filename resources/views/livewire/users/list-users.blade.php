@@ -7,7 +7,10 @@
           
         </x-slot>
     </x-v3-top-header>
-    {{ $this->table }}
+    <div class="">
+        {{ $this->table }}
+
+    </div>
 
 
 </div>

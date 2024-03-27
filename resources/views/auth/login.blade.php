@@ -15,9 +15,10 @@
         <form method="POST" action="{{ route('login') }}" class="mt-6">
         <x-authentication-card-logo />
             <div class="flex items-center justify-center mt-6 ">
+                    
                 <p class="poppins-regular uppercase text-4xl font-bold leading-10 tracking-tight text-primary-600">
                     <span class="relative w-full ">
-                        F<span class="absolute top-0 left-0 -ml-1 text-secondary-500">U</span>ND TR<span class="absolute top-0 right-0 -mr-1 text-secondary-500">A</span>CER
+                        F<span class="absolute top-0 left-0  text-secondary-500">U</span>ND TR<span class="absolute top-0 right-0 mr-1 text-secondary-500">A</span>CER
                     </span>
                 </p>
             </div>
